@@ -1,5 +1,5 @@
 <template>
-  <div></div>
+  <div>Привет, Богдан!</div>
 </template>
 
 <script>
