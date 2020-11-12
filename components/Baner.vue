@@ -1,7 +1,5 @@
 <template>
-  <div class="mainBox">
-    <baner />
-  </div>
+  <div class="banerBox"></div>
 </template>
 
 <script>
@@ -9,6 +7,6 @@ export default {}
 </script>
 
 <style scoped>
-.mainBox {
+.banerBox {
 }
 </style>
