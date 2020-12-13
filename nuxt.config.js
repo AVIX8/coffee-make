@@ -1,6 +1,12 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
+  // target: 'server',
+  server: {
+    port: 3000, // default: 3000
+    host: '0.0.0.0', // default: localhost
+  },
+
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     titleTemplate: '%s - Coffee-Make',
@@ -10,7 +16,7 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/icon32.png' }],
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -57,6 +63,18 @@ export default {
           success: colors.green.accent3,
         },
       },
+    },
+  },
+
+  pwa: {
+    meta: {
+      title: 'Coffee Make',
+      author: 'CM inc.',
+    },
+    manifest: {
+      name: 'Coffee Make',
+      short_name: 'Nuxt.js PWA',
+      lang: 'ru',
     },
   },
 
