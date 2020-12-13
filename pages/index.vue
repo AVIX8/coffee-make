@@ -1,11 +1,17 @@
 <template>
-  <v-app>
-    <v-main>
-      <v-btn text small color="primary">Primary</v-btn>
-    </v-main>
-  </v-app>
+  <div class="mainBox">
+    dsdd
+    <baner />
+  </div>
 </template>
 
 <script>
-export default {}
+export default {
+  layout: 'header&footer',
+}
 </script>
+
+<style scoped>
+.mainBox {
+}
+</style>
