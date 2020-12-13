@@ -1,11 +1,14 @@
 <template>
   <div class="mainBox">
+    dsdd
     <baner />
   </div>
 </template>
 
 <script>
-export default {}
+export default {
+  layout: 'header&footer',
+}
 </script>
 
 <style scoped>
