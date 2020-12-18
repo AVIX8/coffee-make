@@ -1,5 +1,5 @@
 <template>
-  <div class="mainBox">Сиропы</div>
+  <div class="mainBox">Продукты</div>
 </template>
 
 <script>

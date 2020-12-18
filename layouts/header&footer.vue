@@ -2,8 +2,12 @@
   <div class="mainBox">
     <div class="HEADER">
       <div class="Cover">
-        <img class="logo" lazy-src="/icon32.png" src="/icon.png" />
-        <div class="logoName">Coffee Make</div>
+        <nuxt-link to="/" style="text-decoration: none">
+          <div class="toMain" title="На Главную">
+            <img class="logo" src="/icon.png" />
+            <div class="logoName">Coffee Make</div>
+          </div>
+        </nuxt-link>
         <v-text-field
           class="searchBox"
           label="Поиск..."
@@ -11,22 +15,35 @@
           dense
           hide-details
         ></v-text-field>
-        <nuxt-link class="account" tag="img" src="/account.png" to="/" />
-        <nuxt-link class="cart" tag="img" src="/cart.png" to="/" />
+        <nuxt-link
+          class="account"
+          tag="img"
+          src="/account.png"
+          to="/"
+          title="Мой Аккаунт"
+        />
+        <nuxt-link
+          class="cart"
+          tag="img"
+          src="/cart.png"
+          to="/"
+          title="Корзина"
+        />
       </div>
       <div class="Categories">
-        <nuxt-link to="/coffeeProductMain" class="category"> Кофе </nuxt-link>
-        <nuxt-link to="/rentCoffeeMachinesMain" class="category">
-          Аренда кофемашин
+        <nuxt-link
+          v-for="category in categories"
+          :key="category.title"
+          :to="category.linkTo"
+          class="category"
+        >
+          {{ category.title }}
         </nuxt-link>
-        <nuxt-link to="/syrupsProductMain" class="category"> Сиропы </nuxt-link>
-        <nuxt-link to="/accessoriesProductMain" class="category">
-          Аксессуары
-        </nuxt-link>
-        <nuxt-link to="/servicesMain" class="category"> Услуги </nuxt-link>
       </div>
     </div>
+
     <!-- index --><nuxt />
+
     <div class="FOOTER">
       <div class="workingHours">
         <p>ВРЕМЯ РАБОТЫ</p>
@@ -44,13 +61,28 @@
 </template>
 
 <script>
-export default {}
+export default {
+  data() {
+    return {
+      categories: [
+        { title: 'Кофе', linkTo: '/products' },
+        { title: 'Аренда кофемашин', linkTo: '/rentCoffeeMachinesMain' },
+        { title: 'Сиропы', linkTo: '/products' },
+        { title: 'Аксессуары', linkTo: '/products' },
+        { title: 'Услуги', linkTo: '/servicesMain' },
+      ],
+    }
+  },
+}
 </script>
 
 <style scoped>
-@import url('https://fonts.googleapis.com/css2?family=Dancing+Script&family=Rubik&display=swap');
+@font-face {
+  font-family: 'Dancing Script';
+  src: url(/fonts/DancingScript-Bold.ttf); /* Путь к файлу со шрифтом */
+}
 * {
-  transition: ease-out 0.3s;
+  transition: ease-out 0.1s;
 }
 .mainBox {
   position: relative;
@@ -64,9 +96,7 @@ export default {}
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 0.2% 20% 0.2% 20%;
-
-  width: 100%;
+  padding: 0.2rem 25rem 0.2rem 25rem;
 
   background-image: linear-gradient(
     to right bottom,
@@ -84,59 +114,68 @@ export default {}
     #272523
   );
 }
+.toMain {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
 .logo {
-  margin: 0.2%;
-  width: 6%;
+  margin: 0.2rem;
+  width: 5rem;
   /* background-color: red; */
 }
 .logoName {
-  margin: 0.2%;
-  margin-left: 1%;
+  margin: 0.2rem;
+  margin-left: 2rem;
 
   color: white;
   font-family: 'Dancing Script', cursive;
   font-weight: bold;
-  font-size: 2.7vw;
+  font-size: 3rem;
 }
 .searchBox {
-  margin-left: 27%;
+  margin-left: 5rem;
 
-  height: 10%;
-  width: 20%;
+  width: 20rem;
 
+  border-radius: 30px;
   background-color: gainsboro;
 }
 .account {
-  padding: 1.3%;
-  margin-left: 3%;
+  padding: 0.7rem;
+  margin-left: 3rem;
 
-  width: 5%;
+  width: 3.5rem;
 
-  font-size: 1vw;
-  border-radius: 50%;
+  border-radius: 50rem;
+  transition: ease-out 1s;
 }
 .account:hover {
   border: 0;
+  cursor: pointer;
   background-color: #2db6b5;
   transition: all 0.6s;
 }
 .cart {
-  padding: 1.3%;
-  margin-left: 1%;
+  padding: 0.7rem;
+  margin-left: 1rem;
 
-  width: 5%;
+  width: 3.5rem;
 
-  border-radius: 50%;
+  border-radius: 50rem;
+  transition: ease-out 1s;
 }
 .cart:hover {
+  cursor: pointer;
   background-color: #2db6b5;
   transition: all 0.6s;
 }
 .Categories {
-  /* height: 40px; */
   display: flex;
   align-items: center;
   justify-content: center;
+
+  padding: 0.1rem;
 
   text-align: center;
 
@@ -157,11 +196,11 @@ export default {}
   );
 }
 .category {
-  margin: 0.3%;
-  padding: 0.1% 2% 0.1% 2%;
+  margin: 0.3rem;
+  padding: 0.15rem 2rem 0.15rem 2rem;
 
   color: white;
-  font-size: 1vw;
+  font-size: 1.2rem;
   font-family: 'Rubik', sans-serif;
   text-decoration: none;
 
@@ -181,29 +220,30 @@ export default {}
   align-items: center;
   justify-content: center;
 
-  padding: 1%;
+  padding: 1rem;
+  padding-bottom: 2rem;
 
   font-family: 'Segoe UI', 'Open Sans', sans-serif;
-  font-size: 0.8vw;
+  font-size: 0.96rem;
 
   background-color: darkslategrey;
 }
 .workingHours p {
-  margin-bottom: 3%;
-  font-size: 1.2vw;
+  margin-bottom: 0.5rem;
+  font-size: 1.44rem;
   border-bottom: 1px solid white;
 }
 .workingHours {
-  margin: 0 2% 0 10%;
+  margin: 0 2rem 0 10rem;
   color: white;
 }
 .contacts p {
-  margin-bottom: 3%;
-  font-size: 1.2vw;
+  margin-bottom: 0.5rem;
+  font-size: 1.44rem;
   border-bottom: 1px solid white;
 }
 .contacts {
-  margin: 0 10% 0 2%;
+  margin: 0 10rem 0 2rem;
   color: white;
 }
 </style>

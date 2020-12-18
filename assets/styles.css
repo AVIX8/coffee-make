@@ -1,0 +1,9 @@
+html {
+  overflow: auto !important;
+}
+
+*::-webkit-scrollbar {
+  width: 0px;
+  height: 0px;
+  background: #363636;
+}
