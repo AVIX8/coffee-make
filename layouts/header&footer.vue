@@ -1,5 +1,5 @@
 <template>
-  <div class="mainBox">
+  <div class="MAIN">
     <div class="HEADER">
       <div class="Cover">
         <nuxt-link to="/" style="text-decoration: none">
@@ -84,8 +84,9 @@ export default {
 * {
   transition: ease-out 0.1s;
 }
-.mainBox {
+.MAIN {
   position: relative;
+  width: 100%;
 }
 .HEADER {
   position: relative;
