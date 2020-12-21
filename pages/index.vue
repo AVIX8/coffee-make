@@ -1,7 +1,7 @@
 <template>
   <div class="mainBox">
     <div class="slider">
-      <Slider />
+      <Slider :slides="slides" />
     </div>
     <div class="bestsellers">
       <h1>ХИТЫ ПРОДАЖ</h1>
@@ -55,12 +55,42 @@ export default {
           img: '/testCoffee.png',
         },
       ],
+      slides: [
+        {
+          title: 'Slide 1',
+          description: '...',
+          img: '',
+        },
+        {
+          title: 'Slide 2',
+          description: '...',
+          img: '',
+        },
+        {
+          title: 'Slide 3',
+          description: '...',
+          img: '',
+        },
+        {
+          title: 'Slide 4',
+          description: '...',
+          img: '',
+        },
+        {
+          title: 'Slide 5',
+          description: '...',
+          img: '',
+        },
+      ],
     }
   },
 }
 </script>
 
 <style scoped>
+* {
+  transition: all 1s;
+}
 .mainBox {
   position: relative;
   min-height: 100%;
@@ -68,7 +98,14 @@ export default {
 }
 .slider {
   position: relative;
-  background: green;
+
+  /* margin: 1rem 0; */
+  /* margin: 2rem 5rem 2rem 5rem; */
+  /* padding: 1rem; */
+  border: none;
+  /* border-radius: 30px; */
+
+  /* background: green; */
 }
 .bestsellers {
   position: relative;

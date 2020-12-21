@@ -86,7 +86,7 @@ export default {
 }
 .MAIN {
   position: relative;
-  width: 100%;
+  /* width: 100%; */
 }
 .HEADER {
   position: relative;
@@ -114,6 +114,14 @@ export default {
     #2d2b29,
     #272523
   );
+  background: linear-gradient(
+      90.54deg,
+      rgba(43, 42, 40, 0.3) 0%,
+      rgba(255, 255, 255, 0.15) 33.73%,
+      rgba(255, 255, 255, 0.05) 66.56%,
+      rgba(255, 255, 255, 0) 100%
+    ),
+    #00241b;
 }
 .toMain {
   position: relative;
@@ -133,6 +141,10 @@ export default {
   font-family: 'Dancing Script', cursive;
   font-weight: bold;
   font-size: 3rem;
+  text-shadow: 0.2rem 0.2rem 0.2rem black;
+}
+.logoName:active {
+  color: #32bebd;
 }
 .searchBox {
   margin-left: 5rem;
@@ -152,10 +164,10 @@ export default {
   transition: ease-out 1s;
 }
 .account:hover {
-  border: 0;
   cursor: pointer;
   background-color: #2db6b5;
   transition: all 0.6s;
+  box-shadow: 0.2rem 0.2rem 0.4rem black, 0px 0px 50px black;
 }
 .cart {
   padding: 0.7rem;
@@ -170,6 +182,7 @@ export default {
   cursor: pointer;
   background-color: #2db6b5;
   transition: all 0.6s;
+  box-shadow: 0.2rem 0.2rem 0.4rem black, 0px 0px 50px black;
 }
 .Categories {
   display: flex;
@@ -195,10 +208,19 @@ export default {
     #23a3a2,
     #1f9d9c
   );
+  background: linear-gradient(
+      90deg,
+      #35948a 0%,
+      #45bbb0 49.48%,
+      #35948a 100%,
+      #35948a 100%
+    ),
+    #65b891;
+  border-bottom: 0.7rem #00241b solid;
 }
 .category {
   margin: 0.3rem;
-  padding: 0.15rem 2rem 0.15rem 2rem;
+  padding: 0.2rem 2rem 0.2rem 2rem;
 
   color: white;
   font-size: 1.2rem;
@@ -212,7 +234,18 @@ export default {
 .category:hover {
   color: #32bebd;
   background-color: white;
-  transition-duration: 0.4s;
+  box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.2),
+    0px 0px 50px rgba(0, 0, 0, 0.2);
+  transition: all 0.8s;
+}
+.category:active {
+  margin: 0.3rem 0.8rem 0.3rem 0.8rem;
+  padding: 0.15rem 1.5rem 0.15rem 1.5rem;
+
+  /* color: white; */
+  background-color: #3a3736;
+
+  transition: all 0.2s;
 }
 
 .FOOTER {
@@ -227,7 +260,7 @@ export default {
   font-family: 'Segoe UI', 'Open Sans', sans-serif;
   font-size: 0.96rem;
 
-  background-color: darkslategrey;
+  background-color: #16191c;
 }
 .workingHours p {
   margin-bottom: 0.5rem;

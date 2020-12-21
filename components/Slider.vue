@@ -1,33 +1,50 @@
 <template>
-  <div class="container">
-    <v-carousel cycle hide-delimiter-background show-arrows-on-hover>
-      <v-carousel-item v-for="(slide, i) in slides" :key="i">
-        <v-sheet :color="colors[i]" height="100%" tile>
-          <v-row class="fill-height" align="center" justify="center">
-            <div class="display-3">{{ slide }} Slide</div>
-          </v-row>
-        </v-sheet>
-      </v-carousel-item>
-    </v-carousel>
+  <div class="hooperBorder">
+    <hooper
+      style="height: 600px; width: 100%"
+      :infinite-scroll="true"
+      :mouse-drag="false"
+      :wheel-control="false"
+      :auto-play="true"
+      :play-speed="6000"
+      :transition="1000"
+    >
+      <slide v-for="(slide, i) in slides" :key="i" :index="i">
+        <div class="slide">
+          {{ slide.title }}
+        </div>
+      </slide>
+      <hooper-navigation slot="hooper-addons"></hooper-navigation>
+      <hooper-pagination slot="hooper-addons"></hooper-pagination>
+    </hooper>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import {
+  Hooper,
+  Slide,
+  Navigation as HooperNavigation,
+  Pagination as HooperPagination,
+} from 'hooper'
+// import 'hooper/dist/hooper.css'
+import '~/assets/hooper.css'
+
 export default {
+  name: 'App',
+  components: {
+    Hooper,
+    Slide,
+    HooperNavigation,
+    HooperPagination,
+  },
   props: {
-    // ...
+    slides: { type: Array, required: true },
   },
   data() {
     return {
-      colors: [
-        'indigo',
-        'warning',
-        'pink darken-2',
-        'red lighten-1',
-        'deep-purple accent-4',
-      ],
-      slides: ['First', 'Second', 'Third', 'Fourth', 'Fifth'],
+      // ...
     }
   },
   computed: {
@@ -48,13 +65,22 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  transition: all 0.5s;
 }
-.container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
+.hooper-slide.is-prev {
+  background: green;
+  /* border-radius: 30px; */
+}
+.hooper-slide.is-current {
+  background: red;
+  /* border-radius: 30px; */
+}
+.hooper-slide.is-next {
+  background: yellow;
+  /* border-radius: 30px; */
+}
+.slide {
   height: 100%;
+  /* border-radius: 30px; */
+  /* background: blue; */
 }
 </style>

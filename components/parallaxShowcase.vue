@@ -23,15 +23,16 @@
           <div class="price">{{ product.price }} руб.</div>
           <transition name="detailFade">
             <div v-show="mouseIn" ref="detail" class="detail">
-              <nuxt-link to="/products">
-                <button
-                  ref="detailButton"
-                  @mouseenter="ButtonIn"
-                  @mouseleave="ButtonOut"
-                >
+              <div
+                ref="detailButton"
+                class="detailButton"
+                @mouseenter="ButtonIn"
+                @mouseleave="ButtonOut"
+              >
+                <nuxt-link class="detailNuxtLink" to="/products">
                   Подробнее
-                </button>
-              </nuxt-link>
+                </nuxt-link>
+              </div>
             </div>
           </transition>
         </div>
@@ -83,14 +84,14 @@ export default {
       this.$refs.title.style.transform = 'translateZ(50px)'
 
       // this.$refs.visual.style.transform = 'translateZ(100px) rotateZ(10deg)'
-      this.$refs.visual.style.minWidth = '12rem'
+      // this.$refs.visual.style.minWidth = '12rem'
 
-      // this.$refs.circle.style.width = '15rem'
-      // this.$refs.circle.style.height = '15rem'
+      // this.$refs.circle.style.width = '12rem'
+      // this.$refs.circle.style.height = '12rem'
 
-      this.$refs.img.style.transform = 'translateZ(40px) rotateZ(0deg)'
-      this.$refs.img.style.minHeight = '12rem'
-      this.$refs.img.style.minWidth = '12rem'
+      this.$refs.img.style.transform = 'translateZ(60px) rotateZ(0deg)'
+      // this.$refs.img.style.minHeight = '12rem'
+      // this.$refs.img.style.minWidth = '12rem'
 
       this.$refs.detail.style.transform = 'translateZ(25px)'
     },
@@ -102,25 +103,25 @@ export default {
       this.$refs.title.style.transform = 'translateZ(0px)'
 
       // this.$refs.visual.style.transform = 'translateZ(0px) rotateZ(0deg)'
-      this.$refs.visual.style.minWidth = '10rem'
+      // this.$refs.visual.style.minWidth = '10rem'
 
       // this.$refs.circle.style.width = '10rem'
       // this.$refs.circle.style.height = '10rem'
 
       this.$refs.img.style.transform = 'translateZ(0px) rotateZ(0deg)'
-      this.$refs.img.style.minHeight = '10rem'
-      this.$refs.img.style.minWidth = '10rem'
+      // this.$refs.img.style.minHeight = '10rem'
+      // this.$refs.img.style.minWidth = '10rem'
 
       this.$refs.detail.style.transform = 'translateZ(0px)'
     },
     ButtonIn(event) {
       this.$refs.detailButton.style.backgroundColor = '#434343'
-      this.$refs.detailButton.style.color = 'white'
+      // this.$refs.detailButton.style.color = 'white'
       this.$refs.detailButton.style.borderColor = '#434343'
     },
     ButtonOut(event) {
       this.$refs.detailButton.style.backgroundColor = 'white'
-      this.$refs.detailButton.style.color = '#2db6b5'
+      // this.$refs.detailButton.style.color = '#2db6b5'
       this.$refs.detailButton.style.borderColor = '#2db6b5'
     },
   },
@@ -149,6 +150,7 @@ export default {
 
   margin: 1rem;
 
+  min-width: 16rem;
   max-width: 16rem;
 
   /* background: red; */
@@ -180,14 +182,14 @@ export default {
   align-items: center;
   justify-content: center;
 
-  margin: 0.5rem;
+  margin: 0 0.5rem 0.5rem 0.5rem;
 
   min-height: 15rem;
 
   /* background: blue; */
 }
 .visual img {
-  width: 15rem;
+  width: 12rem;
   z-index: 2;
   transition: all 0.75s ease-out;
 }
@@ -212,6 +214,22 @@ export default {
     #7dc2bb,
     #6fb3ac,
     #62a49e
+  );
+  background-image: radial-gradient(
+    circle,
+    #515151,
+    #464646,
+    #3b3b3b,
+    #313131,
+    #272727
+  );
+  background-image: radial-gradient(
+    circle,
+    #4c8c89,
+    #497680,
+    #4c616e,
+    #494e56,
+    #3d3d3d
   );
   position: absolute;
   border-radius: 50%;
@@ -243,6 +261,14 @@ export default {
     #45c3b7,
     #32b0a4,
     #1a9d91
+  );
+  background-image: radial-gradient(
+    circle,
+    #00e188,
+    #00b9b0,
+    #008ba9,
+    #435f79,
+    #3d3d3d
   );
   position: absolute;
   border-radius: 50%;
@@ -287,7 +313,7 @@ export default {
   text-align: center;
   transition: all 0.75s ease-out;
 }
-.detail button {
+.detailButton {
   padding: 1rem 3rem 1rem 3rem;
   margin: 0 1rem 0 1rem;
 
@@ -295,13 +321,18 @@ export default {
   cursor: pointer;
   font-family: 'Rubik', sans-serif;
   font-weight: bolder;
+  text-decoration: none;
 
   border: 2px #2db6b5 solid;
   border-radius: 30px;
 
   background-color: white;
 }
-.detail button:hover {
+.detailNuxtLink {
+  text-decoration: none;
+  color: #2db6b5;
+}
+.detailButton:hover {
   color: white;
 
   background-color: #60bdbc;
