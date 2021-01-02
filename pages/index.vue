@@ -4,7 +4,7 @@
       <Slider :slides="slides" />
     </div>
     <div class="bestsellers">
-      <h1>ХИТЫ ПРОДАЖ</h1>
+      <h2>ХИТЫ ПРОДАЖ</h2>
       <div class="item">
         <ParallaxShowcase
           v-for="(bestseller, i) in bestsellers"
@@ -57,29 +57,27 @@ export default {
       ],
       slides: [
         {
-          title: 'Slide 1',
-          description: '...',
-          img: '',
+          title: '01234567890123456789',
+          description: `0123456789 0123456789 0123456789 0123456789 0123456789
+            0123456789 0123456789 0123456789 0123456789 0123456789 0123456789
+            0123456789 0123456789 0123456789 0123456789 0123456789 0123456789`,
+          button: '0123456789 0123456789',
+          img: '/banner_kofe1.jpg',
+          settings: {
+            left: true,
+          },
         },
         {
-          title: 'Slide 2',
-          description: '...',
-          img: '',
+          title: 'ЗЕРНОВОЙ КОФЕ СВЕЖЕЙ ОБЖАРКИ С ДОСТАВКОЙ',
+          description: `Поможем Вам насладиться вкусным и ароматным кофе свежей обжарки прямо не выходя из офиса. Устройте у себя мини-кофейню. Дегустация кофе - БЕСПЛАТНО!`,
+          button: 'Узнать подробнее',
+          img: '/banner_kofe1.jpg',
         },
         {
-          title: 'Slide 3',
-          description: '...',
-          img: '',
-        },
-        {
-          title: 'Slide 4',
-          description: '...',
-          img: '',
-        },
-        {
-          title: 'Slide 5',
-          description: '...',
-          img: '',
+          title: 'ВОЗЬМИТЕ КОФЕМАШИНУ В АРЕНДУ!',
+          description: `Она создаст имидж компании и будет выполнять роль делового инструмента. Повысьте эффективность работы сотрудников и лояльность клиентов.`,
+          button: 'Узнать подробнее',
+          img: '/banner_kofe1.jpg',
         },
       ],
     }
@@ -91,36 +89,40 @@ export default {
 * {
   transition: all 1s;
 }
+@media screen and (max-width: 765px) {
+  .slider {
+  }
+}
 .mainBox {
   position: relative;
-  min-height: 100%;
-  width: 100%;
+  /* min-height: 100%;
+  width: 100%; */
 }
 .slider {
   position: relative;
 
-  /* margin: 1rem 0; */
-  /* margin: 2rem 5rem 2rem 5rem; */
-  /* padding: 1rem; */
-  border: none;
-  /* border-radius: 30px; */
+  margin: 2rem 5rem 2rem 5rem;
 
-  /* background: green; */
+  border: none;
+
+  filter: drop-shadow(0 0 0.5rem #00241b);
 }
 .bestsellers {
-  position: relative;
-  display: block;
+  /* position: relative; */
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  flex-wrap: wrap;
 
   margin: 1rem 5rem 1rem 5rem;
 }
-.bestsellers h1 {
+.bestsellers h2 {
   font-family: Arial, Helvetica, sans-serif;
   text-align: center;
+  font-weight: bold;
 }
 .bestsellers .item {
   position: relative;
-  display: flex;
-  justify-content: center;
 
   /* background-color: red; */
 }

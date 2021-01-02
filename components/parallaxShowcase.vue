@@ -19,8 +19,8 @@
           <img ref="img" :src="product.img" :alt="product.title" />
         </div>
         <div class="info">
-          <div ref="title" class="title">{{ product.title }}</div>
-          <div class="price">{{ product.price }} руб.</div>
+          <h5 ref="title" class="title">{{ product.title }}</h5>
+          <h6 class="price">{{ product.price }} руб.</h6>
           <transition name="detailFade">
             <div v-show="mouseIn" ref="detail" class="detail">
               <div
@@ -284,7 +284,6 @@ export default {
   color: #2db6b5;
   font-family: 'Ruda';
   font-weight: bold;
-  font-size: 140%;
   text-align: center;
 
   transition: all 0.75s ease-out;
@@ -294,7 +293,6 @@ export default {
 
   color: #585858;
   font-family: sans-serif;
-  font-size: 1.3rem;
   font-weight: lighter;
   text-align: center;
 

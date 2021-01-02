@@ -73,7 +73,7 @@
 .hooper-next,
 .hooper-prev {
   background-color: lightgray;
-  opacity: 0.5;
+  opacity: 0.35;
   border: none;
   border-radius: 50px;
   margin: 1rem 3rem 1rem 3rem;
@@ -147,7 +147,7 @@
 }
 .hooper * {
   box-sizing: border-box;
-  /* border-radius: 30px; */
+  border-radius: 30px;
 }
 .hooper-list {
   overflow: hidden;
