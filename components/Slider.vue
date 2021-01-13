@@ -1,7 +1,7 @@
 <template>
   <div class="hooperBorder">
     <hooper
-      style="height: 600px"
+      :style="{ height: [hooperHeight] + 'px' }"
       :infinite-scroll="true"
       :mouse-drag="false"
       :wheel-control="false"
@@ -49,7 +49,8 @@ export default {
   },
   data() {
     return {
-      // ...
+      isMobile: false,
+      hooperHeight: 600,
     }
   },
   computed: {
@@ -57,7 +58,23 @@ export default {
       // ...
     }),
   },
-  methods: {},
+  mounted() {
+    this.$nextTick(() => {
+      this.onResize()
+    })
+    window.addEventListener('resize', this.onResize)
+  },
+  methods: {
+    onResize() {
+      if (process.client && window.innerWidth <= this.$store.state.mobile) {
+        this.isMobile = true
+        this.hooperHeight = 400
+      } else {
+        this.isMobile = false
+        this.hooperHeight = 600
+      }
+    },
+  },
 }
 </script>
 

@@ -43,31 +43,25 @@
           </nuxt-link>
         </div>
       </template>
+
       <template v-else>
         <div class="Cover">
-          <button class="burger" @click="MenuClick">
-            <v-icon dark>{{ menuIcon }}</v-icon>
-          </button>
+          <div class="search"></div>
+        </div>
+
+        <div class="NavigationBAR">
+          <nuxt-link
+            v-for="(navigationBtn, index) in navigationBtns"
+            :key="index"
+            tag="button"
+            :to="navigationBtn.to"
+          >
+            <v-icon>{{ navigationBtn.icon }}</v-icon>
+            <p>{{ navigationBtn.title }}</p>
+          </nuxt-link>
         </div>
       </template>
     </div>
-
-    <transition name="MenuTransition">
-      <div v-show="isMenuOn" class="MobileMenu">
-        <div class="Categories">
-          <nuxt-link class="category" to="/"><h6>На Главную</h6></nuxt-link>
-          <nuxt-link
-            v-for="category in categories"
-            :key="category.title"
-            tag="button"
-            :to="category.linkTo"
-            class="category"
-          >
-            <h6>{{ category.title }}</h6>
-          </nuxt-link>
-        </div>
-      </div>
-    </transition>
 
     <!-- index --><nuxt />
 
@@ -98,6 +92,12 @@ export default {
         { title: 'Аксессуары', linkTo: '/products' },
         { title: 'Услуги', linkTo: '/servicesMain' },
       ],
+      navigationBtns: [
+        { title: 'Главная', icon: 'mdi-home', to: '/' },
+        { title: 'Каталог', icon: 'mdi-text-search', to: '/catalog' },
+        { title: 'Корзина', icon: 'mdi-cart', to: '/cart' },
+        { title: 'Аккаунт', icon: 'mdi-account-circle', to: '/account' },
+      ],
       isMobile: false,
       isMenuOn: false,
       menuIcon: 'mdi-menu',
@@ -113,10 +113,6 @@ export default {
   },
   methods: {
     onResize() {
-      if (process.client) {
-        console.log(window.innerWidth)
-        console.log(window.innerWidth <= this.$store.state.mobile)
-      }
       if (process.client && window.innerWidth <= this.$store.state.mobile)
         this.isMobile = true
       else this.isMobile = false
@@ -126,6 +122,7 @@ export default {
       if (this.isMenuOn) this.menuIcon = 'mdi-close'
       else this.menuIcon = 'mdi-menu'
     },
+    navClick(index) {},
   },
 }
 </script>
@@ -291,8 +288,15 @@ export default {
   }
 }
 @media screen and (max-width: $mobile) {
+  .HEADER {
+    margin-bottom: 5rem;
+  }
   .Cover {
-    z-index: 90;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 99;
 
     height: 4rem;
   }
@@ -300,6 +304,36 @@ export default {
     position: absolute;
     right: 10%;
   }
+
+  .NavigationBAR {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+    padding: 0.1rem;
+
+    height: 3.5rem;
+
+    font-family: Roboto;
+
+    background: white;
+    // border-top: 1px solid #3a3736;
+    box-shadow: 0 60px 100px 10px #3a3736;
+    z-index: 99;
+  }
+  .nuxt-link-exact-active {
+    color: white;
+    background: #32bebd;
+  }
+  .nuxt-link-exact-active i {
+    color: #32bebd;
+    color: white;
+  }
+
   .MenuTransition-enter-active {
     transition: all 0.3s;
   }
@@ -314,7 +348,7 @@ export default {
   .MobileMenu {
     position: absolute;
     z-index: 9;
-    // top: 0;
+    top: 4rem;
 
     height: 100%;
     width: 100%;
@@ -373,5 +407,13 @@ export default {
 .HEADER {
   position: relative;
   width: 100%;
+}
+.page-enter-active,
+.page-leave-active {
+  transition: all 0.25s ease-out;
+}
+.page-enter,
+.page-leave-active {
+  opacity: 0;
 }
 </style>

@@ -85,14 +85,7 @@ export default {
 }
 </script>
 
-<style scoped>
-* {
-  transition: all 1s;
-}
-@media screen and (max-width: 765px) {
-  .slider {
-  }
-}
+<style scoped lang="scss">
 .mainBox {
   position: relative;
   /* min-height: 100%;
@@ -125,5 +118,11 @@ export default {
   position: relative;
 
   /* background-color: red; */
+}
+
+@media screen and (max-width: $mobile) {
+  .slider {
+    margin: 2rem 0.8rem 2rem 0.8rem;
+  }
 }
 </style>
