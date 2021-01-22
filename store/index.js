@@ -4,6 +4,7 @@ export const state = () => ({
   tablet: 1023,
   mobile: 765,
   smallMobile: 400,
+  isMobile: false,
 })
 
 export const mutations = {
@@ -32,5 +33,14 @@ export const actions = {
           console.error('API server not responding')
         }
       })
+  },
+  setIsMobile(state, isMobile) {
+    state.isMobile = isMobile
+  },
+}
+
+export const getters = {
+  getIsMobile(state) {
+    return state.isMobile
   },
 }

@@ -29,7 +29,7 @@
                 @mouseenter="ButtonIn"
                 @mouseleave="ButtonOut"
               >
-                <nuxt-link class="detailNuxtLink" to="/products">
+                <nuxt-link class="detailNuxtLink" to="/item">
                   Подробнее
                 </nuxt-link>
               </div>
@@ -49,17 +49,17 @@ export default {
   },
   data() {
     return {
-      // ...
       mouseIn: false,
     }
   },
   computed: {
     ...mapGetters({
-      // ...
+      isMobile: 'getIsMobile',
     }),
   },
   methods: {
     MouseMove(event) {
+      if (this.isMobile) return
       const xAxis =
         (this.$refs.container.clientWidth / 2 -
           (event.pageX -
@@ -76,6 +76,7 @@ export default {
       this.$refs.card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`
     },
     MouseEnter(event) {
+      if (this.isMobile) return
       this.mouseIn = true
 
       // тень мистера ботта
@@ -101,6 +102,7 @@ export default {
       this.$refs.detail.style.transform = 'translateZ(25px)'
     },
     MouseLeave(event) {
+      if (this.isMobile) return
       this.mouseIn = false
       this.$refs.card.style.boxShadow = 'none'
       this.$refs.card.style.transition = 'all 1.5s'
@@ -121,11 +123,13 @@ export default {
       this.$refs.detail.style.transform = 'translateZ(0px)'
     },
     ButtonIn(event) {
+      if (this.isMobile) return
       this.$refs.detailButton.style.backgroundColor = '#434343'
       // this.$refs.detailButton.style.color = 'white'
       this.$refs.detailButton.style.borderColor = '#434343'
     },
     ButtonOut(event) {
+      if (this.isMobile) return
       this.$refs.detailButton.style.backgroundColor = 'white'
       // this.$refs.detailButton.style.color = '#2db6b5'
       this.$refs.detailButton.style.borderColor = '#2db6b5'
@@ -134,7 +138,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
 @font-face {
   font-family: 'Ruda';
   src: url(/fonts/Ruda.ttf); /* Путь к файлу со шрифтом */
@@ -215,22 +219,6 @@ export default {
   height: 10rem;
   background-image: radial-gradient(
     circle,
-    #98e1d9,
-    #8ad1ca,
-    #7dc2bb,
-    #6fb3ac,
-    #62a49e
-  );
-  background-image: radial-gradient(
-    circle,
-    #515151,
-    #464646,
-    #3b3b3b,
-    #313131,
-    #272727
-  );
-  background-image: radial-gradient(
-    circle,
     #4c8c89,
     #497680,
     #4c616e,
@@ -244,30 +232,6 @@ export default {
 .circle2 {
   width: 10rem;
   height: 10rem;
-  background-image: radial-gradient(
-    circle,
-    #ffd473,
-    #f2be5b,
-    #e5a843,
-    #d8912b,
-    #cb7b10
-  );
-  background-image: radial-gradient(
-    circle,
-    #ffcfb1,
-    #fbc29f,
-    #f7b68d,
-    #f3a97b,
-    #ee9c6a
-  );
-  background-image: radial-gradient(
-    circle,
-    #69ebdf,
-    #57d7cb,
-    #45c3b7,
-    #32b0a4,
-    #1a9d91
-  );
   background-image: radial-gradient(
     circle,
     #00e188,
@@ -341,5 +305,148 @@ export default {
 
   background-color: #60bdbc;
   transition: 'background-image' 0.5s;
+}
+
+@media screen and (max-width: $mobile) {
+  .showcase {
+    position: relative;
+    float: left;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0 0.25rem 1rem 0.25rem;
+
+    min-width: 10rem;
+    max-width: 10rem;
+
+    // background: red;
+  }
+  .container {
+    display: flex;
+    justify-content: center;
+
+    height: 17.5rem;
+
+    // background-color: green;
+  }
+  .card {
+    transform-style: preserve-3d;
+
+    padding: 0.5rem;
+
+    width: 100%;
+
+    border-radius: 20px;
+    box-shadow: 0 0 1rem lightgrey;
+    transition: all 0.1s ease;
+    // background: yellow;
+  }
+
+  .visual {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin: 0;
+
+    min-height: 10rem;
+
+    // background: blue;
+  }
+  .visual img {
+    width: 10rem;
+    z-index: 2;
+    transition: all 0.75s ease-out;
+  }
+
+  .circle1 {
+    width: 8rem;
+    height: 8rem;
+    background-image: radial-gradient(
+      circle,
+      #00e188,
+      #00b9b0,
+      #008ba9,
+      #435f79,
+      #3d3d3d
+    );
+    position: absolute;
+    border-radius: 50%;
+    z-index: 1;
+  }
+
+  .title {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 4rem;
+
+    color: #2db6b5;
+    font-family: 'Ruda';
+    font-size: 1.2rem;
+    font-weight: bold;
+    text-align: center;
+
+    transition: all 0.75s ease-out;
+  }
+  .price {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.5rem 1rem 1rem 1rem;
+
+    color: #585858;
+    font-family: sans-serif;
+    font-size: 1.1rem;
+    font-weight: lighter;
+    text-align: center;
+
+    background: white;
+    border-radius: 0 0 20px 20px;
+    box-shadow: 0 -1rem 1rem white;
+
+    transition: all 0.75s ease-out;
+  }
+
+  .detailFade-enter-active,
+  .detailFade-leave-active {
+    transition: opacity 0.5s;
+  }
+  .detailFade-enter,
+  .detailFade-leave-to {
+    opacity: 0;
+  }
+  .detail {
+    text-align: center;
+    transition: all 0.75s ease-out;
+  }
+  .detailButton {
+    padding: 1rem 3rem 1rem 3rem;
+    margin: 0 1rem 0 1rem;
+
+    color: #2db6b5;
+    cursor: pointer;
+    font-family: 'Rubik', sans-serif;
+    font-weight: bolder;
+    text-decoration: none;
+
+    border: 2px #2db6b5 solid;
+    border-radius: 30px;
+
+    background-color: white;
+  }
+  .detailNuxtLink {
+    text-decoration: none;
+    color: #2db6b5;
+  }
+  .detailButton:hover {
+    color: white;
+
+    background-color: #60bdbc;
+    transition: 'background-image' 0.5s;
+  }
 }
 </style>

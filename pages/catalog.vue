@@ -103,7 +103,7 @@ export default {
   width: 100%;
 
   border-radius: 10%;
-  box-shadow: 0 0 0.7rem black;
+  box-shadow: 0 0 1rem 0.1rem lightgray;
   transition: all 0.1s ease;
   background: white;
 }
