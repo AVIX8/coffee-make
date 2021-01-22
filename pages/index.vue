@@ -5,7 +5,7 @@
     </div>
     <div class="bestsellers">
       <h2>ХИТЫ ПРОДАЖ</h2>
-      <div class="item">
+      <div class="items">
         <ParallaxShowcase
           v-for="(bestseller, i) in bestsellers"
           :key="i"
@@ -17,9 +17,8 @@
 </template>
 
 <script>
-import parallaxShowcase from '../components/parallaxShowcase.vue'
+import { mapGetters } from 'vuex'
 export default {
-  components: { parallaxShowcase },
   layout: 'header&footer',
   data() {
     return {
@@ -82,6 +81,12 @@ export default {
       ],
     }
   },
+  computed: {
+    ...mapGetters({
+      isMobile: 'getIsMobile',
+    }),
+  },
+  methods: {},
 }
 </script>
 
@@ -114,15 +119,100 @@ export default {
   text-align: center;
   font-weight: bold;
 }
-.bestsellers .item {
+.bestsellers .items {
   position: relative;
-
   /* background-color: red; */
+}
+
+.slide {
+  position: relative;
+  height: 100%;
+  box-shadow: inset 0px 0px 20px white;
+}
+.slideBackground {
+  position: initial;
+  z-index: 1;
+}
+.slideInfo {
+  position: absolute;
+  top: 23%;
+  left: 13%;
+
+  padding: 1rem 0 0 2rem;
+
+  min-height: 45%;
+  max-height: 60%;
+  min-width: 25%;
+  max-width: 28%;
+
+  /* background: red; */
+  z-index: 2;
+}
+.title {
+  margin: 0 0 1rem 0;
+
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.8rem;
+  font-weight: bold;
+  border-bottom: 0.3rem white ridge;
+  border-radius: 0;
+}
+.description {
+  color: white;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.5rem;
+
+  /* background: blue; */
+}
+.button {
+  margin: 2rem 0;
+  padding: 0.5rem 0 0.7rem 0;
+
+  width: 70%;
+
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 1.5rem;
+  text-align: center;
+  font-weight: bold;
+
+  border: 2px #00b9b0 solid;
+  border-radius: 20px;
+  transition: all 0.3s;
+
+  /* background: yellow; */
+}
+.button:hover {
+  cursor: pointer;
+  background-image: linear-gradient(
+    to top,
+    #009b94,
+    #00a9a1,
+    #00b7ae,
+    #00c5bb,
+    #00d3c8
+  );
+  transition: all 0.3s;
+}
+.button:active {
+  background: steelblue;
 }
 
 @media screen and (max-width: $mobile) {
   .slider {
     margin: 2rem 0.8rem 2rem 0.8rem;
+  }
+  .bestsellers h2 {
+    font-size: 1.8rem;
+  }
+  .bestsellers .items {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    margin: 0.5rem 0 3rem 0;
+
+    // background-color: red;
   }
 }
 </style>

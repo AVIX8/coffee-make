@@ -82,6 +82,7 @@
 </template>
 
 <script>
+import { mapMutations, mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -98,12 +99,15 @@ export default {
         { title: 'Корзина', icon: 'mdi-cart', to: '/cart' },
         { title: 'Аккаунт', icon: 'mdi-account-circle', to: '/account' },
       ],
-      isMobile: false,
       isMenuOn: false,
       menuIcon: 'mdi-menu',
     }
   },
-  computed: {},
+  computed: {
+    ...mapGetters({
+      isMobile: 'getIsMobile',
+    }),
+  },
   watch: {},
   mounted() {
     this.$nextTick(() => {
@@ -112,17 +116,17 @@ export default {
     window.addEventListener('resize', this.onResize)
   },
   methods: {
+    ...mapMutations({ setIsMobile: 'setIsMobile' }),
     onResize() {
       if (process.client && window.innerWidth <= this.$store.state.mobile)
-        this.isMobile = true
-      else this.isMobile = false
+        this.setIsMobile(true)
+      else this.setIsMobile(false)
     },
     MenuClick() {
       this.isMenuOn = !this.isMenuOn
       if (this.isMenuOn) this.menuIcon = 'mdi-close'
       else this.menuIcon = 'mdi-menu'
     },
-    navClick(index) {},
   },
 }
 </script>
@@ -237,11 +241,19 @@ export default {
     transition: 0.4s ease-out;
   }
   .category:hover {
-    color: #32bebd;
-    background-color: white;
-    box-shadow: 0.2rem 0.2rem 0.2rem rgba(0, 0, 0, 0.2),
+    // color: #32bebd;
+    // background-color: white;
+    background-image: linear-gradient(
+      to right bottom,
+      #35edeb,
+      #34e1df,
+      #34d5d4,
+      #33cac8,
+      #32bebd
+    );
+    box-shadow: 0.2rem 0.2rem 0.9rem rgba(0, 0, 0, 0.2),
       0px 0px 50px rgba(0, 0, 0, 0.2);
-    transition: all 0.55s;
+    transition: all 0.35s;
   }
   .category:active {
     margin: 0.3rem 0.8rem 0.3rem 0.8rem;
