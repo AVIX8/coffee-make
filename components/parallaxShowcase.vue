@@ -61,26 +61,25 @@ export default {
   methods: {
     MouseMove(event) {
       const xAxis =
-        (this.$refs.container.clientWidth / 3 -
+        (this.$refs.container.clientWidth / 2 -
           (event.pageX -
             window.scrollX -
-            60 -
             this.$refs.container.getBoundingClientRect().left)) /
-        15
+        20
       const yAxis =
         -(
-          this.$refs.container.clientHeight / 3 -
+          this.$refs.container.clientHeight / 2 -
           (event.pageY -
             window.scrollY -
             this.$refs.container.getBoundingClientRect().top)
-        ) / 30
+        ) / 20
       this.$refs.card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`
     },
     MouseEnter(event) {
       this.mouseIn = true
       this.$refs.card.style.boxShadow =
         '0 20px 20px rgba(0, 0, 0, 0.2), 0px 0px 50px rgba(0, 0, 0, 0.2)'
-      this.$refs.card.style.transition = 'all 0.5s'
+      this.$refs.card.style.transition = 'all 0.1s'
       this.$refs.title.style.transform = 'translateZ(50px)'
 
       // this.$refs.visual.style.transform = 'translateZ(100px) rotateZ(10deg)'
@@ -98,6 +97,7 @@ export default {
     MouseLeave(event) {
       this.mouseIn = false
       this.$refs.card.style.boxShadow = 'none'
+      this.$refs.card.style.transition = 'all 1.5s'
       this.$refs.card.style.transform = 'rotateY(0deg) rotateX(0deg)'
 
       this.$refs.title.style.transform = 'translateZ(0px)'

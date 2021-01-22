@@ -13,11 +13,13 @@
             v-model="password"
             label="password"
             type="password"
+            name="password"
             autocomplete="current-password"
           ></v-text-field>
         </v-card-text>
         <v-card-actions>
           <v-btn @click="login">Login</v-btn>
+          <v-btn @click="$router.push('register')">Go to registration</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -36,7 +38,7 @@ export default {
   methods: {
     login() {
       this.$axios
-        .$post(this.$axios.defaults.baseURL + '/user/login', {
+        .$post('user/login', {
           email: this.email,
           password: this.password,
         })
@@ -45,15 +47,11 @@ export default {
           this.$router.push('profile')
         })
         .catch((err) => {
-          console.log(err.response)
+          console.log(err.response.data)
         })
     },
   },
 }
 </script>
 
-<style scoped>
-.cookie {
-  background-color: #fde;
-}
-</style>
+<style scoped></style>

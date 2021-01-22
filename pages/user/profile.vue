@@ -24,24 +24,24 @@ export default {
   },
   mounted() {
     this.$axios
-      .$get(this.$axios.defaults.baseURL + '/user/profile')
+      .$get('user/profile')
       .then((data) => {
         this.userData = data
       })
       .catch((err) => {
-        console.error(err.response)
+        console.error(err.response.data)
       })
   },
   methods: {
     logout() {
       this.$axios
-        .$get(this.$axios.defaults.baseURL + '/user/logout')
+        .$get('user/logout')
         .then((data) => {
           console.log(data)
           this.$router.push('login')
         })
         .catch((err) => {
-          console.log(err.response)
+          console.log(err.response.data)
         })
     },
   },

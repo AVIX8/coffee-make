@@ -18,6 +18,7 @@
         </v-card-text>
         <v-card-actions>
           <v-btn @click="register">Register</v-btn>
+          <v-btn @click="$router.push('login')">Go to login</v-btn>
         </v-card-actions>
       </v-card>
     </v-col>
@@ -36,7 +37,7 @@ export default {
   methods: {
     register() {
       this.$axios
-        .$post(this.$axios.defaults.baseURL + '/user/register', {
+        .$post('user/register', {
           email: this.email,
           password: this.password,
         })
@@ -45,7 +46,7 @@ export default {
           this.$router.push('profile')
         })
         .catch((err) => {
-          console.log(err.response)
+          console.log(err.response.data)
         })
     },
   },
