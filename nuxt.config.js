@@ -45,7 +45,13 @@ export default {
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: {},
+  axios: {
+    baseURL: 'http://83.246.145.119:4000/api', // Used as fallback if no runtime config is provided
+    credentials: true,
+    init(axios) {
+      axios.defaults.withCredentials = true
+    },
+  },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
