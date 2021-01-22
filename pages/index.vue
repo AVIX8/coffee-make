@@ -6,7 +6,7 @@
     <div class="bestsellers">
       <h2>ХИТЫ ПРОДАЖ</h2>
       <div class="items">
-        <ParallaxShowcase
+        <ProductCard
           v-for="(bestseller, i) in bestsellers"
           :key="i"
           :product="bestseller"
