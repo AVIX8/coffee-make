@@ -16,7 +16,7 @@ export const actions = {
   // вызывается каждый раз на сервере при полной загрузке страницы
   async nuxtServerInit({ commit, dispatch }) {
     await dispatch('getUserData')
-    // await dispatch('...')
+    // await Promise.all(dispatch('...'), dispatch('...')) - так лучше делать наверное
   },
 
   // запрашивает у сервера информацию о текущем пользователе и сохраняет в state.user

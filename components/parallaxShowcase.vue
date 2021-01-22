@@ -77,8 +77,14 @@ export default {
     },
     MouseEnter(event) {
       this.mouseIn = true
-      this.$refs.card.style.boxShadow =
-        '0 20px 20px rgba(0, 0, 0, 0.2), 0px 0px 50px rgba(0, 0, 0, 0.2)'
+
+      // тень мистера ботта
+      // this.$refs.card.style.boxShadow =
+      // '0 20px 20px rgba(0, 0, 0, 0.2), 0px 0px 50px rgba(0, 0, 0, 0.2)'
+
+      // тень авикса
+      this.$refs.card.style.boxShadow = '5px 5px 15px rgba(0, 0, 0, 0.3)'
+
       this.$refs.card.style.transition = 'all 0.1s'
       this.$refs.title.style.transform = 'translateZ(50px)'
 
@@ -89,8 +95,8 @@ export default {
       // this.$refs.circle.style.height = '12rem'
 
       this.$refs.img.style.transform = 'translateZ(60px) rotateZ(0deg)'
-      // this.$refs.img.style.minHeight = '12rem'
-      // this.$refs.img.style.minWidth = '12rem'
+      this.$refs.img.style.minHeight = '14rem'
+      this.$refs.img.style.minWidth = '14rem'
 
       this.$refs.detail.style.transform = 'translateZ(25px)'
     },
@@ -109,8 +115,8 @@ export default {
       // this.$refs.circle.style.height = '10rem'
 
       this.$refs.img.style.transform = 'translateZ(0px) rotateZ(0deg)'
-      // this.$refs.img.style.minHeight = '10rem'
-      // this.$refs.img.style.minWidth = '10rem'
+      this.$refs.img.style.minHeight = '12rem'
+      this.$refs.img.style.minWidth = '12rem'
 
       this.$refs.detail.style.transform = 'translateZ(0px)'
     },
@@ -161,7 +167,7 @@ export default {
 
   /* width: 100%; */
   height: 29rem;
-
+  cursor: pointer;
   /* background-color: green; */
 }
 .card {
