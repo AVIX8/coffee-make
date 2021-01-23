@@ -47,23 +47,7 @@ export default {
           to: '/products',
         },
       ],
-      isMobile: false,
     }
-  },
-  computed: {},
-  watch: {},
-  mounted() {
-    this.$nextTick(() => {
-      this.onResize()
-    })
-    window.addEventListener('resize', this.onResize)
-  },
-  methods: {
-    onResize() {
-      if (process.client && window.innerWidth <= this.$store.state.mobile)
-        this.isMobile = true
-      else this.isMobile = false
-    },
   },
 }
 </script>

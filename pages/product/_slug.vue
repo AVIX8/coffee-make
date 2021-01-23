@@ -145,10 +145,6 @@ export default {
       },
     }
   },
-  created() {
-    require('~/assets/hooperSlug.css')
-    // console.log(this.$route.params.slug)
-  },
   computed: {
     cost() {
       return this.quantity * parseInt(this.item.price)
@@ -156,6 +152,10 @@ export default {
     ...mapGetters({
       isMobile: 'getIsMobile',
     }),
+  },
+  created() {
+    require('~/assets/hooperSlug.css')
+    // console.log(this.$route.params.slug)
   },
   methods: {},
 }

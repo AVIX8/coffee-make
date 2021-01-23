@@ -11,13 +11,24 @@ export const mutations = {
   setUser(state, data) {
     state.user = data
   },
+  onResize(state) {
+    state.isMobile = window.innerWidth <= state.mobile
+  },
 }
 
 export const actions = {
-  // вызывается каждый раз на сервере при полной загрузке страницы
+  // вызывается каждый раз на СЕРВЕРЕ при загрузке страницы
   async nuxtServerInit({ commit, dispatch }) {
     await dispatch('getUserData')
     // await Promise.all(dispatch('...'), dispatch('...')) - так лучше делать наверное
+  },
+
+  // вызывается каждый раз на КЛИЕНТЕ при загрузке страницы
+  nuxtClientInit({ commit, dispatch }) {
+    commit('onResize')
+    window.onresize = () => {
+      commit('onResize')
+    }
   },
 
   // запрашивает у сервера информацию о текущем пользователе и сохраняет в state.user
@@ -27,15 +38,9 @@ export const actions = {
       .then((res) => {
         commit('setUser', res.user)
       })
-      .catch((err) => {
+      .catch(() => {
         commit('setUser', {})
-        if (err.code === 'ECONNABORTED') {
-          console.error('API server not responding')
-        }
       })
-  },
-  setIsMobile(state, isMobile) {
-    state.isMobile = isMobile
   },
 }
 

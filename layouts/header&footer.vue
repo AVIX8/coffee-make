@@ -62,8 +62,28 @@
         </div>
       </template>
     </div>
-
-    <!-- index --><nuxt />
+    <p>
+      Можно использовать это для определения устройств (но оно проверяет только
+      при чистой загрузке страницы)
+    </p>
+    <div
+      v-for="(i, index) in [
+        'isDesktop',
+        'isMobile',
+        'isTablet',
+        'isMobileOrTablet',
+        'isDesktopOrTablet',
+        'isIos',
+        'isWindows',
+        'isMacOS',
+        'isAndroid',
+      ]"
+      :key="index"
+    >
+      <p v-if="$device[i]">{{ i }}</p>
+    </div>
+    <!-- index -->
+    <nuxt />
 
     <div v-if="!isMobile" class="FOOTER">
       <div class="workingHours">
@@ -82,7 +102,7 @@
 </template>
 
 <script>
-import { mapMutations, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -108,20 +128,7 @@ export default {
       isMobile: 'getIsMobile',
     }),
   },
-  watch: {},
-  mounted() {
-    this.$nextTick(() => {
-      this.onResize()
-    })
-    window.addEventListener('resize', this.onResize)
-  },
   methods: {
-    ...mapMutations({ setIsMobile: 'setIsMobile' }),
-    onResize() {
-      if (process.client && window.innerWidth <= this.$store.state.mobile)
-        this.setIsMobile(true)
-      else this.setIsMobile(false)
-    },
     MenuClick() {
       this.isMenuOn = !this.isMenuOn
       if (this.isMenuOn) this.menuIcon = 'mdi-close'

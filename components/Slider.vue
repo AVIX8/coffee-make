@@ -65,14 +65,15 @@ export default {
       hooperHeight: 600,
     }
   },
-  created() {
-    require('~/assets/hooper.css')
-  },
   computed: {
     ...mapGetters({
       isMobile: 'getIsMobile',
     }),
   },
+  created() {
+    require('~/assets/hooper.css')
+  },
+
   methods: {},
 }
 </script>

@@ -1,3 +1,3 @@
 <template>
-  <div>Cart</div>
+  <div>Account</div>
 </template>
