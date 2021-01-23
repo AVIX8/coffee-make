@@ -42,7 +42,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 export default {
   props: {
     product: { type: Object, required: true },
@@ -52,14 +51,10 @@ export default {
       mouseIn: false,
     }
   },
-  computed: {
-    ...mapGetters({
-      isMobile: 'getIsMobile',
-    }),
-  },
+  computed: {},
   methods: {
     MouseMove(event) {
-      if (this.isMobile) return
+      if (this.$device.isMobile) return
       const xAxis =
         (this.$refs.container.clientWidth / 2 -
           (event.pageX -
@@ -76,7 +71,7 @@ export default {
       this.$refs.card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`
     },
     MouseEnter(event) {
-      if (this.isMobile) return
+      if (this.$device.isMobile) return
       this.mouseIn = true
 
       // тень мистера ботта
@@ -102,7 +97,7 @@ export default {
       this.$refs.detail.style.transform = 'translateZ(25px)'
     },
     MouseLeave(event) {
-      if (this.isMobile) return
+      if (this.$device.isMobile) return
       this.mouseIn = false
       this.$refs.card.style.boxShadow = 'none'
       this.$refs.card.style.transition = 'all 1.5s'
@@ -123,13 +118,13 @@ export default {
       this.$refs.detail.style.transform = 'translateZ(0px)'
     },
     ButtonIn(event) {
-      if (this.isMobile) return
+      if (this.$device.isMobile) return
       this.$refs.detailButton.style.backgroundColor = '#434343'
       // this.$refs.detailButton.style.color = 'white'
       this.$refs.detailButton.style.borderColor = '#434343'
     },
     ButtonOut(event) {
-      if (this.isMobile) return
+      if (this.$device.isMobile) return
       this.$refs.detailButton.style.backgroundColor = 'white'
       // this.$refs.detailButton.style.color = '#2db6b5'
       this.$refs.detailButton.style.borderColor = '#2db6b5'

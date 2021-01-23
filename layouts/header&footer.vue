@@ -1,11 +1,11 @@
 <template>
   <div ref="main" class="MAIN">
     <div class="HEADER">
-      <template v-if="!isMobile">
+      <template v-if="$device.isDesktop">
         <div class="Cover">
           <nuxt-link to="/" style="text-decoration: none">
             <div class="toMain" title="На Главную">
-              <img class="logo" src="/icon.png" />
+              <img class="logo" src="/logo.png" />
               <h1 class="logoName">Coffee Make</h1>
             </div>
           </nuxt-link>
@@ -85,7 +85,7 @@
     <!-- index -->
     <nuxt />
 
-    <div v-if="!isMobile" class="FOOTER">
+    <div v-if="$device.isDesktop" class="FOOTER">
       <div class="workingHours">
         <h5>ВРЕМЯ РАБОТЫ</h5>
         ПН - ПТ с 9:00 до 18:00 <br />
@@ -102,7 +102,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 export default {
   data() {
     return {
@@ -123,11 +122,7 @@ export default {
       menuIcon: 'mdi-menu',
     }
   },
-  computed: {
-    ...mapGetters({
-      isMobile: 'getIsMobile',
-    }),
-  },
+  computed: {},
   methods: {
     MenuClick() {
       this.isMenuOn = !this.isMenuOn

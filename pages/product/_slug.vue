@@ -2,7 +2,7 @@
   <div class="mainBox">
     <div class="previewBox">
       <hooper
-        v-if="!isMobile"
+        v-if="$device.isDesktop"
         :style="{
           height: [hooperHeight] + 'rem',
           width: [hooperWidth] + 'rem',
@@ -75,7 +75,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import {
   Hooper,
   Slide,
@@ -149,9 +148,6 @@ export default {
     cost() {
       return this.quantity * parseInt(this.item.price)
     },
-    ...mapGetters({
-      isMobile: 'getIsMobile',
-    }),
   },
   created() {
     require('~/assets/hooperSlug.css')

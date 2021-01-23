@@ -17,7 +17,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 export default {
   layout: 'header&footer',
   data() {
@@ -81,11 +80,7 @@ export default {
       ],
     }
   },
-  computed: {
-    ...mapGetters({
-      isMobile: 'getIsMobile',
-    }),
-  },
+  computed: {},
   methods: {},
 }
 </script>

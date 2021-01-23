@@ -1,7 +1,7 @@
 <template>
   <div class="hooperBorder">
     <hooper
-      v-if="!isMobile"
+      v-if="$device.isDesktop"
       :style="{ height: [hooperHeight] + 'px' }"
       :infinite-scroll="true"
       :mouse-drag="false"
@@ -40,7 +40,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import {
   Hooper,
   Slide,
@@ -65,11 +64,7 @@ export default {
       hooperHeight: 600,
     }
   },
-  computed: {
-    ...mapGetters({
-      isMobile: 'getIsMobile',
-    }),
-  },
+  computed: {},
   created() {
     require('~/assets/hooper.css')
   },

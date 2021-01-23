@@ -4,15 +4,11 @@ export const state = () => ({
   tablet: 1023,
   mobile: 765,
   smallMobile: 400,
-  isMobile: false,
 })
 
 export const mutations = {
   setUser(state, data) {
     state.user = data
-  },
-  onResize(state) {
-    state.isMobile = window.innerWidth <= state.mobile
   },
 }
 
@@ -25,10 +21,7 @@ export const actions = {
 
   // вызывается каждый раз на КЛИЕНТЕ при загрузке страницы
   nuxtClientInit({ commit, dispatch }) {
-    commit('onResize')
-    window.onresize = () => {
-      commit('onResize')
-    }
+    //
   },
 
   // запрашивает у сервера информацию о текущем пользователе и сохраняет в state.user
@@ -45,7 +38,5 @@ export const actions = {
 }
 
 export const getters = {
-  getIsMobile(state) {
-    return state.isMobile
-  },
+  //
 }

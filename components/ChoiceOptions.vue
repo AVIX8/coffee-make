@@ -18,8 +18,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-
 export default {
   props: {
     options: { type: Object, required: true },
@@ -31,9 +29,6 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      isMobile: 'getIsMobile',
-    }),
     // isActive() {
     //   if (this.$props.options.variants[this.index]
     // },
