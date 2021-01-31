@@ -37,10 +37,10 @@
         <div class="priceBox">
           <transition name="priceFade">
             <div v-if="quantity.value > 1" class="calc">
-              <h6>{{ item.price }} &times; {{ quantity.value }} =</h6>
+              <h6>{{ choiceProperty.price }} &times; {{ quantity.value }} =</h6>
             </div>
           </transition>
-          <div class="price">
+          <div ref="price" class="price">
             <h2>{{ cost }} руб</h2>
           </div>
         </div>
@@ -48,13 +48,19 @@
           <div class="property">
             <h4>{{ item.choiceProperty.name }}</h4>
             <div class="choice">
-              <ChoiceOptions :options="item.choiceProperty"></ChoiceOptions>
+              <ChoiceOptions
+                :options="item.choiceProperty"
+                @changeOption="changeOption($event)"
+              ></ChoiceOptions>
             </div>
           </div>
           <div class="quantity">
             <h4>Количество</h4>
             <div class="choice">
-              <ChoiceOptions :options="item.choiceProperty"></ChoiceOptions>
+              <InputOptions
+                :option="quantity"
+                @inputOption="inputOption($event)"
+              ></InputOptions>
             </div>
           </div>
           <div class="specificationsBox"></div>
@@ -94,9 +100,14 @@ export default {
   layout: 'header&footer',
   data() {
     return {
+      choiceProperty: {
+        price: 0,
+        option: 0,
+      },
       quantity: {
         value: 1,
-        maxValue: 99,
+        minValue: 1,
+        maxValue: 9999,
       },
       hooperHeight: 34,
       hooperWidth: 28,
@@ -146,18 +157,37 @@ export default {
   },
   computed: {
     cost() {
-      return this.quantity * parseInt(this.item.price)
+      return this.choiceProperty.price * this.quantity.value
+    },
+  },
+  watch: {
+    quantity(newValue) {
+      this.$refs.price.style.transition = 'all 2s'
+      if (newValue.value !== 1)
+        this.$refs.price.style.transform = 'translateY(-50px)'
+      else this.$refs.price.style.transform = 'translateY(-150px)'
     },
   },
   created() {
     require('~/assets/hooperSlug.css')
-    // console.log(this.$route.params.slug)
+    this.choiceProperty = this.item.choiceProperty.variants[0]
   },
-  methods: {},
+  methods: {
+    changeOption(option) {
+      this.item.choiceProperty.variants.forEach((variant) => {
+        if (variant.option === option) {
+          this.choiceProperty = variant
+          return 0
+        }
+      })
+    },
+    inputOption(option) {
+      this.quantity.value = option
+    },
+  },
 }
 </script>
 <style scoped lang="scss">
-// @import '~/assets/hooperSlug.scss';
 .mainBox {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -227,15 +257,49 @@ export default {
   width: 100%;
   // background: coral;
 }
+
 .priceBox {
-  padding: 1rem;
+  // display: flex;
+  // align-items: center;
+  // flex-wrap: wrap;
+  position: relative;
+
+  margin: 1rem 1rem 2rem 1rem;
+
+  height: 4rem;
   width: 100%;
+
   // background: palegreen;
 }
-.price {
+.calc {
+  position: absolute;
+  height: 35%;
   width: 100%;
-  // background: cyan;
+  // background: brown;
 }
+.priceFade-enter-active,
+.priceFade-leave-active {
+  transition: all 1s;
+}
+.priceFade-enter {
+  transform: translateY(-1rem);
+  opacity: 0;
+}
+.priceFade-leave-to {
+  transform: translateY(-1rem);
+  opacity: 0;
+}
+.price {
+  position: absolute;
+  top: 35%;
+
+  height: 65%;
+  width: 100%;
+
+  // background: cyan;
+  transition: all 1s;
+}
+
 .property {
   display: flex;
   margin: 0.5rem 1rem 0.5rem 0;

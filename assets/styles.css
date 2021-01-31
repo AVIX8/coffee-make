@@ -1,7 +1,13 @@
-@import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Comfortaa&display=swap'); */
+@font-face {
+  font-family: 'Comfortaa';
+  src: url(/fonts/Comfortaa-VariableFont_wght.ttf); /* Путь к файлу со шрифтом */
+}
 html {
   overflow: auto !important;
-  font-family: 'Comfortaa', cursive;
+  font-family: 'Comfortaa', cursive !important;
+
+  font-size: 16px !important;
 }
 
 h1 {
