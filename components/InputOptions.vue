@@ -25,6 +25,8 @@ export default {
         return this.$emit('inputOption', this.overflow())
       if (this.option.minValue && parseInt(newValue) < this.option.minValue)
         return this.$emit('inputOption', this.bottomingOut())
+      if (newValue === null || newValue === '')
+        return this.$emit('inputOption', this.option.minValue)
       this.$emit('inputOption', newValue)
     },
   },

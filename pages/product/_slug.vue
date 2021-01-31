@@ -37,7 +37,10 @@
         <div class="priceBox">
           <transition name="priceFade">
             <div v-if="quantity.value > 1" class="calc">
-              <h6>{{ choiceProperty.price }} &times; {{ quantity.value }} =</h6>
+              <h6>
+                {{ choiceProperty.price }} руб. &times; {{ quantity.value }} шт.
+                =
+              </h6>
             </div>
           </transition>
           <div ref="price" class="price">
