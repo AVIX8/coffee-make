@@ -1,17 +1,65 @@
 <template>
   <v-app>
-    <v-navigation-drawer permanent>
-      <v-list-item>
+    <v-app-bar app height="64px">
+      <template v-slot:img="{ props }">
+        <v-img
+          v-bind="props"
+          gradient="to top right, rgba(128,128,255,.9), rgba(255,128,128,.9)"
+        ></v-img>
+      </template>
+      <v-app-bar-nav-icon
+        v-show="!drawer"
+        @click="drawer = !drawer"
+      ></v-app-bar-nav-icon>
+
+      <v-toolbar-title>Coffee Make</v-toolbar-title>
+
+      <v-spacer></v-spacer>
+
+      <v-btn icon>
+        <v-icon>mdi-heart</v-icon>
+      </v-btn>
+
+      <v-btn icon>
+        <v-icon>mdi-magnify</v-icon>
+      </v-btn>
+
+      <v-menu left bottom>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn icon v-bind="attrs" v-on="on">
+            <v-icon>mdi-dots-vertical</v-icon>
+          </v-btn>
+        </template>
+
+        <v-list>
+          <v-list-item v-for="n in 5" :key="n" @click="() => {}">
+            <v-list-item-title>Option {{ n }}</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-app-bar>
+
+    <v-navigation-drawer
+      v-model="drawer"
+      app
+      disable-resize-watcher
+      :mini-variant.sync="miniVariantSync"
+      :expand-on-hover="$device.isDesktop"
+    >
+      <v-list-item class="px-2 py-1">
+        <v-list-item-avatar tile>
+          <v-img src="/logo.png"></v-img>
+        </v-list-item-avatar>
+
         <v-list-item-content>
           <v-list-item-title class="title"> Coffee Make </v-list-item-title>
-          <v-list-item-subtitle> admin panel </v-list-item-subtitle>
         </v-list-item-content>
       </v-list-item>
 
       <v-divider></v-divider>
 
       <v-list dense nav>
-        <v-list-item v-for="item in items" :key="item.title" link>
+        <v-list-item v-for="item in items" :key="item.title" link :to="item.to">
           <v-list-item-icon>
             <v-icon>{{ item.icon }}</v-icon>
           </v-list-item-icon>
@@ -40,17 +88,29 @@ export default {
   middleware: 'admin',
   data() {
     return {
+      drawer: this.$device.isDesktop,
+      miniVariantSync: false,
       items: [
-        { title: 'Dashboard', icon: 'mdi-view-dashboard' },
-        { title: 'Products', icon: '' },
-        { title: 'Categories', icon: '' },
-        { title: 'Orders', icon: '' },
-        { title: 'Users', icon: 'mdi-account-supervisor' },
-        { title: 'Sessions', icon: '' },
-        { title: 'Photos', icon: 'mdi-image' },
-        { title: 'About', icon: 'mdi-help-box' },
+        {
+          title: 'Панель управления',
+          icon: 'mdi-view-dashboard',
+          to: '/admin/dashboard',
+        },
+
+        { title: 'База данных', icon: 'mdi-database', to: '/admin/database' },
+        { title: 'Заказы', icon: 'mdi-clipboard-text', to: '/admin/orders' },
+
+        { title: 'Категории', icon: 'mdi-apps', to: '/admin/categories' },
+        { title: 'Товары', icon: 'mdi-basket', to: '/admin/products' },
+
+        {
+          title: 'Пользователи',
+          icon: 'mdi-account-supervisor',
+          to: '/admin/users',
+        },
+        { title: 'Сессии', icon: 'mdi-responsive', to: '/admin/sessions' },
+        { title: 'Фото', icon: 'mdi-image', to: '/admin/photos' },
       ],
-      right: null,
     }
   },
 }
