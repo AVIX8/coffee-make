@@ -82,7 +82,8 @@
       <h5>{{ item.desc }}</h5>
     </div>
     <div class="recentlyViewedBox">
-      <h2>Вы недавно смотрели</h2>
+      <h2>Вы недавно смотрели:</h2>
+      <Card v-for="i in 5" :key="i" :item="item" />
     </div>
   </div>
 </template>
@@ -205,7 +206,7 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
 
-  margin: 1rem 0;
+  margin: 2rem 0;
 }
 .previewBox {
   display: flex;
@@ -219,7 +220,7 @@ export default {
   height: 36rem;
   width: 100%;
 
-  // background: red;
+  // background: blue;
 }
 .container {
   position: relative;
@@ -228,7 +229,9 @@ export default {
   justify-content: center;
 
   height: 100%;
+
   background: white;
+  // background: red;
 }
 .circle {
   width: 20rem;
@@ -242,14 +245,16 @@ export default {
     #3d3d3d
   );
   border-radius: 50%;
+  box-shadow: inset 0 0 1rem black;
   z-index: 1;
 }
 .itemImg {
   // position: absolute;
-  height: 150%;
-  width: 150%;
-  transform: translate(-16%, -18%);
+  height: 100%;
+  width: 100%;
+  transform: scale(1.4);
 }
+
 .infoBox {
   position: relative;
   display: flex;
@@ -376,9 +381,19 @@ export default {
 }
 .recentlyViewedBox {
   grid-column: 1 / span 2;
-  height: 20rem;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  padding: 4rem 20% 2rem 20%;
+
   width: 100%;
-  background: violet;
+  // background: violet;
+}
+.recentlyViewedBox h2 {
+  margin: 0 0 1rem 0;
+  width: 100%;
+  font-weight: bold;
 }
 @media screen and (max-width: $mobile) {
 }
