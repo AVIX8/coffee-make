@@ -11,7 +11,7 @@
         :mouse-drag="false"
         :wheel-control="false"
         :auto-play="true"
-        :play-speed="6000"
+        :play-speed="10000"
         :transition="1000"
         :items-to-show="1"
         :center-mode="true"
@@ -38,8 +38,7 @@
           <transition name="priceFade">
             <div v-if="quantity.value > 1" class="calc">
               <h6>
-                {{ choiceProperty.price }} руб. &times; {{ quantity.value }} шт.
-                =
+                {{ choiceProperty.price }} руб &times; {{ quantity.value }} шт =
               </h6>
             </div>
           </transition>
@@ -47,27 +46,32 @@
             <h2>{{ cost }} руб</h2>
           </div>
         </div>
-        <div class="controlBox">
+
+        <div class="specificationsBox">
           <div class="property">
             <h4>{{ item.choiceProperty.name }}</h4>
-            <div class="choice">
-              <ChoiceOptions
-                :options="item.choiceProperty"
-                @changeOption="changeOption($event)"
-              ></ChoiceOptions>
-            </div>
+            <ChoiceOptions
+              :options="item.choiceProperty"
+              @changeOption="changeOption($event)"
+            ></ChoiceOptions>
           </div>
-          <div class="quantity">
+          <div class="property">
             <h4>Количество</h4>
-            <div class="choice">
-              <InputOptions
-                :option="quantity"
-                @inputOption="inputOption($event)"
-              ></InputOptions>
-            </div>
+            <InputOptions
+              :option="quantity"
+              @inputOption="inputOption($event)"
+            ></InputOptions>
           </div>
-          <div class="specificationsBox"></div>
+          <div
+            v-for="(property, name) in item.properties"
+            :key="name"
+            class="property"
+          >
+            <h5>{{ name }}:</h5>
+            <PropertiesView :property="property"></PropertiesView>
+          </div>
         </div>
+
         <div class="cartBtn">
           <button><h6>Добавить в Корзину</h6></button>
         </div>
@@ -90,8 +94,6 @@ import {
   Navigation as HooperNavigation,
   Pagination as HooperPagination,
 } from 'hooper'
-// import '~/assets/hooperSlug.css'
-// require('~/assets/hooperSlug.css')
 
 export default {
   components: {
@@ -117,7 +119,7 @@ export default {
       item: {
         _id: '054VA72303012P',
         desc:
-          "Give your dressy look a lift with these women's Kate high-heel shoes by Metaphor. These playful peep-toe pumps feature satin-wrapped stiletto heels and chiffon pompoms at the toes. Rhinestones on each of the silvertone buckles add just a touch of sparkle to these shoes for a flirty footwear look that's made for your next night out.",
+          'Сироп Argento Карамель один из самых популярных и универсальных ароматов. Этот сироп с темным янтарным оттенком можно использовать для создания сладкого кофе, чая и горячего шоколада. Сироп со вкусом карамели цениться как отличная сладкая основа для множества напитков и очень хорошо переплетается с другими ароматами в кофе. Если вы еще ни разу не пробовали готовить напитки с добавлением карамели, то самое время начать экспериментировать!  Современные технологии производства сиропов позволяют создать высококачественную продукцию, достойную занять место на у ваших кофемашин. Сироп Argento поставляется в литровых стеклянных бутылках, оборудованных удобной завинчивающейся крышкой.',
         name: `Сироп ARGENTO "ЗЕЛЕНЫЙ БАНАН", 1л`,
         category: '/кофе/моносорта',
         brand: 'Argento',
@@ -149,10 +151,18 @@ export default {
               price: 940.0,
               option: 1000,
             },
-            {
-              price: 1600.0,
-              option: 2000,
-            },
+            // {
+            //   price: 1600.0,
+            //   option: 2000,
+            // },
+            // {
+            //   price: 1600.0,
+            //   option: 2000,
+            // },
+            // {
+            //   price: 1600.0,
+            //   option: 2000,
+            // },
           ],
         },
       },
@@ -303,32 +313,31 @@ export default {
   transition: all 1s;
 }
 
-.property {
-  display: flex;
-  margin: 0.5rem 1rem 0.5rem 0;
-  width: 100%;
-  // background: springgreen;
-}
-.choice {
-  position: absolute;
-  left: 25%;
-}
-.quantity {
-  display: flex;
-  margin: 0.5rem 1rem 0.5rem 0;
-  width: 100%;
-  // background: wheat;
-}
 .specificationsBox {
   grid-column: 1 / span 2;
+
+  margin: 2rem 0 0 0rem;
+
   width: 100%;
+
   // background: yellow;
 }
+.property {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 2fr 3fr;
+
+  margin: 0 0 1rem 0;
+
+  width: 100%;
+  // background: darkorchid;
+}
+
 .cartBtn {
   display: flex;
   justify-content: center;
 
-  padding: 2rem 20% 2rem 0;
+  padding: 1rem 30% 1rem 0;
 
   width: 100%;
 
@@ -338,22 +347,7 @@ export default {
   height: 4rem;
   width: 100%;
 
-  background-image: linear-gradient(
-    to left top,
-    #1d816f,
-    #0c9b7e,
-    #00b58c,
-    #00d097,
-    #12eba0
-  );
-  // background-image: linear-gradient(
-  //   to left bottom,
-  //   #1d816f,
-  //   #0c9b7e,
-  //   #00b58c,
-  //   #00d097,
-  //   #12eba0
-  // );
+  background-color: #00a199;
 
   border-radius: 20px;
 }
@@ -362,22 +356,7 @@ export default {
   font-weight: bold;
 }
 .cartBtn button:hover {
-  background-image: linear-gradient(
-    to left bottom,
-    #1d816f,
-    #0c9b7e,
-    #00b58c,
-    #00d097,
-    #12eba0
-  );
-  background-image: linear-gradient(
-    to left top,
-    #1d816f,
-    #0c9b7e,
-    #00b58c,
-    #00d097,
-    #12eba0
-  );
+  background-color: #00aca3;
   box-shadow: 3px 3px 0.2rem rgb(2, 87, 82);
   transition: all 0.15s;
 }

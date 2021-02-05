@@ -1,13 +1,21 @@
 <template>
-  <!-- @mouseenter="mouseOver" @mouseleave="mouseLeave" -->
   <div class="choiseBox">
-    <div ref="choice" class="choice">
-      <button v-show="!isOpen" class="now" @click="btnClick">
+    <div
+      ref="choice"
+      v-click-outside="close"
+      class="choice"
+      @mouseenter="mouseIn"
+      @mouseleave="mouseOut"
+    >
+      <p v-if="this.$props.options.variants.length === 1" class="low">
+        {{ now }}
+      </p>
+      <button v-show="isActive" class="now" @click="btnClick">
         <p>{{ now }}</p>
         <v-icon>mdi-chevron-down</v-icon>
       </button>
       <transition name="down">
-        <ul v-show="isOpen" class="list">
+        <ul v-if="isOpen" class="list">
           <li
             v-for="(variant, i) in options.variants"
             :key="i"
@@ -34,35 +42,19 @@ export default {
     }
   },
   computed: {
-    // isActive() {
-    //   if (this.$props.options.variants[this.index]
-    // },
-  },
-  mounted() {
-    // this.$refs.lft.disabled = true
+    isActive() {
+      if (this.$props.options.variants.length > 1 && !this.isOpen) return true
+      else return false
+    },
   },
   methods: {
     btnClick() {
-      this.now = ''
       this.isOpen = !this.isOpen
       this.$refs.choice.style.height = this.isOpen
-        ? 2 * this.options.variants.length - 0.7 + 'rem'
+        ? 2.1 * this.options.variants.length + 'rem'
         : '2rem'
+      this.$refs.choice.style.background = 'white'
       this.$refs.choice.style.zIndex = 9
-    },
-    mouseOver() {
-      this.$refs.choice.style.height =
-        2 * this.options.variants.length - 0.65 + 'rem'
-      this.$refs.choice.style.zIndex = 9
-      this.isOpen = true
-    },
-    mouseLeave() {
-      this.$refs.choice.style.height = '2rem'
-      this.$refs.choice.style.zIndex = 1
-      // setTimeout(() => {
-      //   this.isOpen = false
-      // }, 400)
-      this.isOpen = false
     },
     liClick(option) {
       this.isOpen = false
@@ -70,6 +62,18 @@ export default {
       this.$refs.choice.style.height = '2rem'
       this.$refs.choice.style.zIndex = 1
       this.$emit('changeOption', option)
+    },
+    close() {
+      this.isOpen = false
+      this.$refs.choice.style.height = '2rem'
+    },
+    mouseIn() {
+      if (this.$props.options.variants.length > 1 && !this.isOpen)
+        this.$refs.choice.style.background = '#32bebd'
+      else this.$refs.choice.style.cursor = 'default'
+    },
+    mouseOut() {
+      this.$refs.choice.style.background = 'white'
     },
   },
 }
@@ -90,35 +94,50 @@ export default {
 
   transition: all 0.3s;
 }
+button {
+  cursor: default;
+}
 .choiseBox {
   height: 2rem;
   width: 8rem;
+  // background: blue;
 }
 .choice {
   position: relative;
   display: grid;
 
-  height: 2rem;
+  height: 100%;
 
   background: white;
+  // background: red;
 
   border-radius: 20px;
-  border: 0.2rem solid #32bebd;
+  border: 0.2rem solid #2aa5a5;
 
   box-shadow: 0.1rem 0.1rem 0.3rem gray;
+  overflow: hidden;
 
-  transition: all 0.2s;
-}
-
-.now {
-  display: grid;
-  grid-template-columns: 1fr 3fr 1fr;
-  border-radius: 18px;
   transition: all 0.5s;
 }
-.now:hover {
-  background: #32bebd;
-  transition: all 0.2s;
+
+.low {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  color: black;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+.now {
+  display: grid;
+  align-items: center;
+  grid-template-columns: 1fr 3fr 1fr;
+
+  border-radius: 20px;
+
+  cursor: pointer;
+  transition: all 0.5s;
 }
 .now:active {
   background: #31d4d4;
@@ -126,7 +145,6 @@ export default {
 }
 .now p {
   grid-column: 2;
-  padding: 0.2rem;
 
   color: black;
   font-size: 1.1rem;
@@ -141,12 +159,13 @@ export default {
   list-style-type: none;
   text-align: center;
 }
+.list li {
+  height: 2rem;
+}
 .option {
   display: flex;
   align-items: center;
   justify-content: center;
-
-  padding: 0.2rem;
 
   color: gray;
   font-size: 1.1rem;
@@ -175,12 +194,15 @@ export default {
   box-shadow: inset 0 0 1rem lightgrey;
 }
 
-.down-enter-active,
+.down-enter-active {
+  transition: all 0.8s;
+}
 .down-leave-active {
-  transition: all 0.3s;
+  transition: all 0.1s;
 }
 .down-enter,
 .down-leave-to {
+  transform: translateY(-2rem);
   opacity: 0;
 }
 @media screen and (max-width: $laptop) {
