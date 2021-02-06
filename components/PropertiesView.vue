@@ -28,7 +28,10 @@ export default {
         },
       },
       blockWidth: {
-        width: 10 / this.property.maxValue - 0.2 + 'rem',
+        width:
+          (this.$device.isMobile ? 8 : 10) / this.property.maxValue -
+          0.2 +
+          'rem',
       },
     }
   },
@@ -73,5 +76,12 @@ export default {
   // background: #24584b;
   background: #4fc7a9;
   // box-shadow: 0 0 0.5rem #4fc7a9;
+}
+
+@media screen and (max-width: $mobile) {
+  .propertyBox {
+    height: 0.8rem;
+    width: 8rem;
+  }
 }
 </style>

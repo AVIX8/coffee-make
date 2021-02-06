@@ -225,6 +225,7 @@ export default {
   z-index: 1;
 }
 .circle2 {
+  position: absolute;
   width: 10rem;
   height: 10rem;
   background-image: radial-gradient(
@@ -235,8 +236,8 @@ export default {
     #435f79,
     #3d3d3d
   );
-  position: absolute;
   border-radius: 50%;
+  box-shadow: inset 0 0 1rem rgb(78, 78, 78);
   z-index: 1;
 }
 

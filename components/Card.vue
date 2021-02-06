@@ -1,6 +1,12 @@
 <template>
   <div class="cardBox">
-    <div class="card">
+    <nuxt-link
+      :to="'/product/' + item.slug"
+      tag="div"
+      class="card"
+      style="text-decoration: none"
+    >
+      <!-- <div class="card"> -->
       <div class="preview">
         <img :src="item.imgs[0]" :alt="item.name" />
       </div>
@@ -8,7 +14,8 @@
         <div class="name">{{ item.name }}</div>
         <div class="price">{{ item.choiceProperty.variants[0].price }} руб</div>
       </div>
-    </div>
+      <!-- </div> -->
+    </nuxt-link>
   </div>
 </template>
 
@@ -27,7 +34,7 @@ export default {
 
 <style scoped lang="scss">
 .cardBox {
-  margin: 0 1rem 0 1rem;
+  margin: 1rem;
 
   height: 19rem;
   width: 12rem;
@@ -102,5 +109,41 @@ export default {
   width: 100%;
   text-align: center;
   // background: orange;
+}
+
+@media screen and (max-width: $mobile) {
+  .cardBox {
+    margin: 0 0 1rem 0;
+    // margin: 0 1rem 0;
+
+    height: 95%;
+    width: 90%;
+    // background: blue;
+  }
+  .card {
+    box-shadow: 0 0 0.3rem gray;
+  }
+  .card:hover {
+    box-shadow: 0;
+    transition: 0;
+  }
+  .card:active {
+    box-shadow: 0 0 0.5rem gray;
+    transition: all 0.4s;
+  }
+
+  .title {
+    padding: 1rem 0 0 0;
+    // background: springgreen;
+  }
+  .name {
+    padding: 0 0.2rem 0 0.2rem;
+    // background: yellow;
+  }
+
+  .price {
+    margin: 0.5rem 0;
+    // background: orange;
+  }
 }
 </style>

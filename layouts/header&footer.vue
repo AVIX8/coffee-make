@@ -5,7 +5,7 @@
         <div class="Cover">
           <nuxt-link to="/" style="text-decoration: none">
             <div class="toMain" title="На Главную">
-              <img class="logo" src="/logo.png" />
+              <img class="logo" src="/logo1.png" />
               <h1 class="logoName">Coffee Make</h1>
             </div>
           </nuxt-link>
@@ -58,7 +58,7 @@
         </div>
       </template>
     </div>
-    <div
+    <!-- <div
       v-for="(i, index) in [
         'isDesktop',
         'isMobile',
@@ -73,7 +73,8 @@
       :key="index"
     >
       <p v-if="$device[i]">{{ i }}</p>
-    </div>
+    </div> -->
+
     <!-- index -->
     <nuxt />
 
