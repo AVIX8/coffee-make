@@ -43,7 +43,6 @@
       v-model="drawer"
       app
       disable-resize-watcher
-      :mini-variant.sync="miniVariantSync"
       :expand-on-hover="$device.isDesktop"
     >
       <v-list-item class="px-2 py-1">
@@ -89,7 +88,6 @@ export default {
   data() {
     return {
       drawer: this.$device.isDesktop,
-      miniVariantSync: false,
       items: [
         {
           title: 'Панель управления',

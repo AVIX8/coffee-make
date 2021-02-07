@@ -55,6 +55,11 @@ export default {
     },
   },
 
+  loading: {
+    color: 'green',
+    height: '5px',
+  },
+
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
     customVariables: ['~/assets/variables.scss'],

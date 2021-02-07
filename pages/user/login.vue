@@ -45,6 +45,7 @@ export default {
         .then((data) => {
           console.log(data)
           this.$router.push('profile')
+          console.log(this.$router)
         })
         .catch((err) => {
           console.log(err.response.data)
