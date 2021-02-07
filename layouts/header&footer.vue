@@ -5,17 +5,13 @@
         <div class="Cover">
           <nuxt-link to="/" style="text-decoration: none">
             <div class="toMain" title="На Главную">
-              <img class="logo" src="/logo.png" />
+              <img class="logo" src="/logo1.png" />
               <h1 class="logoName">Coffee Make</h1>
             </div>
           </nuxt-link>
-          <v-text-field
-            class="searchBox"
-            label="Поиск..."
-            solo
-            dense
-            hide-details
-          />
+          <div class="searchBox">
+            <SearchBox />
+          </div>
           <nuxt-link
             class="account"
             tag="img"
@@ -62,7 +58,7 @@
         </div>
       </template>
     </div>
-    <div
+    <!-- <div
       v-for="(i, index) in [
         'isDesktop',
         'isMobile',
@@ -77,7 +73,8 @@
       :key="index"
     >
       <p v-if="$device[i]">{{ i }}</p>
-    </div>
+    </div> -->
+
     <!-- index -->
     <nuxt />
 
@@ -145,12 +142,13 @@ export default {
 
     background: linear-gradient(
         90.54deg,
-        rgba(43, 42, 40, 0.3) 0%,
-        rgba(255, 255, 255, 0.15) 33.73%,
-        rgba(255, 255, 255, 0.05) 66.56%,
-        rgba(255, 255, 255, 0) 100%
+        rgba(40, 43, 42, 0.3) 0%,
+        #0c5134 25%,
+        #156141 54.17%,
+        #0c5335 82.29%,
+        rgba(40, 43, 42, 0.3) 100%
       ),
-      #00241b;
+      #004332;
   }
   .toMain {
     display: flex;
@@ -161,8 +159,7 @@ export default {
     width: 4.5rem;
   }
   .logoName {
-    margin: 0.2rem;
-    margin-left: 2rem;
+    margin: 0 10rem 0 2rem;
 
     color: white;
     font-family: 'Dancing Script', cursive;
@@ -173,10 +170,11 @@ export default {
     text-shadow: 0.5rem 0.5rem 0.5rem black;
   }
   .searchBox {
-    margin-left: 5rem;
+    margin: 1rem;
 
-    border-radius: 30px;
-    background-color: gainsboro;
+    width: 28rem;
+
+    // background-color: gainsboro;
   }
   .account {
     padding: 0.6rem;
@@ -187,12 +185,6 @@ export default {
     border-radius: 50rem;
     transition: ease-out 0.5s;
   }
-  .account:hover {
-    cursor: pointer;
-    background-color: #2db6b5;
-    transition: all 0.4s;
-    box-shadow: 0.2rem 0.2rem 0.4rem black, 0px 0px 50px black;
-  }
   .cart {
     padding: 0.6rem;
     margin-left: 1rem;
@@ -202,11 +194,12 @@ export default {
     border-radius: 50rem;
     transition: ease-out 0.5s;
   }
+  .account:hover,
   .cart:hover {
     cursor: pointer;
-    background-color: #2db6b5;
+    background-color: #1c8358;
     transition: all 0.4s;
-    box-shadow: 0.2rem 0.2rem 0.4rem black, 0px 0px 50px black;
+    box-shadow: 0.2rem 0.2rem 0.4rem black;
   }
   .Categories {
     position: relative;
@@ -231,27 +224,27 @@ export default {
     padding: 0.2rem 2rem 0.2rem 2rem;
 
     color: white;
-    font-family: 'Rubik', sans-serif;
+    // font-family: 'Rubik', sans-serif;
     text-decoration: none;
 
     border-radius: 50px;
 
-    transition: 0.4s ease-out;
+    transition: 0.3s ease-out;
   }
   .category:hover {
-    // color: #32bebd;
-    // background-color: white;
-    background-image: linear-gradient(
-      to right bottom,
-      #35edeb,
-      #34e1df,
-      #34d5d4,
-      #33cac8,
-      #32bebd
-    );
-    box-shadow: 0.2rem 0.2rem 0.9rem rgba(0, 0, 0, 0.2),
+    color: #2aa0a0;
+    background-color: white;
+    // background-image: linear-gradient(
+    //   to right bottom,
+    //   #35edeb,
+    //   #34e1df,
+    //   #34d5d4,
+    //   #33cac8,
+    //   #32bebd
+    // );
+    box-shadow: 0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0.2),
       0px 0px 50px rgba(0, 0, 0, 0.2);
-    transition: all 0.35s;
+    transition: all 0.1s;
   }
   .category:active {
     margin: 0.3rem 0.8rem 0.3rem 0.8rem;
