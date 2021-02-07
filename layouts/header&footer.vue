@@ -42,7 +42,7 @@
 
       <template v-else>
         <div class="Cover">
-          <div class="search"></div>
+          <div class="search"><SearchBox /></div>
         </div>
 
         <div class="NavigationBAR">
@@ -292,7 +292,7 @@ export default {
 }
 @media screen and (max-width: $mobile) {
   .HEADER {
-    margin-bottom: 5rem;
+    margin-bottom: 4rem;
   }
   .Cover {
     position: fixed;
@@ -301,7 +301,7 @@ export default {
     right: 0;
     z-index: 99;
 
-    height: 4rem;
+    height: 3rem;
   }
   .burger {
     position: absolute;
@@ -319,14 +319,15 @@ export default {
 
     padding: 0.1rem;
 
-    height: 3.5rem;
-
-    font-family: Roboto;
+    height: 3rem;
 
     background: white;
     // border-top: 1px solid #3a3736;
     box-shadow: 0 60px 100px 10px #3a3736;
     z-index: 99;
+  }
+  .NavigationBAR p {
+    font-size: 0.5rem;
   }
   .nuxt-link-exact-active {
     color: white;

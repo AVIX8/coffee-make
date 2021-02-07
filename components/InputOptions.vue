@@ -154,9 +154,22 @@ export default {
   background: #32bebd;
   transition: all 0.1s;
 }
+.minus:active,
+.plus:active {
+  background: #31d4d4;
+}
 @media screen and (max-width: $laptop) {
 }
 
 @media screen and (max-width: $mobile) {
+  .minus:hover,
+  .plus:hover {
+    background: none;
+    transition: all 0;
+  }
+  .minus:active,
+  .plus:active {
+    background: #31d4d4;
+  }
 }
 </style>

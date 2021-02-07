@@ -138,6 +138,7 @@ export default {
   }
   .name {
     padding: 0 0.2rem 0 0.2rem;
+    font-size: 1rem;
     // background: yellow;
   }
 

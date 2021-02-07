@@ -209,5 +209,28 @@ button {
 }
 
 @media screen and (max-width: $mobile) {
+  .option:first-child:hover,
+  .option:hover,
+  .option:last-child:hover {
+    background: none;
+  }
+  .option:first-child:active,
+  .option:active,
+  .option:last-child:active {
+    background: white;
+    box-shadow: none;
+  }
+
+  .down-enter-active {
+    transition: all 0.8s;
+  }
+  .down-leave-active {
+    transition: all 0s;
+  }
+  .down-enter,
+  .down-leave-to {
+    transform: translateY(-2rem);
+    opacity: 0;
+  }
 }
 </style>

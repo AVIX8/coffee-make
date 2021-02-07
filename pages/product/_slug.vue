@@ -32,6 +32,11 @@
           v-if="!$device.isMobile"
           slot="hooper-addons"
         ></hooper-pagination>
+        <hooper-pagination
+          v-else
+          slot="hooper-addons"
+          mode="fraction"
+        ></hooper-pagination>
       </hooper>
       <div v-else class="container">
         <div class="circle">
@@ -131,8 +136,12 @@ export default {
       },
       item: {
         _id: '054VA72303012P',
-        desc:
-          'Сироп Argento Карамель один из самых популярных и универсальных ароматов. Этот сироп с темным янтарным оттенком можно использовать для создания сладкого кофе, чая и горячего шоколада. Сироп со вкусом карамели цениться как отличная сладкая основа для множества напитков и очень хорошо переплетается с другими ароматами в кофе. Если вы еще ни разу не пробовали готовить напитки с добавлением карамели, то самое время начать экспериментировать!  Современные технологии производства сиропов позволяют создать высококачественную продукцию, достойную занять место на у ваших кофемашин. Сироп Argento поставляется в литровых стеклянных бутылках, оборудованных удобной завинчивающейся крышкой.',
+        desc: `Сироп Argento Карамель один из самых популярных и универсальных ароматов.
+        Этот сироп с темным янтарным оттенком можно использовать для создания сладкого кофе, чая и горячего шоколада.
+        Сироп со вкусом карамели цениться как отличная сладкая основа для множества напитков и очень хорошо переплетается с другими ароматами в кофе.
+        Если вы еще ни разу не пробовали готовить напитки с добавлением карамели, то самое время начать экспериментировать!
+        Современные технологии производства сиропов позволяют создать высококачественную продукцию, достойную занять место на у ваших кофемашин.
+        Сироп Argento поставляется в литровых стеклянных бутылках, оборудованных удобной завинчивающейся крышкой.`,
         name: `Сироп ARGENTO "ЗЕЛЕНЫЙ БАНАН", 1л`,
         slug: `cироп-argento-зеленый-банан-1л`,
         category: '/кофе/моносорта',
@@ -425,7 +434,7 @@ export default {
     display: flex;
     flex-direction: column;
 
-    padding: 2rem 1rem 7.5rem 1rem;
+    padding: 0rem 1rem 5.5rem 1rem;
     // background: saddlebrown;
   }
   .previewBox {
@@ -447,7 +456,7 @@ export default {
     height: 15rem;
   }
   .itemImg {
-    transform: scale(1.4);
+    transform: scale(1.3);
   }
 
   .title {
@@ -455,7 +464,8 @@ export default {
 
     text-align: center;
     font-size: 150%;
-    text-shadow: 0 0 0.1rem black;
+    font-weight: 900;
+    // text-shadow: 0 0 0.1rem black;
     // background: coral;
   }
 
@@ -488,8 +498,8 @@ export default {
     // background: darkorchid;
   }
   .property h4 {
-    font-size: 1.3rem;
-    font-weight: bold;
+    font-size: 1.2rem;
+    // font-weight: bold;
   }
   .property h5 {
     font-size: 1.1rem;
@@ -497,7 +507,7 @@ export default {
 
   .cartBtn {
     position: fixed;
-    bottom: 3.5rem;
+    bottom: 3rem;
     left: 0;
     right: 0;
 
@@ -509,11 +519,12 @@ export default {
     width: 100%;
 
     background: white;
-    box-shadow: 0 60px 100px 10px #3a3736;
+    // box-shadow: 0 60px 100px 10px #3a3736;
+    box-shadow: 0 0 1rem lightgray;
     z-index: 98;
   }
   .cartBtn button {
-    height: 3rem;
+    height: 2.1rem;
     width: 100%;
 
     background-color: #00a199;
@@ -521,8 +532,7 @@ export default {
     border-radius: 10px;
   }
   .cartBtn button h6 {
-    color: white;
-    font-weight: bold;
+    font-size: 0.9rem;
   }
   .cartBtn button:hover {
     background-color: #00a199;
@@ -545,7 +555,7 @@ export default {
     font-weight: bold;
   }
   .descriptionBox h5 {
-    font-size: 1rem;
+    font-size: 0.7rem;
   }
 
   .recentlyViewedBox {
@@ -574,7 +584,7 @@ export default {
     grid-column: 1 / span 2;
     // position: absolute;
     // margin: -2rem 0 1rem 10%;
-    font-size: 170%;
+    font-size: 150%;
   }
 }
 </style>

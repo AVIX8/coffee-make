@@ -1,12 +1,7 @@
 <template>
   <div class="searchBox">
     <div ref="search" class="search">
-      <input
-        ref="input"
-        v-model="text"
-        class="input"
-        placeholder="Введите что-то для поиска..."
-      />
+      <input ref="input" v-model="text" class="input" placeholder="Поиск" />
       <button class="clear" title="Очистить" @click="clear">
         <v-icon class="clear">mdi-close</v-icon>
       </button>
@@ -14,15 +9,23 @@
         <v-icon class="searchGo">mdi-magnify</v-icon>
       </button>
     </div>
+
     <transition name="resultsDown">
       <div v-show="results" ref="results" class="results">
-        <div v-for="(result, i) in results" :key="i" class="result">
+        <nuxt-link
+          v-for="(result, i) in results"
+          :key="i"
+          tag="div"
+          class="result"
+          to="/"
+          @click.native="clear"
+        >
           <img class="preview" :src="result.imgs[0]" />
           <div class="info">
             <h6>{{ result.name }}</h6>
             <p>Цена: {{ result.choiceProperty.variants[0].price }} руб</p>
           </div>
-        </div>
+        </nuxt-link>
       </div>
     </transition>
   </div>
@@ -361,5 +364,21 @@ export default {
 }
 .info h6 {
   margin: 0 0 1rem 0;
+}
+
+@media screen and (max-width: $mobile) {
+  .result:hover {
+    background: none;
+  }
+  .info {
+    padding: 0 0 0 1rem;
+  }
+  .info h6 {
+    margin: 0 0 1rem 0;
+    font-size: 1rem;
+  }
+  .info p {
+    font-size: 0.8rem;
+  }
 }
 </style>
