@@ -1,5 +1,8 @@
 <template>
   <div ref="main" class="MAIN">
+    <div v-if="isAuthentication" class="authenticationCover">
+      <Authentication @close="closeAuthentication" />
+    </div>
     <div class="HEADER">
       <template v-if="$device.isDesktop">
         <div class="Cover">
@@ -12,12 +15,11 @@
           <div class="searchBox">
             <SearchBox />
           </div>
-          <nuxt-link
+          <img
             class="account"
-            tag="img"
             src="/account.png"
-            to="/"
             title="Мой Аккаунт"
+            @click="accountClick"
           />
           <nuxt-link
             class="cart"
@@ -98,6 +100,7 @@
 export default {
   data() {
     return {
+      isAuthentication: false,
       categories: [
         { title: 'Кофе', linkTo: '/products' },
         { title: 'Аренда кофемашин', linkTo: '/rentCoffeeMachinesMain' },
@@ -122,6 +125,14 @@ export default {
       if (this.isMenuOn) this.menuIcon = 'mdi-close'
       else this.menuIcon = 'mdi-menu'
     },
+    accountClick() {
+      if (Object.keys(this.$store.state.user).length === 0)
+        this.isAuthentication = true
+      else this.$router.push('/account')
+    },
+    closeAuthentication() {
+      this.isAuthentication = false
+    },
   },
 }
 </script>
@@ -132,6 +143,21 @@ export default {
   src: url(/fonts/DancingScript-Bold.ttf); /* Путь к файлу со шрифтом */
 }
 @media screen and (max-width: $laptop) {
+  .authenticationCover {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    height: 100%;
+
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 100;
+  }
   .Cover {
     position: relative;
     display: flex;

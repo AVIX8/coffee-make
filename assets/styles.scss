@@ -4,10 +4,12 @@
   src: url(/fonts/Comfortaa-VariableFont_wght.ttf); /* Путь к файлу со шрифтом */
 }
 html {
-  overflow: auto !important;
   font-family: 'Comfortaa', cursive !important;
-
   font-size: 16px !important;
+
+  overflow: auto !important;
+    -ms-overflow-style: none !important; /* IE 11 */
+    scrollbar-width: none !important; /* Firefox 64 */
 }
 
 h1 {

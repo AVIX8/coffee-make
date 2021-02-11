@@ -238,7 +238,7 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr;
 
-  padding: 2rem 20% 2rem 20%;
+  padding: 2rem 22rem 2rem 22rem;
 }
 .previewBox {
   display: flex;

@@ -259,6 +259,8 @@ export default {
   height: 100%;
   width: 100%;
 
+  font-size: 1.15rem;
+
   border-radius: 20px 0 0 20px;
 
   background: white;
@@ -294,6 +296,8 @@ export default {
   text-shadow: 0 0 0.7rem rgb(28, 156, 139);
 }
 
+//===============================================
+
 .resultsDown-enter-active,
 .resultsDown-leave-active {
   transition: all 0.2s;
@@ -320,7 +324,10 @@ export default {
   box-shadow: 0.2rem 0.2rem 0.5rem rgba(0, 0, 0, 0.5);
 
   z-index: 1;
-  overflow: scroll;
+  // overflow: scroll;
+  overflow: auto !important;
+  -ms-overflow-style: none !important; /* IE 11 */
+  scrollbar-width: none !important; /* Firefox 64 */
   transition: all 0.5s;
 }
 .result {
@@ -367,6 +374,9 @@ export default {
 }
 
 @media screen and (max-width: $mobile) {
+  .input {
+    font-size: 0.9rem;
+  }
   .result:hover {
     background: none;
   }
