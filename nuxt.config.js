@@ -48,20 +48,19 @@ export default {
     '@nuxtjs/pwa',
     // https://github.com/nuxt-community/device-module
     '@nuxtjs/device',
+    // https://github.com/microcipcip/cookie-universal/tree/master/packages/cookie-universal-nuxt
+    ['cookie-universal-nuxt', { alias: 'cookiz', parseJSON: false }],
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: 'http://83.246.145.119:4000/api', // Used as fallback if no runtime config is provided
-    credentials: true,
-    init(axios) {
-      axios.defaults.withCredentials = true
-    },
+    baseURL: 'http://83.246.145.119:4000/api',
   },
 
   loading: {
     color: 'green',
     height: '5px',
+    failedColor: 'yellow',
   },
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)

@@ -9,6 +9,8 @@
         <v-card-actions>
           <v-btn @click="logout">logout</v-btn>
         </v-card-actions>
+        <v-btn @click="$router.push('register')">Go to registration</v-btn>
+        <v-btn @click="$router.push('/admin')">Go to admin panel</v-btn>
       </v-card>
     </v-col>
   </v-row>
@@ -23,8 +25,8 @@ export default {
     }
   },
   mounted() {
-    this.$axios
-      .$get('user/profile')
+    this.$store
+      .dispatch('api/profile')
       .then((data) => {
         this.userData = data
       })
@@ -34,8 +36,8 @@ export default {
   },
   methods: {
     logout() {
-      this.$axios
-        .$get('user/logout')
+      this.$store
+        .dispatch('api/logout')
         .then((data) => {
           console.log(data)
           this.$router.push('login')

@@ -65,29 +65,27 @@ export default {
   },
   methods: {
     login() {
-      this.$axios
-        .$post('user/login', {
+      this.$store
+        .dispatch('api/login', {
           email: this.email,
           password: this.password,
         })
-        .then((data) => {
-          console.log(data)
+        .then(() => {
+          // нужно что-то делать
           this.$router.push('user/profile')
-          console.log(this.$router)
         })
         .catch((err) => {
           console.log(err.response.data)
         })
     },
     register() {
-      console.log('register')
-      this.$axios
-        .$post('user/register', {
+      this.$store
+        .dispatch('api/register', {
           email: this.email,
           password: this.password,
         })
-        .then((data) => {
-          console.log(data)
+        .then(() => {
+          // нужно что-то делать
           this.$router.push('user/profile')
         })
         .catch((err) => {

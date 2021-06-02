@@ -37,15 +37,15 @@ export default {
   },
   methods: {
     login() {
-      this.$axios
-        .$post('user/login', {
+      this.$store
+        .dispatch('api/login', {
           email: this.email,
           password: this.password,
         })
-        .then((data) => {
-          console.log(data)
-          this.$router.push('profile')
-          console.log(this.$router)
+        .then(() => {
+          setTimeout(() => {
+            this.$router.push('profile')
+          }, 11000)
         })
         .catch((err) => {
           console.log(err.response.data)

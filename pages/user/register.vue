@@ -36,13 +36,12 @@ export default {
   },
   methods: {
     register() {
-      this.$axios
-        .$post('user/register', {
+      this.$store
+        .dispatch('api/register', {
           email: this.email,
           password: this.password,
         })
-        .then((data) => {
-          console.log(data)
+        .then(() => {
           this.$router.push('profile')
         })
         .catch((err) => {
