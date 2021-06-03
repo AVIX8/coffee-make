@@ -1,19 +1,15 @@
 export const state = () => ({
   accessToken: '',
-  refreshToken: '',
   refreshRequest: null,
 })
 
 export const mutations = {
-  setUser(state, data) {
-    state.user = data
-  },
   setTokens(state, data) {
     state.accessToken = data.accessToken
-    state.refreshToken = data.refreshToken
     this.$cookiz.set('refreshToken', data.refreshToken, {
       path: '/',
       maxAge: 60 * 60 * 24 * 35,
+      // httpOnly: true,
     })
   },
   setRefreshRequest(state, date) {
@@ -30,20 +26,9 @@ export const actions = {
 
   // вызывается каждый раз на КЛИЕНТЕ при загрузке страницы
   nuxtClientInit({ commit, dispatch }) {
-    commit('setTokens', { refreshToken: this.$cookiz.get('refreshToken') })
+    // console.log(this.$axios)
+    // commit('setTokens', { refreshToken: this.$cookiz.get('refreshToken') })
   },
-
-  // запрашивает у сервера информацию о текущем пользователе и сохраняет в state.user
-  // getUserData({ commit }) {
-  //   return this.$axios
-  //     .$get('user/getUserData', { timeout: 200 })
-  //     .then((res) => {
-  //       commit('setUser', res.user)
-  //     })
-  //     .catch(() => {
-  //       commit('setUser', {})
-  //     })
-  // },
 
   login({ commit }, { email, password }) {
     return this.$axios
@@ -57,8 +42,8 @@ export const actions = {
     return this.$axios.$post('/auth/register', { email, password })
   },
 
-  logout({ commit, state }) {
-    const refreshToken = state.refreshToken
+  logout({ commit, state, $cookiz }) {
+    const refreshToken = $cookiz.get('refreshToken')
     console.log(refreshToken)
     commit('setTokens', { refreshToken: '', accessToken: '' })
     return this.$axios.$post('/auth/logout', { refreshToken })
@@ -67,8 +52,4 @@ export const actions = {
   profile({ commit }) {
     return this.$axios.$get('/user/profile')
   },
-}
-
-export const getters = {
-  //
 }

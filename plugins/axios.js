@@ -1,4 +1,4 @@
-export default function ({ $axios, store, redirect }) {
+export default function ({ $axios, store, redirect, $cookiz }) {
   $axios.onError((error) => {
     if (error.response?.status === 500) {
       console.warn('[plugins/axios.js] API server returned 500 code')
@@ -27,7 +27,7 @@ export default function ({ $axios, store, redirect }) {
   })
 
   $axios.onResponseError(async (error) => {
-    const refreshToken = store.state.api.refreshToken
+    const refreshToken = $cookiz.get('refreshToken')
 
     if (!refreshToken || error.response.status !== 401 || error.config.retry) {
       throw error
@@ -42,15 +42,19 @@ export default function ({ $axios, store, redirect }) {
       )
     }
 
-    const data = await store.state.api.refreshRequest
-    store.commit('api/setTokens', data)
-    store.commit('api/setRefreshRequest', null)
-
-    const newRequest = {
-      ...error.config,
-      retry: true,
+    try {
+      const data = await store.state.api.refreshRequest
+      store.commit('api/setTokens', data)
+      store.commit('api/setRefreshRequest', null)
+      const newRequest = {
+        ...error.config,
+        retry: true,
+      }
+      return $axios(newRequest)
+    } catch (e) {
+      store.commit('api/setTokens', { refreshToken: '', accessToken: '' })
+      store.commit('api/setRefreshRequest', null)
+      return error
     }
-
-    return $axios(newRequest)
   })
 }

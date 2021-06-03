@@ -30,6 +30,7 @@
             >
               <template v-slot:prepend="{ item }">
                 <v-img
+                  v-if="item.image"
                   :src="
                     $axios.defaults.baseURL + '/storage/image/' + item.image
                   "
@@ -55,6 +56,7 @@
 
             <v-list-item-avatar tile size="80">
               <v-img
+                v-if="selected.image"
                 :src="
                   $axios.defaults.baseURL + '/storage/image/' + selected.image
                 "

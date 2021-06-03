@@ -15,26 +15,26 @@ export const mutations = {
 export const actions = {
   // вызывается каждый раз на СЕРВЕРЕ при загрузке страницы
   async nuxtServerInit({ commit, dispatch }) {
-    // await dispatch('getUserData')
     // await Promise.all(dispatch('...'), dispatch('...')) - так лучше делать наверное
   },
 
   // вызывается каждый раз на КЛИЕНТЕ при загрузке страницы
   nuxtClientInit({ commit, dispatch }) {
+    setTimeout(dispatch('getUserData'), 1000)
     //
   },
 
   // запрашивает у сервера информацию о текущем пользователе и сохраняет в state.user
-  // getUserData({ commit }) {
-  //   return this.$axios
-  //     .$get('user/getUserData', { timeout: 200 })
-  //     .then((res) => {
-  //       commit('setUser', res.user)
-  //     })
-  //     .catch(() => {
-  //       commit('setUser', {})
-  //     })
-  // },
+  getUserData({ commit }) {
+    return this.$axios
+      .$get('user/getUserData', { timeout: 200 })
+      .then((res) => {
+        commit('setUser', res.user)
+      })
+      .catch(() => {
+        commit('setUser', {})
+      })
+  },
 }
 
 export const getters = {
