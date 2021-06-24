@@ -42,8 +42,8 @@ export const actions = {
     return this.$axios.$post('/auth/register', { email, password })
   },
 
-  logout({ commit, state, $cookiz }) {
-    const refreshToken = $cookiz.get('refreshToken')
+  logout({ commit }) {
+    const refreshToken = this.$cookiz.get('refreshToken')
     console.log(refreshToken)
     commit('setTokens', { refreshToken: '', accessToken: '' })
     return this.$axios.$post('/auth/logout', { refreshToken })

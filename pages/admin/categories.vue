@@ -170,11 +170,9 @@ export default {
     fetchCategories(item) {
       return this.$axios
         .$post('categories/', { parentPath: item.category })
-        .then((res) => {
-          if (res.categories.length) {
-            res.categories.forEach((category) =>
-              this.addNewItem(item, category)
-            )
+        .then((categories) => {
+          if (categories.length) {
+            categories.forEach((category) => this.addNewItem(item, category))
           } else {
             this.$delete(item, 'children')
           }
