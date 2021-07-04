@@ -85,6 +85,7 @@ export default {
         if (flag) this.isEdit = false
       } else this.isEdit = true
     },
+    validate() {},
     wrong(index) {
       const element = this.$refs.profile[index]
       element.style.background = 'rgb(253, 150, 150)'
@@ -195,8 +196,6 @@ export default {
   background: whitesmoke;
 
   transition: all 1s;
-}
-.label {
 }
 .clear {
   position: absolute;
