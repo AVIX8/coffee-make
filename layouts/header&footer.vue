@@ -3,7 +3,7 @@
     <div v-if="isAuthentication" class="authenticationCover">
       <Authentication @close="closeAuthentication" />
     </div>
-    <div class="HEADER">
+    <!-- <div class="HEADER">
       <template v-if="$device.isDesktop">
         <div class="Cover">
           <nuxt-link to="/" style="text-decoration: none">
@@ -59,7 +59,7 @@
           </nuxt-link>
         </div>
       </template>
-    </div>
+    </div> -->
     <!-- <div
       v-for="(i, index) in [
         'isDesktop',
@@ -166,15 +166,7 @@ export default {
 
     // padding: 0.2rem 25rem 0.2rem 25rem;
 
-    background: linear-gradient(
-        90.54deg,
-        rgba(40, 43, 42, 0.3) 0%,
-        #0c5134 25%,
-        #156141 54.17%,
-        #0c5335 82.29%,
-        rgba(40, 43, 42, 0.3) 100%
-      ),
-      #004332;
+    background: $main-color;
   }
   .toMain {
     display: flex;
@@ -223,7 +215,7 @@ export default {
   .account:hover,
   .cart:hover {
     cursor: pointer;
-    background-color: #1c8358;
+    background-color: $main-light-color;
     transition: all 0.4s;
     box-shadow: 0.2rem 0.2rem 0.4rem black;
   }
