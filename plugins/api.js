@@ -1,4 +1,4 @@
-export default function ({ $axios, store, redirect, $cookiz }) {
+export default function ({ $axios, store, redirect, $cookies }) {
   $axios.onError((error) => {
     if (error.response?.status === 500) {
       console.warn('[plugins/axios.js] API server returned 500 code')
@@ -27,7 +27,7 @@ export default function ({ $axios, store, redirect, $cookiz }) {
   })
 
   $axios.onResponseError(async (error) => {
-    const refreshToken = $cookiz.get('refreshToken')
+    const refreshToken = $cookies.get('refreshToken')
 
     if (!refreshToken || error.response.status !== 401 || error.config.retry) {
       throw error

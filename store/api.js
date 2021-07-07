@@ -6,7 +6,7 @@ export const state = () => ({
 export const mutations = {
   setTokens(state, data) {
     state.accessToken = data.accessToken
-    this.$cookiz.set('refreshToken', data.refreshToken, {
+    this.$cookies.set('refreshToken', data.refreshToken, {
       path: '/',
       maxAge: 60 * 60 * 24 * 35,
       // httpOnly: true,
@@ -27,7 +27,7 @@ export const actions = {
   // вызывается каждый раз на КЛИЕНТЕ при загрузке страницы
   nuxtClientInit({ commit, dispatch }) {
     // console.log(this.$axios)
-    // commit('setTokens', { refreshToken: this.$cookiz.get('refreshToken') })
+    // commit('setTokens', { refreshToken: this.$cookies.get('refreshToken') })
   },
 
   login({ commit }, { email, password }) {
@@ -43,7 +43,7 @@ export const actions = {
   },
 
   logout({ commit }) {
-    const refreshToken = this.$cookiz.get('refreshToken')
+    const refreshToken = this.$cookies.get('refreshToken')
     console.log(refreshToken)
     commit('setTokens', { refreshToken: '', accessToken: '' })
     return this.$axios.$post('/auth/logout', { refreshToken })
@@ -51,5 +51,8 @@ export const actions = {
 
   profile({ commit }) {
     return this.$axios.$get('/user/profile')
+  },
+  getProducts({ commit }, filters, skip) {
+    return this.$axios.$post('/products/get', { filters, skip })
   },
 }

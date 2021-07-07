@@ -49,7 +49,7 @@ export default {
     // https://github.com/nuxt-community/device-module
     '@nuxtjs/device',
     // https://github.com/microcipcip/cookie-universal/tree/master/packages/cookie-universal-nuxt
-    ['cookie-universal-nuxt', { alias: 'cookiz', parseJSON: false }],
+    ['cookie-universal-nuxt', { parseJSON: false }],
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -89,7 +89,6 @@ export default {
     },
     manifest: {
       name: 'Coffee Make',
-      short_name: 'Nuxt.js PWA',
       lang: 'ru',
     },
   },

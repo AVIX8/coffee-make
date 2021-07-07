@@ -5,7 +5,7 @@
         <v-list-item-content>
           <div class="overline mb-4">Категория</div>
           <v-list-item-title class="headline mb-1">
-            {{ name }}
+            {{ title }}
           </v-list-item-title>
         </v-list-item-content>
 
@@ -15,20 +15,20 @@
       </v-list-item>
       <v-card-text>
         <v-text-field
-          v-model="name"
+          v-model="title"
           label="Название"
           required
           outlined
           autocomplete="off"
         ></v-text-field>
         <v-text-field
-          :value="parent.category + '/' + name"
+          :value="parent.path + '/' + title"
           label="Полный путь"
           disabled
         ></v-text-field>
         <v-text-field
-          v-if="parent.category"
-          :value="parent.category"
+          v-if="parent.path"
+          :value="parent.path"
           label="Родитель"
           disabled
         ></v-text-field>
@@ -58,7 +58,7 @@ export default {
   },
   data: () => ({
     dialog: false,
-    name: '',
+    title: '',
     image: null,
     imageURL: '',
   }),
@@ -66,7 +66,7 @@ export default {
     value(newVal, oldVal) {
       this.dialog = newVal
       if (newVal === true) {
-        this.name = ''
+        this.title = ''
         this.image = null
         this.imageURL = ''
       }
@@ -85,7 +85,7 @@ export default {
       this.$emit(
         'create',
         {
-          name: this.name,
+          title: this.title,
           image: this.image,
           parentId: this.parent._id,
         },

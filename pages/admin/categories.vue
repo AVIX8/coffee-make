@@ -13,7 +13,7 @@
           <v-card-title>
             Иерархия
             <v-spacer />
-            <v-btn color="blue" text @click="fetchAll()">Загрузить все</v-btn>
+            <!-- <v-btn color="blue" text @click="fetchAll()">Загрузить все</v-btn> -->
           </v-card-title>
           <v-card-text>
             <v-treeview
@@ -50,7 +50,7 @@
             <v-list-item-content>
               <div class="overline mb-4">Категория</div>
               <v-list-item-title class="headline mb-1">
-                {{ selected.name }}
+                {{ selected.title }}
               </v-list-item-title>
             </v-list-item-content>
 
@@ -64,11 +64,11 @@
             </v-list-item-avatar>
           </v-list-item>
           <v-card-text>
-            <p v-if="selected.name">
-              <strong> Название: </strong>{{ selected.name }}
+            <p v-if="selected.title">
+              <strong> Название: </strong>{{ selected.title }}
             </p>
-            <p v-if="selected.category">
-              <strong> Полный путь: </strong>{{ selected.category }}
+            <p v-if="selected.path">
+              <strong> Полный путь: </strong>{{ selected.path }}
             </p>
             <p v-if="selected.parent">
               <strong> Родитель: </strong>{{ selected.parent }}
@@ -108,7 +108,7 @@ export default {
     active: [],
     open: [],
     root: {
-      category: '',
+      path: '',
       children: [],
     },
   }),
@@ -128,7 +128,8 @@ export default {
     },
   },
   created() {
-    this.fetchCategories(this.root)
+    // this.fetchCategories(this.root)
+    this.fetchAll()
   },
   methods: {
     getCategoryById(_id, element = this.root) {
@@ -145,7 +146,12 @@ export default {
     },
     addNewItem(parent, category) {
       if (this.getCategoryById(category._id) === null) {
-        const newItem = { ...category, children: [], parentId: parent._id }
+        const newItem = {
+          ...category,
+          name: category.title,
+          children: [],
+          parentId: parent._id,
+        }
         if (!parent?.children?.length) {
           this.$set(parent, 'children', [])
         }
@@ -169,7 +175,7 @@ export default {
     },
     fetchCategories(item) {
       return this.$axios
-        .$post('categories/', { parentPath: item.category })
+        .$post('categories/', { parentPath: item.path })
         .then((categories) => {
           if (categories.length) {
             categories.forEach((category) => this.addNewItem(item, category))
@@ -182,7 +188,7 @@ export default {
     create(data, parent) {
       console.log('create:', data)
       const fd = new FormData()
-      fd.append('name', data.name)
+      fd.append('title', data.title)
       fd.append('image', data.image)
       fd.append('parentId', data.parentId)
       this.$axios
