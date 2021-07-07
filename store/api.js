@@ -30,6 +30,9 @@ export const actions = {
     // commit('setTokens', { refreshToken: this.$cookies.get('refreshToken') })
   },
 
+  /*
+   * AUTH
+   */
   login({ commit }, { email, password }) {
     return this.$axios
       .$post('/auth/login', { email, password })
@@ -37,22 +40,46 @@ export const actions = {
         commit('setTokens', data)
       })
   },
-
   register({ commit }, { email, password }) {
     return this.$axios.$post('/auth/register', { email, password })
   },
-
   logout({ commit }) {
     const refreshToken = this.$cookies.get('refreshToken')
-    console.log(refreshToken)
     commit('setTokens', { refreshToken: '', accessToken: '' })
     return this.$axios.$post('/auth/logout', { refreshToken })
   },
 
+  /*
+   * USER
+   */
   profile({ commit }) {
     return this.$axios.$get('/user/profile')
   },
+
+  /**
+   * PRODUCTS
+   */
   getProducts({ commit }, filters, skip) {
     return this.$axios.$post('/products/get', { filters, skip })
+  },
+  createProduct({ commit }, data) {
+    return this.$axios.$post('/products/create', data)
+  },
+
+  /**
+   * CATEGORIES
+   */
+  getCategories({ commit }, parentPath) {
+    return this.$axios.$post('categories/', { parentPath })
+  },
+  createCategory({ commit }, data) {
+    const fd = new FormData()
+    fd.append('title', data.title)
+    fd.append('image', data.image)
+    fd.append('parentId', data.parentId)
+    return this.$axios.$post('/categories/create', fd)
+  },
+  deleteCategory({ commit }, id) {
+    return this.$axios.$post('categories/delete', { id })
   },
 }

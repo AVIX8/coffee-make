@@ -267,6 +267,7 @@ export default {
         Object.assign(this.desserts[this.editedIndex], this.editedItem)
       } else {
         this.desserts.push(this.editedItem)
+        // this.$store.dispatch('api/createProduct', this.editedItem)
       }
       this.close()
     },

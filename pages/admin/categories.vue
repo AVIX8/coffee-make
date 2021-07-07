@@ -174,8 +174,8 @@ export default {
       }
     },
     fetchCategories(item) {
-      return this.$axios
-        .$post('categories/', { parentPath: item.path })
+      return this.$store
+        .dispatch('api/getCategories', item.path)
         .then((categories) => {
           if (categories.length) {
             categories.forEach((category) => this.addNewItem(item, category))
@@ -187,17 +187,13 @@ export default {
     },
     create(data, parent) {
       console.log('create:', data)
-      const fd = new FormData()
-      fd.append('title', data.title)
-      fd.append('image', data.image)
-      fd.append('parentId', data.parentId)
-      this.$axios
-        .post('categories/create', fd)
-        .then((res) => {
+      this.$store
+        .dispatch('api/createCategory', data)
+        .then((newCategory) => {
           this.fetchCategories(parent)
 
-          this.addNewItem(parent, res.data)
-          const category = this.getCategoryById(res.data._id)
+          this.addNewItem(parent, newCategory)
+          const category = this.getCategoryById(newCategory._id)
 
           this.fetchCategories(category)
           this.open.push(parent)
@@ -211,8 +207,8 @@ export default {
     del() {
       const toDelete = this.selected
       console.log('del:', toDelete)
-      this.$axios
-        .$post('categories/delete', { id: toDelete._id })
+      this.$store
+        .dispatch('api/deleteCategory', toDelete._id)
         .then((res) => {
           this.removeItem(toDelete)
           this.$set(this.active, 0, this.getCategoryById(toDelete.parentId))
