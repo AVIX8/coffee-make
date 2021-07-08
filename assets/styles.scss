@@ -45,3 +45,8 @@ p {
   height: 0px;
   background: #363636;
 }
+
+/* проблемы vuetify */
+.v-card__text, .v-card__title {
+  word-break: normal !important;
+}

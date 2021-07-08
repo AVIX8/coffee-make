@@ -65,12 +65,22 @@ export const actions = {
   createProduct({ commit }, data) {
     return this.$axios.$post('/products/create', data)
   },
+  deleteProduct({ commit }, id) {
+    return this.$axios.$post('/products/delete', { id })
+  },
 
   /**
    * CATEGORIES
    */
   getCategories({ commit }, parentPath) {
     return this.$axios.$post('categories/', { parentPath })
+  },
+  updateCategory({ commit }, data) {
+    const fd = new FormData()
+    fd.append('title', data.title)
+    fd.append('image', data.image)
+    fd.append('id', data._id)
+    return this.$axios.$post('/categories/update', fd)
   },
   createCategory({ commit }, data) {
     const fd = new FormData()

@@ -2,19 +2,22 @@
   <v-card>
     <v-data-table
       :headers="headers"
-      :items="desserts"
+      :items="products"
       sort-by="calories"
       class="elevation-1"
     >
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>Товары</v-toolbar-title>
-          <v-divider class="mx-4" inset vertical></v-divider>
+          <!-- <v-divider class="mx-4" inset vertical></v-divider> -->
           <v-spacer></v-spacer>
-          <v-dialog v-model="dialogCreate" max-width="500px">
+
+          <v-btn color="primary" dark class="ma-2"> Фильтр </v-btn>
+
+          <v-dialog v-model="dialog" max-width="80%">
             <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
-                New Item
+              <v-btn color="primary" dark class="ma-2" v-bind="attrs" v-on="on">
+                Добавить
               </v-btn>
             </template>
             <v-card>
@@ -23,63 +26,57 @@
               </v-card-title>
 
               <v-card-text>
-                <v-container>
-                  <v-row>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.title"
-                        label="Название продукта"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.category"
-                        label="Категория"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.slug"
-                        label="Слаг"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.carbs"
-                        label="Carbs (g)"
-                      ></v-text-field>
-                    </v-col>
-                    <v-col cols="12" sm="6" md="4">
-                      <v-text-field
-                        v-model="editedItem.protein"
-                        label="Protein (g)"
-                      ></v-text-field>
-                    </v-col>
-                  </v-row>
-                </v-container>
+                <v-row>
+                  <v-col sm="12" md="6">
+                    <v-text-field
+                      v-model="editedItem.title"
+                      label="Название"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col sm="12" md="6">
+                    <v-text-field
+                      v-model="editedItem.slug"
+                      label="Слаг"
+                    ></v-text-field>
+                    <v-btn> Проверить </v-btn>
+                  </v-col>
+                  <v-col sm="12" md="6">
+                    <v-text-field
+                      v-model="editedItem.category"
+                      label="Категория"
+                    ></v-text-field>
+                  </v-col>
+                  <v-col sm="12" md="6">
+                    <v-textarea
+                      v-model="editedItem.descr"
+                      rows="2"
+                      label="Описание"
+                    ></v-textarea>
+                  </v-col>
+                </v-row>
               </v-card-text>
 
               <v-card-actions>
                 <v-spacer></v-spacer>
                 <v-btn color="blue darken-1" text @click="close">
-                  Cancel
+                  Отмена
                 </v-btn>
-                <v-btn color="blue darken-1" text @click="save"> Save </v-btn>
+                <v-btn color="blue darken-1" text @click="save">
+                  Сохранить
+                </v-btn>
               </v-card-actions>
             </v-card>
           </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="500px">
+          <v-dialog v-model="dialogDelete" max-width="40%">
             <v-card>
-              <v-card-title class="text-h5"
-                >Are you sure you want to delete this item?</v-card-title
+              <v-card-title class="text-wrap"
+                >Подтверждение удаления ({{ editedItem.title }})</v-card-title
               >
               <v-card-actions>
                 <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="closeDelete"
-                  >Cancel</v-btn
-                >
-                <v-btn color="blue darken-1" text @click="deleteItemConfirm"
-                  >OK</v-btn
+                <v-btn color="blue" text @click="closeDelete">Отмена</v-btn>
+                <v-btn color="error" text @click="deleteItemConfirm"
+                  >Удалить</v-btn
                 >
                 <v-spacer></v-spacer>
               </v-card-actions>
@@ -106,42 +103,31 @@
 export default {
   layout: 'admin',
   data: () => ({
-    dialogCreate: false,
+    dialog: false,
     dialogDelete: false,
+    products: [],
+    filters: {},
+    skip: 0,
     headers: [
       { text: 'Название', value: 'title' },
       { text: 'Категория', value: 'category' },
-      // { text: 'Количество', value: 'fat' },
-      // { text: 'Carbs (g)', value: 'carbs' },
-      // { text: 'Protein (g)', value: 'protein' },
       { text: 'Действия', value: 'actions', sortable: false },
     ],
-    desserts: [],
     editedIndex: -1,
-    editedItem: {
-      title: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
-    defaultItem: {
-      title: '',
-      calories: 0,
-      fat: 0,
-      carbs: 0,
-      protein: 0,
-    },
+    editedItem: {},
+    defaultItem: {},
   }),
 
   computed: {
     formTitle() {
-      return this.editedIndex === -1 ? 'New Item' : 'Edit Item'
+      return this.editedIndex === -1
+        ? 'Добавление товара'
+        : 'Редактирование товара'
     },
   },
 
   watch: {
-    dialogCreate(val) {
+    dialog(val) {
       val || this.close()
     },
     dialogDelete(val) {
@@ -155,99 +141,40 @@ export default {
 
   methods: {
     initialize() {
-      this.desserts = [
-        {
-          title: 'Frozen Yogurt',
-          calories: 159,
-          fat: 6.0,
-          carbs: 24,
-          protein: 4.0,
-        },
-        {
-          title: 'Ice cream sandwich',
-          calories: 237,
-          fat: 9.0,
-          carbs: 37,
-          protein: 4.3,
-        },
-        {
-          title: 'Eclair',
-          calories: 262,
-          fat: 16.0,
-          carbs: 23,
-          protein: 6.0,
-        },
-        {
-          title: 'Cupcake',
-          calories: 305,
-          fat: 3.7,
-          carbs: 67,
-          protein: 4.3,
-        },
-        {
-          title: 'Gingerbread',
-          calories: 356,
-          fat: 16.0,
-          carbs: 49,
-          protein: 3.9,
-        },
-        {
-          title: 'Jelly bean',
-          calories: 375,
-          fat: 0.0,
-          carbs: 94,
-          protein: 0.0,
-        },
-        {
-          title: 'Lollipop',
-          calories: 392,
-          fat: 0.2,
-          carbs: 98,
-          protein: 0,
-        },
-        {
-          title: 'Honeycomb',
-          calories: 408,
-          fat: 3.2,
-          carbs: 87,
-          protein: 6.5,
-        },
-        {
-          title: 'Donut',
-          calories: 452,
-          fat: 25.0,
-          carbs: 51,
-          protein: 4.9,
-        },
-        {
-          title: 'KitKat',
-          calories: 518,
-          fat: 26.0,
-          carbs: 65,
-          protein: 7,
-        },
-      ]
+      this.$store
+        .dispatch('api/getProducts', this.filters, this.skip)
+        .then((products) => {
+          this.products = products
+        })
+        .catch((err) => {
+          console.log(err)
+        })
     },
 
     editItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
+      this.editedIndex = this.products.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      this.dialogCreate = true
+      this.dialog = true
     },
 
     deleteItem(item) {
-      this.editedIndex = this.desserts.indexOf(item)
+      this.editedIndex = this.products.indexOf(item)
       this.editedItem = Object.assign({}, item)
       this.dialogDelete = true
     },
 
     deleteItemConfirm() {
-      this.desserts.splice(this.editedIndex, 1)
+      this.$store
+        .dispatch('api/deleteProduct', this.editedItem._id)
+        .then((deletedProduct) => {
+          console.log(deletedProduct)
+        })
+      this.products.splice(this.editedIndex, 1)
       this.closeDelete()
     },
 
     close() {
-      this.dialogCreate = false
+      this.dialog = false
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
@@ -264,10 +191,20 @@ export default {
 
     save() {
       if (this.editedIndex > -1) {
-        Object.assign(this.desserts[this.editedIndex], this.editedItem)
+        this.$store
+          .dispatch('api/updateProduct', this.editedItem)
+          .then((res) => {
+            Object.assign(this.products[this.editedIndex], res)
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       } else {
-        this.desserts.push(this.editedItem)
-        // this.$store.dispatch('api/createProduct', this.editedItem)
+        this.$store
+          .dispatch('api/createProduct', this.editedItem)
+          .then((data) => {
+            this.products.push(data)
+          })
       }
       this.close()
     },
