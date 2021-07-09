@@ -4,11 +4,18 @@ export const state = () => ({
   tablet: 1023,
   mobile: 765,
   smallMobile: 400,
+  windowWidth: 0,
+  windowHeight: 0,
 })
 
 export const mutations = {
   setUser(state, data) {
     state.user = data
+  },
+  updateSize(state) {
+    state.windowWidth = window.innerWidth
+    state.windowHeight = window.innerHeight
+    console.log(state.windowWidth, state.windowHeight)
   },
 }
 
@@ -21,6 +28,10 @@ export const actions = {
   // вызывается каждый раз на КЛИЕНТЕ при загрузке страницы
   nuxtClientInit({ commit, dispatch }) {
     setTimeout(dispatch('getUserData'), 1000)
+    window.addEventListener('resize', () => {
+      commit('updateSize')
+    })
+    commit('updateSize')
     //
   },
 
