@@ -1,7 +1,10 @@
 <template>
   <div class="mainBox">
     <div ref="leftBox" class="left animation" :class="leftStyle">
-      <div v-show="isLeftActive" class="content">left content</div>
+      <div v-show="isLeftActive" class="content">
+        <Filtres />
+        <ProductList />
+      </div>
       <div
         v-show="!isLeftActive"
         class="slide-title animation"
@@ -13,6 +16,7 @@
       </div>
       <div
         v-if="isCenterActive"
+        ref="leftEyelet"
         class="eyelet eyelet-left"
         @click="setLeftActive"
         @mouseenter="scaleHover(true, $refs.leftBox)"
@@ -44,6 +48,7 @@
       </div>
       <div
         v-if="isCenterActive"
+        ref="rightEyelet"
         class="eyelet eyelet-right"
         @click="setRightActive"
         @mouseenter="scaleHover(true, $refs.rightBox)"
@@ -75,7 +80,7 @@ export default {
     },
     rightStyle() {
       return {
-        open: !this.isLeftActive,
+        open: !this.isLeftActive && !this.isCenterActive,
         'rolled-up': this.isLeftActive && !this.isCenterActive,
         balance: this.isCenterActive,
         shadow: !this.isLeftActive && this.isCenterActive,
@@ -84,6 +89,7 @@ export default {
   },
   mounted() {
     window.addEventListener('resize', this.resizeHandler)
+    this.$refs.leftBox.style.height = this.$store.state.windowHeight + 'px'
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeHandler)
@@ -99,13 +105,16 @@ export default {
       this.isCenterActive = false
       this.$refs.rightBox.style.transform = 'scale(1)'
     },
-    risizeHandler(e) {
-      // console.log(window.innerWidth + ' x ' + window.innerHeight)
-    },
     scaleHover(enter, obj) {
       if (!this.isCenterActive) return
       if (enter) obj.style.transform = 'scale(1.06)'
       else obj.style.transform = 'scale(1)'
+    },
+    resizeHandler(e) {
+      this.$refs.leftEyelet.style.left =
+        this.$store.state.windowWidth * 0.29 - 30 + 'px'
+      this.$refs.rightEyelet.style.right =
+        this.$store.state.windowWidth * 0.29 - 30 + 'px'
     },
   },
 }
@@ -143,9 +152,6 @@ export default {
 .balance {
   width: 33.33%;
 }
-// .balance:hover {
-//   width: 35%;
-// }
 .eyelet {
   display: flex;
   justify-content: center;
@@ -172,7 +178,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 58rem;
+  // height: 58rem;
+  height: 100%;
   font-size: 3.5rem;
   color: white;
   text-shadow: 0 0 0.5rem black;
@@ -188,12 +195,8 @@ export default {
   position: relative;
   right: 0;
   cursor: pointer;
-  // margin-right: -5%;
   background: $side-dark-color;
 }
-// .right:hover {
-//   transform: translateX(-5%);
-// }
 .centerBox {
   padding: 3rem 0 3rem 0;
   text-align: center;
@@ -222,6 +225,11 @@ export default {
 }
 
 .content {
+  position: relative;
+  // position: fixed;
+  cursor: default;
+  padding: 2rem;
+  height: 100%;
   background: white;
 }
 

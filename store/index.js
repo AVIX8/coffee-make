@@ -15,7 +15,6 @@ export const mutations = {
   updateSize(state) {
     state.windowWidth = window.innerWidth
     state.windowHeight = window.innerHeight
-    console.log(state.windowWidth, state.windowHeight)
   },
 }
 

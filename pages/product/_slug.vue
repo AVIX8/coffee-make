@@ -62,13 +62,13 @@
         </div>
 
         <div class="specificationsBox">
-          <!-- <div class="property">
+          <div class="property">
             <h4>{{ item.choiceProperty.name }}</h4>
             <ChoiceOptions
               :options="item.choiceProperty"
               @changeOption="changeOption($event)"
             ></ChoiceOptions>
-          </div> -->
+          </div>
           <div class="property">
             <h4>Количество</h4>
             <InputOptions
