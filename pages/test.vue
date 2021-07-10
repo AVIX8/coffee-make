@@ -89,7 +89,7 @@ export default {
   },
   mounted() {
     window.addEventListener('resize', this.resizeHandler)
-    this.$refs.leftBox.style.height = this.$store.state.windowHeight + 'px'
+    this.$refs.leftBox.style.minHeight = this.$store.state.windowHeight + 'px'
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeHandler)
@@ -107,7 +107,7 @@ export default {
     },
     scaleHover(enter, obj) {
       if (!this.isCenterActive) return
-      if (enter) obj.style.transform = 'scale(1.06)'
+      if (enter) obj.style.transform = 'scale(1.02)'
       else obj.style.transform = 'scale(1)'
     },
     resizeHandler(e) {
@@ -228,7 +228,7 @@ export default {
   position: relative;
   // position: fixed;
   cursor: default;
-  padding: 2rem;
+  // padding: 2rem;
   height: 100%;
   background: white;
 }

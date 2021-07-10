@@ -1,16 +1,11 @@
 <template>
   <div>
-    <div
-      ref="choice"
-      v-click-outside="close"
-      class="choice"
-      @mouseenter="mouseIn"
-      @mouseleave="mouseOut"
-    >
+    <div ref="choice" class="choice">
       <transition name="top-bottom">
-        <button v-show="!isOpen" class="now" @click="btnClick">
+        <button class="now" @click="btnClick">
           <p>{{ this.$props.filter.title }}</p>
-          <v-icon>mdi-chevron-down</v-icon>
+          <v-icon v-if="!isOpen">mdi-chevron-down</v-icon>
+          <v-icon v-else>mdi-chevron-up</v-icon>
         </button>
       </transition>
       <transition name="down">
@@ -48,7 +43,7 @@ export default {
     btnClick() {
       this.isOpen = !this.isOpen
       this.$refs.choice.style.height = this.isOpen
-        ? 2 * this.filter.values.length + 0.4 + 'rem'
+        ? 2 * (this.filter.values.length + 1) + 0.4 + 'rem'
         : '2rem'
       this.$refs.choice.style.background = 'white'
       this.$refs.choice.style.zIndex = 9
@@ -64,14 +59,14 @@ export default {
       this.$refs.choice.style.zIndex = 1
     },
     // hover
-    mouseIn() {
-      if (this.$props.filter.values.length > 1 && !this.isOpen)
-        this.$refs.choice.style.background = '#e57657'
-      else this.$refs.choice.style.cursor = 'default'
-    },
-    mouseOut() {
-      this.$refs.choice.style.background = 'white'
-    },
+    // mouseIn() {
+    //   if (this.$props.filter.values.length > 1 && !this.isOpen)
+    //     this.$refs.choice.style.background = '#e57657'
+    //   else this.$refs.choice.style.cursor = 'default'
+    // },
+    // mouseOut() {
+    //   this.$refs.choice.style.background = 'white'
+    // },
   },
 }
 </script>
@@ -91,9 +86,6 @@ export default {
 
   transition: all 0.3s;
 }
-button {
-  cursor: default;
-}
 .choice {
   position: relative;
   box-sizing: border-box;
@@ -103,7 +95,7 @@ button {
 
   background: white;
 
-  border-radius: 20px;
+  border-radius: 1rem;
   border: 0.2rem solid $main-color;
 
   box-shadow: 0.1rem 0.1rem 0.3rem gray;
@@ -114,13 +106,15 @@ button {
 .now {
   display: grid;
   align-items: center;
-  grid-template-columns: 1fr 3fr 1fr;
+  grid-template-columns: 2fr 100fr 1fr;
 
-  border-radius: 20px;
+  text-align: left;
+  border-radius: 1rem;
 
   cursor: pointer;
   transition: all 0.5s;
 }
+.now:hover,
 .now:active {
   background: $main-light-color;
   transition: all 0s;
@@ -137,8 +131,8 @@ button {
   // position: absolute;
   // display: inline-block;
   // padding-top: 4px;
-
   width: 100%;
+  margin-top: 0.4rem;
 
   // list-style-type: none;
   text-align: center;
@@ -162,9 +156,9 @@ button {
   cursor: pointer;
   transition: all 0s;
 }
-.value:first-child {
-  border-radius: 16px 16px 0 0;
-}
+// .value:first-child {
+//   border-radius: 16px 16px 0 0;
+// }
 .value:last-child {
   border-radius: 0 0 17px 17px;
 }

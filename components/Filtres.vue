@@ -11,7 +11,7 @@
         @removeFilter="removeSelected"
       ></FilterOptions>
     </div>
-    <div id="selectedFiltresBox">
+    <!-- <div id="selectedFiltresBox">
       <transition name="rolled">
         <button v-if="isSelectedEmpty" id="clearButton" @click="removeAll">
           Очистить всё
@@ -28,7 +28,7 @@
           <v-icon small>mdi-close</v-icon>
         </button>
       </transition-group>
-    </div>
+    </div> -->
   </div>
 </template>
 
@@ -127,24 +127,28 @@ export default {
 <style scoped lang="scss">
 #search-filtres-box {
   position: relative;
+  // position: fixed;
   padding: 1rem;
-  min-height: 4rem;
-  max-height: 15rem;
+  // display: inline-block;
+  // height: 100%;
+  // width: 100%;
   background: whitesmoke;
+  background: blue;
 }
 #filtresBox {
   position: absolute;
+  // padding: 0 13%;
   // display: grid;
   // display: flex;
   // align-items: center;
-  width: 99%;
+  width: 100%;
   // grid-template-columns: 2fr 2.5fr 1.5fr 2fr 3fr;
 }
 .filter {
   margin-right: 1rem;
   margin-bottom: 1rem;
   float: left;
-  // min-width: 12rem;
+  width: 90%;
   // display: inline-block;
 }
 #selectedFiltresBox {

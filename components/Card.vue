@@ -6,15 +6,13 @@
       class="card"
       style="text-decoration: none"
     >
-      <!-- <div class="card"> -->
       <div class="preview">
-        <img :src="item.imgs[0]" :alt="item.name" />
+        <img :src="item.imgs[0]" :alt="item.title" />
       </div>
-      <div class="title">
-        <div class="name">{{ item.name }}</div>
-        <div class="price">{{ item.choiceProperty.variants[0].price }} руб</div>
+      <div class="title-price">
+        <!-- <div class="title">{{ item.title }}</div> -->
+        <div class="price">{{ item.price }} руб</div>
       </div>
-      <!-- </div> -->
     </nuxt-link>
   </div>
 </template>
@@ -27,6 +25,7 @@ export default {
   data() {
     return {}
   },
+  computed: {},
   watch: {},
   methods: {},
 }
@@ -34,11 +33,8 @@ export default {
 
 <style scoped lang="scss">
 .cardBox {
-  margin: 1rem;
-
-  height: 19rem;
-  width: 12rem;
-  // background: blue;
+  height: 100%;
+  width: 100%;
 }
 .card {
   display: flex;
@@ -50,55 +46,43 @@ export default {
   height: 100%;
 
   border-radius: 20px;
-  box-shadow: 0 0 0.5rem lightgray;
+  box-shadow: 0 0 0.7rem gray;
 
   background: white;
+  background: #e74623;
 
   cursor: pointer;
-  transition: all 0.8s;
+  transition: all 0.1s;
 }
 .card:hover {
-  box-shadow: 0 0 0.5rem gray;
-  transition: all 0.4s;
+  box-shadow: 0 0 0.1rem 0.1rem red;
+  transition: all 0.1s;
 }
-// .card:hover .preview img {
-//   transform: scale(1.2);
-//   transition: all 0.4s;
-// }
 
 .preview {
-  margin: 1.5rem 1.8rem 0 1.8rem;
-  width: 100%;
-
-  border-radius: 50%;
-  box-shadow: inset 0 0 1rem black;
-
-  background: #188a77;
-  background-image: linear-gradient(
-    to right bottom,
-    #35edeb,
-    #2dd4cc,
-    #26baae,
-    #1fa292,
-    #188a77
-  );
+  box-sizing: border-box;
+  margin: 14% 11% 5% 11%;
+  width: 90%;
 }
 .preview img {
   width: 100%;
+  border-radius: 10px;
   transform: scale(1.2);
   transition: all 0.8s;
 }
-
-.title {
+.title-price {
+  width: 90%;
   padding: 1.5rem 0 0 0;
   // background: springgreen;
 }
-.name {
+.title {
   padding: 0 0.5rem 0 0.5rem;
   width: 100%;
 
+  color: $main-color;
+  color: white;
   text-align: center;
-  font-size: 1.1rem;
+  font-size: 2rem;
   font-weight: bold;
 
   // background: yellow;
@@ -107,7 +91,11 @@ export default {
 .price {
   margin: 1rem 0;
   width: 100%;
-  text-align: center;
+  color: white;
+  letter-spacing: 0.2rem;
+  font-size: 120%;
+  font-weight: bold;
+  text-align: right;
   // background: orange;
 }
 
@@ -136,7 +124,7 @@ export default {
     padding: 1rem 0 0 0;
     // background: springgreen;
   }
-  .name {
+  .title {
     padding: 0 0.2rem 0 0.2rem;
     font-size: 1rem;
     // background: yellow;

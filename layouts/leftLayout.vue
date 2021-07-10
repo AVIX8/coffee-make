@@ -3,81 +3,27 @@
     <div v-if="isAuthentication" class="authenticationCover">
       <Authentication @close="closeAuthentication" />
     </div>
-    <!-- <div class="HEADER">
-      <template v-if="$device.isDesktop">
-        <div class="Cover">
-          <nuxt-link to="/" style="text-decoration: none">
-            <div class="toMain" title="На Главную">
-              <img class="logo" src="/logo1.png" />
-              <h1 class="logoName">Coffee Make</h1>
-            </div>
-          </nuxt-link>
-          <div class="searchBox">
-            <SearchBox />
-          </div>
-          <img
-            class="account"
-            src="/account.png"
-            title="Мой Аккаунт"
-            @click="accountClick"
-          />
-          <nuxt-link
-            class="cart"
-            tag="img"
-            src="/cart.png"
-            to="/"
-            title="Корзина"
-          />
-        </div>
-        <div class="Categories">
-          <nuxt-link
-            v-for="category in categories"
-            :key="category.title"
-            tag="button"
-            :to="category.linkTo"
-            class="category"
-          >
-            <h6>{{ category.title }}</h6>
-          </nuxt-link>
-        </div>
-      </template>
 
-      <template v-else>
-        <div class="Cover">
-          <div class="search"><SearchBox /></div>
-        </div>
+    <div class="HEADER">
+      <nuxt-link to="/" style="text-decoration: none">
+        <img class="logo" title="На Главную" src="/Logo_white_.png" />
+      </nuxt-link>
+      <img
+        class="account"
+        src="/account.png"
+        title="Мой Аккаунт"
+        @click="accountClick"
+      />
+      <nuxt-link
+        class="cart"
+        tag="img"
+        src="/cart.png"
+        to="/"
+        title="Корзина"
+      />
+    </div>
 
-        <div class="NavigationBAR">
-          <nuxt-link
-            v-for="(navigationBtn, index) in navigationBtns"
-            :key="index"
-            tag="button"
-            :to="navigationBtn.to"
-          >
-            <v-icon>{{ navigationBtn.icon }}</v-icon>
-            <p>{{ navigationBtn.title }}</p>
-          </nuxt-link>
-        </div>
-      </template>
-    </div> -->
-    <!-- <div
-      v-for="(i, index) in [
-        'isDesktop',
-        'isMobile',
-        'isTablet',
-        'isMobileOrTablet',
-        'isDesktopOrTablet',
-        'isIos',
-        'isWindows',
-        'isMacOS',
-        'isAndroid',
-      ]"
-      :key="index"
-    >
-      <p v-if="$device[i]">{{ i }}</p>
-    </div> -->
-
-    <!-- index -->
+    <nuxt-link id="blueLink" tag="div" to="/business">Для Бизнеса</nuxt-link>
     <nuxt />
 
     <div v-if="$device.isDesktop" class="FOOTER">
@@ -158,41 +104,22 @@ export default {
     background: rgba(0, 0, 0, 0.5);
     z-index: 100;
   }
-  .Cover {
-    position: relative;
+  .HEADER {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
 
-    // padding: 0.2rem 25rem 0.2rem 25rem;
-
+    padding: 0 15%;
     background: $main-color;
-  }
-  .toMain {
-    display: flex;
-    align-items: center;
+    z-index: 3;
   }
   .logo {
     margin: 0.2rem;
-    width: 4.5rem;
-  }
-  .logoName {
-    margin: 0 10rem 0 2rem;
-
-    color: white;
-    font-family: 'Dancing Script', cursive;
-    font-weight: bold;
-    text-shadow: 0.2rem 0.2rem 0.2rem black;
-  }
-  .logoName:hover {
-    text-shadow: 0.5rem 0.5rem 0.5rem black;
-  }
-  .searchBox {
-    margin: 1rem;
-
-    width: 28rem;
-
-    // background-color: gainsboro;
+    width: 6rem;
   }
   .account {
     padding: 0.6rem;
@@ -219,60 +146,33 @@ export default {
     transition: all 0.4s;
     box-shadow: 0.2rem 0.2rem 0.4rem black;
   }
-  .Categories {
-    position: relative;
+  #blueLink {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    right: 0;
     display: flex;
-    // align-items: center;
+    align-items: center;
     justify-content: center;
 
-    padding: 0.1rem;
+    width: 20%;
 
-    text-align: center;
-    background: linear-gradient(
-        90deg,
-        #35948a 0%,
-        #45bbb0 49.48%,
-        #35948a 100%,
-        #35948a 100%
-      ),
-      #65b891;
-  }
-  .category {
-    margin: 0.3rem;
-    padding: 0.2rem 2rem 0.2rem 2rem;
-
+    cursor: pointer;
     color: white;
-    // font-family: 'Rubik', sans-serif;
-    text-decoration: none;
+    font-weight: bold;
+    font-size: 2rem;
+    text-shadow: 0 0 0.5rem black;
 
-    border-radius: 50px;
+    z-index: 2;
+    background: $side-dark-color;
+    box-shadow: 0 0 1rem gray;
 
-    transition: 0.3s ease-out;
+    transform: translateX(95%);
+    transition: all 0.5s;
   }
-  .category:hover {
-    color: #2aa0a0;
-    background-color: white;
-    // background-image: linear-gradient(
-    //   to right bottom,
-    //   #35edeb,
-    //   #34e1df,
-    //   #34d5d4,
-    //   #33cac8,
-    //   #32bebd
-    // );
-    box-shadow: 0.2rem 0.2rem 0.1rem rgba(0, 0, 0, 0.2),
-      0px 0px 50px rgba(0, 0, 0, 0.2);
-    transition: all 0.1s;
-  }
-  .category:active {
-    margin: 0.3rem 0.8rem 0.3rem 0.8rem;
-    padding: 0.15rem 1.5rem 0.15rem 1.5rem;
-
-    background-color: #3a3736;
-    box-shadow: 0.1rem 0.1rem 0.2rem rgba(0, 0, 0, 0.2),
-      0px 0px 50px rgba(0, 0, 0, 0.2);
-
-    transition: all 0.1s;
+  #blueLink:hover {
+    box-shadow: 0 0 1rem black;
+    transform: translateX(0%);
   }
 
   .FOOTER {
@@ -291,6 +191,7 @@ export default {
     font-size: 0.96rem;
 
     background-color: #16191c;
+    z-index: 3;
   }
   .workingHours h5 {
     margin-bottom: 0.5rem;
