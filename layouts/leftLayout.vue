@@ -8,6 +8,7 @@
       <nuxt-link to="/" style="text-decoration: none">
         <img class="logo" title="На Главную" src="/Logo_white_.png" />
       </nuxt-link>
+      <div style="width: 80%" />
       <img
         class="account"
         src="/account.png"
@@ -107,8 +108,8 @@ export default {
   .HEADER {
     position: fixed;
     top: 0;
-    left: 0;
-    right: 0;
+    // left: 0;
+    // right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -119,7 +120,7 @@ export default {
   }
   .logo {
     margin: 0.2rem;
-    width: 6rem;
+    width: 7rem;
   }
   .account {
     padding: 0.6rem;
@@ -144,7 +145,7 @@ export default {
     cursor: pointer;
     background-color: $main-light-color;
     transition: all 0.4s;
-    box-shadow: 0.2rem 0.2rem 0.4rem black;
+    box-shadow: 0 0 0.5rem black;
   }
   #blueLink {
     position: fixed;

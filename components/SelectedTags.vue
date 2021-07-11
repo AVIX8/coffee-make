@@ -1,27 +1,31 @@
 <template>
-  <div id="filtresBox" ref="filtresBox">
-    <!-- <div id="filtresBox"> -->
-    <FilterOptions
-      v-for="(filter, i) in filtres"
-      :key="i"
-      class="filter"
-      :filter="filter"
-      :selected="selected[filter.title]"
-      @addFilter="addSelected"
-      @removeFilter="removeSelected"
-    ></FilterOptions>
-    <transition name="rolled-top">
-      <button v-if="isSelectedEmpty" id="clearButton" @click="removeAll">
+  <div id="selectedBox">
+    <transition name="rolled">
+      <button v-if="isSelectedNotEmpty" id="clearButton" @click="removeAll">
         Очистить всё
       </button>
     </transition>
+    <transition-group name="rolled">
+      <button
+        v-for="(value, title) in notEmptySelected"
+        :key="title"
+        class="selectedFilter"
+        @click="removeCategory(title)"
+      >
+        {{ title }}: {{ value.join('; ') }}
+        <v-icon small>mdi-close</v-icon>
+      </button>
+    </transition-group>
+    <!-- <transition name="rolled">
+      <span v-if="!isSelectedNotEmpty">Нет фильтров</span>
+    </transition> -->
   </div>
 </template>
 
 <script>
 export default {
   props: {
-    filtres: { type: Array, required: true },
+    // filtres: { type: Array, required: true },
     selected: { type: Object, required: true },
   },
   data() {
@@ -34,17 +38,13 @@ export default {
         if (this.selected[key].length > 0) obj[key] = this.selected[key]
       return obj
     },
-    isSelectedEmpty() {
+    isSelectedNotEmpty() {
       for (const key in this.selected)
         if (this.selected[key].length > 0) return true
       return false
     },
   },
   watch: {},
-  mounted() {
-    this.$refs.filtresBox.style.maxHeight =
-      this.$store.state.windowHeight - 240 + 'px'
-  },
   methods: {
     addSelected(option, filter) {
       this.selected[filter].push(option)
@@ -65,46 +65,36 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#filtresBox {
-  padding: 1rem;
-  // background: blue;
-  // height: 40rem;
-  overflow: scroll;
-}
-.filter {
-  margin-bottom: 1rem;
-  width: 100%;
-}
-.filter:last-child {
-  margin-bottom: 0;
-}
-#selectedFiltresBox {
-  margin-top: 3rem;
+#selectedBox {
+  display: flex;
+  align-items: center;
+  // justify-content: center;
+  min-height: 3.6rem;
+  padding: 0.5rem;
 }
 .selectedFilter {
-  display: inline-block;
-  margin: 0 0.5rem 0.4rem 0;
+  margin: 0.4rem 0.5rem 0.4rem 0;
   padding: 0.3rem 1rem;
+  font-size: 0.8rem;
   text-align: left;
   background: lightgray;
   border-radius: 20px;
-  border: 1px lightgray solid;
+  border: 0.0625rem lightgray solid;
   transition: all 0.3s;
 }
 .selectedFilter:hover {
-  // background: $main-light-color;
-  // background: white;
   border-color: gray;
 }
 #clearButton {
-  padding: 0.3rem 1rem;
-  height: 3rem;
-  width: 100%;
+  margin: 0.4rem 0.5rem 0.4rem 0;
+  padding: 0.4rem 1rem;
+  font-size: 0.8rem;
+  text-align: left;
+  white-space: nowrap;
   background: white;
-  border: 1px black solid;
   border-radius: 20px;
+  border: 0.0625rem black solid;
   transition: all 0.3s;
-  z-index: 0;
 }
 #clearButton:hover {
   color: white;
@@ -112,13 +102,13 @@ export default {
   background: $main-color;
   border-color: $main-light-color;
 }
-.rolled-top-enter-active,
-.rolled-top-leave-active {
+.rolled-enter-active,
+.rolled-leave-active {
   transition: all 0.6s;
 }
-.rolled-top-enter,
-.rolled-top-leave-to {
-  transform: translateY(-3rem);
+.rolled-enter,
+.rolled-leave-to {
+  transform: translateX(-3rem);
   opacity: 0;
 }
 @media screen and (max-width: $mobile) {

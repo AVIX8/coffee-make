@@ -10,7 +10,7 @@
         <img :src="item.imgs[0]" :alt="item.title" />
       </div>
       <div class="title-price">
-        <!-- <div class="title">{{ item.title }}</div> -->
+        <div class="title">{{ item.title }}</div>
         <div class="price">{{ item.price }} руб</div>
       </div>
     </nuxt-link>
@@ -35,6 +35,7 @@ export default {
 .cardBox {
   height: 100%;
   width: 100%;
+  z-index: 1;
 }
 .card {
   display: flex;
@@ -46,7 +47,7 @@ export default {
   height: 100%;
 
   border-radius: 20px;
-  box-shadow: 0 0 0.7rem gray;
+  box-shadow: 0 0 0.25rem black;
 
   background: white;
   background: #e74623;
@@ -55,47 +56,62 @@ export default {
   transition: all 0.1s;
 }
 .card:hover {
-  box-shadow: 0 0 0.1rem 0.1rem red;
+  box-shadow: 0 0 0.5rem black;
   transition: all 0.1s;
 }
 
 .preview {
-  box-sizing: border-box;
-  margin: 14% 11% 5% 11%;
-  width: 90%;
+  overflow: hidden;
+  // margin: 14% 11% 5% 11%;
+  margin: 1.5%;
+  width: 100%;
+  height: 88%;
+  background: white;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0.2rem black;
 }
 .preview img {
+  // margin: 8%;
   width: 100%;
   border-radius: 10px;
-  transform: scale(1.2);
+  // border: 2px solid blue;
+  // transform: scale(1.2);
   transition: all 0.8s;
 }
 .title-price {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  align-items: center;
   width: 90%;
-  padding: 1.5rem 0 0 0;
+  // padding: 1.5rem 0 0 0;
   // background: springgreen;
+  margin-bottom: 1rem;
 }
 .title {
-  padding: 0 0.5rem 0 0.5rem;
-  width: 100%;
+  padding: 0 0.5rem;
+  // width: 100%;
+  // float: left;
 
   color: $main-color;
   color: white;
-  text-align: center;
-  font-size: 2rem;
-  font-weight: bold;
+  font-size: 1.3rem;
+  text-shadow: 0 0 0.2rem gray;
+  // font-weight: bold;
 
   // background: yellow;
 }
 
 .price {
-  margin: 1rem 0;
+  // margin: 1rem 0;
+  // margin-bottom: 1rem;
   width: 100%;
   color: white;
   letter-spacing: 0.2rem;
-  font-size: 120%;
+  font-size: 130%;
+  text-shadow: 0 0 0.2rem black;
   font-weight: bold;
   text-align: right;
+
   // background: orange;
 }
 

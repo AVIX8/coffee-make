@@ -1,15 +1,20 @@
 <template>
   <div>
-    <div ref="choice" class="choice">
-      <transition name="top-bottom">
-        <button class="now" @click="btnClick">
-          <p>{{ this.$props.filter.title }}</p>
-          <v-icon v-if="!isOpen">mdi-chevron-down</v-icon>
-          <v-icon v-else>mdi-chevron-up</v-icon>
-        </button>
-      </transition>
+    <div
+      ref="choice"
+      class="choice"
+      @mouseenter="mouseIn"
+      @mouseleave="mouseOut"
+    >
+      <!-- <transition name="top-bottom"> -->
+      <button class="now" @click="btnClick">
+        <p>{{ this.$props.filter.title }}</p>
+        <v-icon v-if="!isOpen">mdi-chevron-down</v-icon>
+        <v-icon v-else>mdi-chevron-up</v-icon>
+      </button>
+      <!-- </transition> -->
       <transition name="down">
-        <div v-show="isOpen" class="list">
+        <div v-show="isOpen" ref="list" class="list">
           <div
             v-for="(value, i) in filter.values"
             :key="i"
@@ -20,7 +25,7 @@
               >mdi-checkbox-blank-circle-outline</v-icon
             >
             <v-icon v-else>mdi-checkbox-marked-circle</v-icon>
-            &nbsp;{{ value }}
+            {{ value }}
           </div>
         </div>
       </transition>
@@ -36,15 +41,15 @@ export default {
   },
   data() {
     return {
-      isOpen: false,
+      isOpen: true,
     }
   },
   methods: {
     btnClick() {
       this.isOpen = !this.isOpen
-      this.$refs.choice.style.height = this.isOpen
-        ? 2 * (this.filter.values.length + 1) + 0.4 + 'rem'
-        : '2rem'
+      // this.$refs.choice.style.height = this.isOpen
+      //   ? 2 * (this.filter.values.length + 1) + 0.4 + 'rem'
+      //   : '2rem'
       this.$refs.choice.style.background = 'white'
       this.$refs.choice.style.zIndex = 9
     },
@@ -53,20 +58,15 @@ export default {
         this.$emit('removeFilter', value, this.filter.title)
       else this.$emit('addFilter', value, this.filter.title)
     },
-    close() {
-      this.isOpen = false
-      this.$refs.choice.style.height = '2rem'
-      this.$refs.choice.style.zIndex = 1
-    },
     // hover
-    // mouseIn() {
-    //   if (this.$props.filter.values.length > 1 && !this.isOpen)
-    //     this.$refs.choice.style.background = '#e57657'
-    //   else this.$refs.choice.style.cursor = 'default'
-    // },
-    // mouseOut() {
-    //   this.$refs.choice.style.background = 'white'
-    // },
+    mouseIn() {
+      if (this.$props.filter.values.length > 1 && !this.isOpen)
+        this.$refs.choice.style.background = '#e57657'
+      else this.$refs.choice.style.cursor = 'default'
+    },
+    mouseOut() {
+      this.$refs.choice.style.background = 'white'
+    },
   },
 }
 </script>
@@ -89,9 +89,9 @@ export default {
 .choice {
   position: relative;
   box-sizing: border-box;
-  // display: block;
+  display: inline-block;
 
-  // height: 100%;
+  // height: 2rem;
 
   background: white;
 
@@ -108,17 +108,18 @@ export default {
   align-items: center;
   grid-template-columns: 2fr 100fr 1fr;
 
+  height: 2rem;
+
   text-align: left;
-  border-radius: 1rem;
 
   cursor: pointer;
   transition: all 0.5s;
 }
-.now:hover,
-.now:active {
-  background: $main-light-color;
-  transition: all 0s;
-}
+// .now:hover,
+// .now:active {
+//   background: $main-light-color;
+//   transition: all 0s;
+// }
 .now p {
   grid-column: 2;
 
@@ -138,17 +139,18 @@ export default {
   text-align: center;
 }
 .value {
-  // display: grid;
-  // grid-template-columns: 1fr 2fr 1fr;
-  display: flex;
-  align-items: center;
-  // justify-content: center;
-  padding: 0 1rem 0 0.5rem;
+  display: grid;
+  grid-template-columns: 1fr 8fr;
+  // display: flex;
+  // display: inline-block;
+  // align-items: left;
+  // justify-content: left;
+  padding: 0.5rem 1rem 0.5rem 0.5rem;
 
-  height: 2rem;
+  // height: 2rem;
 
   color: gray;
-  white-space: nowrap;
+  white-space: wrap;
   font-size: 1.1rem;
   text-align: center;
   text-align: left;
