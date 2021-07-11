@@ -1,7 +1,12 @@
 <template>
   <div class="searchBox">
     <div ref="search" class="search">
-      <input ref="input" v-model="text" class="input" placeholder="Поиск" />
+      <input
+        ref="input"
+        v-model="text"
+        class="input"
+        placeholder="Поиск по каталогу"
+      />
       <button class="clear" title="Очистить" @click="clear">
         <v-icon class="clear">mdi-close</v-icon>
       </button>
@@ -10,7 +15,7 @@
       </button>
     </div>
 
-    <transition name="resultsDown">
+    <!-- <transition name="resultsDown">
       <div v-show="results" ref="results" class="results">
         <nuxt-link
           v-for="(result, i) in results"
@@ -27,7 +32,7 @@
           </div>
         </nuxt-link>
       </div>
-    </transition>
+    </transition> -->
   </div>
 </template>
 
@@ -40,31 +45,31 @@ export default {
     }
   },
   watch: {
-    results(newValue) {
-      // this.$refs.search.style.transition = 'all 0.7s'
-      if (newValue) this.$refs.search.style.borderRadius = '20px 20px 0 0'
-      else this.$refs.search.style.borderRadius = '20px'
-      if (newValue && newValue.length > 3)
-        this.$refs.results.style.height = '22rem'
-    },
+    // results(newValue) {
+    //   // this.$refs.search.style.transition = 'all 0.7s'
+    //   if (newValue) this.$refs.search.style.borderRadius = '20px 20px 0 0'
+    //   else this.$refs.search.style.borderRadius = '20px'
+    //   if (newValue && newValue.length > 3)
+    //     this.$refs.results.style.height = '22rem'
+    // },
   },
   mounted() {
-    if (this.results && this.results.length > 3)
-      this.$refs.results.style.height = '22rem'
-    else if (this.results)
-      this.$refs.results.style.height = 6 * this.results.length + 1.9 + 'rem'
-    this.$refs.results.style.padding =
-      this.$refs.input.clientHeight + 1 + 'px 0 0 0'
+    // if (this.results && this.results.length > 3)
+    //   this.$refs.results.style.height = '22rem'
+    // else if (this.results)
+    //   this.$refs.results.style.height = 6 * this.results.length + 1.9 + 'rem'
+    // this.$refs.results.style.padding =
+    //   this.$refs.input.clientHeight + 1 + 'px 0 0 0'
   },
   methods: {
     clear() {
       this.text = ''
       this.results = null
-      this.$refs.results.style.transition = 'all 0.5s'
-      this.$refs.results.style.height = 0
+      // this.$refs.results.style.transition = 'all 0.5s'
+      // this.$refs.results.style.height = 0
     },
     test() {
-      this.$refs.results.style.transition = 'all 0.6s'
+      // this.$refs.results.style.transition = 'all 0.6s'
       this.results = [
         {
           _id: '054VA72303012P',
@@ -243,15 +248,21 @@ export default {
   height: 100%;
   width: 100%;
 
+  background: whitesmoke;
   border-radius: 20px;
   border: solid 1px lightgray;
+  box-shadow: inset 0 0 0.1rem gray;
 
-  z-index: 2;
+  z-index: 0;
 
-  transition: all 0.7s;
+  transition: all 0.2s;
 
   // background: blue;
   // overflow: hidden;
+}
+.search:hover {
+  background: white;
+  // box-shadow: inset 0 0 0.5rem gray;
 }
 .input {
   padding: 0 0 0 5%;
@@ -263,13 +274,13 @@ export default {
 
   border-radius: 20px 0 0 20px;
 
-  background: white;
+  // background: lightgray;
   // background: red;
 }
 .clear {
   padding: 0 1% 0 1%;
   height: 100%;
-  background: white;
+  // background: white;
   // box-shadow: -1.5rem 0 1rem 0rem white;
   cursor: pointer;
   // background: yellow;
@@ -278,7 +289,7 @@ export default {
   padding: 0 1.5% 0 1%;
   height: 100%;
   border-radius: 0 20px 20px 0;
-  background: white;
+  // background: white;
   cursor: pointer;
   // background: greenyellow;
 }

@@ -5,7 +5,7 @@
         Очистить всё
       </button>
     </transition>
-    <transition-group name="rolled">
+    <transition name="rolled">
       <button
         v-for="(value, title) in notEmptySelected"
         :key="title"
@@ -15,7 +15,7 @@
         {{ title }}: {{ value.join('; ') }}
         <v-icon small>mdi-close</v-icon>
       </button>
-    </transition-group>
+    </transition>
     <!-- <transition name="rolled">
       <span v-if="!isSelectedNotEmpty">Нет фильтров</span>
     </transition> -->

@@ -6,6 +6,7 @@
       :key="i"
       class="filter"
       :filter="filter"
+      :open="i === 0 || i === 1"
       :selected="selected[filter.title]"
       @addFilter="addSelected"
       @removeFilter="removeSelected"
@@ -43,7 +44,7 @@ export default {
   watch: {},
   mounted() {
     this.$refs.filtresBox.style.maxHeight =
-      this.$store.state.windowHeight - 240 + 'px'
+      this.$store.state.windowHeight - 200 + 'px'
   },
   methods: {
     addSelected(option, filter) {
