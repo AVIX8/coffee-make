@@ -62,6 +62,33 @@ export const actions = {
   getProducts({ commit }, filters, skip) {
     return this.$axios.$post('/products/get', { filters, skip })
   },
+  getProductBySlug({ commit }, slug) {
+    return this.$axios.$post('/products/getBySlug', { slug })
+  },
+  getCharacteristics({ coomit }, category) {
+    return this.$axios
+      .$post('/products/getCharacteristics', { category })
+      .then((characteristics) => {
+        const tmp = {}
+        characteristics.forEach((element) => {
+          if (!tmp[element.title]) tmp[element.title] = [element.value]
+          else tmp[element.title].push(element.value)
+        })
+        return tmp
+      })
+  },
+  getAttributes({ coomit }, category) {
+    return this.$axios
+      .$post('/products/getAttributes', { category })
+      .then((attributes) => {
+        const tmp = {}
+        attributes.forEach((element) => {
+          if (!tmp[element.title]) tmp[element.title] = [element.value]
+          else tmp[element.title].push(element.value)
+        })
+        return tmp
+      })
+  },
   createProduct({ commit }, data) {
     return this.$axios.$post('/products/create', data)
   },
