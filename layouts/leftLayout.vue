@@ -8,7 +8,7 @@
       <nuxt-link to="/" style="text-decoration: none">
         <img class="logo" title="На Главную" src="/Logo_white_.png" />
       </nuxt-link>
-      <div style="width: 80%" />
+      <div style="width: 75%" />
       <img
         class="account"
         src="/account.png"
@@ -24,7 +24,12 @@
       />
     </div>
 
-    <nuxt-link id="blueLink" tag="div" to="/business">Для Бизнеса</nuxt-link>
+    <nuxt-link id="blueLink" tag="div" to="/business">
+      Для Бизнеса
+      <div class="eyelet" @click="setRightActive">
+        <v-icon large>mdi-chevron-left</v-icon>
+      </div>
+    </nuxt-link>
     <nuxt />
 
     <div v-if="$device.isDesktop" class="FOOTER">
@@ -116,7 +121,7 @@ export default {
 
     padding: 0 15%;
     background: $main-color;
-    z-index: 3;
+    z-index: 2;
   }
   .logo {
     margin: 0.2rem;
@@ -156,7 +161,7 @@ export default {
     align-items: center;
     justify-content: center;
 
-    width: 20%;
+    width: 15%;
 
     cursor: pointer;
     color: white;
@@ -165,15 +170,37 @@ export default {
     text-shadow: 0 0 0.5rem black;
 
     z-index: 2;
-    background: $side-dark-color;
-    box-shadow: 0 0 1rem gray;
+    // background: $side-dark-color;
+    background-image: url(static\right-background.jpg);
+    background-position: 75% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
 
-    transform: translateX(95%);
-    transition: all 0.5s;
+    box-shadow: inset 50px 50px 50px 50px $side-dark-color;
+    filter: drop-shadow(0 0 0.3rem $dark-packege);
+
+    transform: translateX(99%);
+    transition: all 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
   }
   #blueLink:hover {
-    box-shadow: 0 0 1rem black;
+    // box-shadow: 0 0 1rem black;
+    filter: drop-shadow(0 0 0.5rem black);
     transform: translateX(0%);
+  }
+  .eyelet {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: 50%;
+    margin-top: -50px;
+    text-shadow: none;
+    border-radius: 100%;
+    z-index: -2;
+    padding: 0 2.5rem 0 0;
+    background: $side-dark-color;
+    transform: translateX(-140%);
   }
 
   .FOOTER {
@@ -192,7 +219,8 @@ export default {
     font-size: 0.96rem;
 
     background-color: #16191c;
-    z-index: 3;
+    background: $dark-packege;
+    z-index: 1;
   }
   .workingHours h5 {
     margin-bottom: 0.5rem;
