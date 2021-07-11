@@ -1,10 +1,15 @@
 <template>
   <div id="catalogBox">
     <div id="path">Каталог/Кофе</div>
-    <!-- <div id="searchBox" class="hd shadowBox">
-      <SelectedTags :selected="selected" />
+    <div id="searchBox" class="hd shadowBox">
+      <!-- <SelectedTags :selected="selected" /> -->
+      <div id="sortBox">
+        Сортировать по:
+        <button class="sortButton">Дате добавления</button>
+        <button class="sortButton">Цене</button>
+      </div>
       <SearchBox />
-    </div> -->
+    </div>
     <!-- <div class="fake-shadow"></div> -->
     <div class="content">
       <div ref="filtres" class="filtres fl shadowBox">
@@ -65,13 +70,12 @@ export default {
           values: [
             'Бразилия',
             'Бразилия Моджиана, Колумбия Супремо',
-            'Бразилия, Вьетнам',
-            'Бразилия, Гватемала, Индонезия',
-            'Бразилия, Колумбия',
-            'Бразилия, Колумбия, Гватемала',
-            'Бразилия, Уганда',
+            'Вьетнам',
+            'Гватемала',
+            'Индонезия',
+            'Колумбия',
+            'Уганда',
             'Вьетнам Тай Нгуен',
-            'Колумбия, Гватемала, Уганда, Вьетнам',
             'Мексика, Чьяпас',
             'Респ. Гондурас Сан Маркос',
           ],
@@ -92,9 +96,13 @@ export default {
     window.removeEventListener('scroll', this.scrollHandler)
   },
   methods: {
+    resizeHandler() {
+      this.$refs.filtres.style.width =
+        (this.$store.state.windowWidth - 30 * 16) / 4 + 'px'
+    },
     scrollHandler() {
       if (window.scrollY > 50) this.$refs.filtres.style.top = '3%'
-      else this.$refs.filtres.style.top = '16%'
+      else this.$refs.filtres.style.top = '15%'
     },
   },
 }
@@ -117,11 +125,15 @@ export default {
 }
 #searchBox {
   display: grid;
-  grid-template-columns: 4fr 1fr;
+  grid-template-columns: 1fr 1fr;
+  // position: absolute;
+  // right: 13%;
   align-items: center;
+  width: 71%;
 
+  margin-left: 27%;
   margin-bottom: 0.8rem;
-  padding: 0 1rem;
+  padding: 1rem;
   background: white;
 }
 .content {
@@ -147,28 +159,35 @@ export default {
 }
 .shadowBox {
   border-radius: 20px;
-  box-shadow: 0 0 0.8rem gray;
+  box-shadow: 0 1px 0.15rem gray;
 }
 .filtres {
   position: relative;
   position: fixed;
-  top: 18%;
-  width: 19%;
+  top: 15%;
+  width: 360px;
   // width: 100%;
   height: fit-content;
 
   // text-align: center;
 
   background: whitesmoke;
+  background: white;
   // background: $main-light-color;
-  transition: top 0.2s;
+  transition: top 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .categoryTitle {
   margin: 1rem 0 0 2rem;
   font-size: 2rem;
+  // border-bottom: 1px solid black;
+  // background: blue;
 }
-.productList {
-  // height: 50rem;
+#sortBox {
+}
+.sortButton {
+  margin: 0 0.5rem;
+  padding: 2px 0;
+  border-bottom: 1px dashed black;
 }
 .fake-shadow {
   position: absolute;

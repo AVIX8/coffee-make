@@ -36,12 +36,13 @@
 <script>
 export default {
   props: {
+    open: { type: Boolean, required: false },
     filter: { type: Object, required: true },
     selected: { type: Array, required: true },
   },
   data() {
     return {
-      isOpen: true,
+      isOpen: this.open === undefined ? false : this.open,
     }
   },
   methods: {
@@ -96,12 +97,12 @@ export default {
   background: white;
 
   border-radius: 1rem;
-  border: 0.2rem solid $main-color;
+  border: 0.15rem solid $main-color;
 
-  box-shadow: 0.1rem 0.1rem 0.3rem gray;
+  // box-shadow: 0 0 0.3rem gray;
   overflow: hidden;
 
-  transition: all 0.5s;
+  transition: all 0.2s;
 }
 .now {
   display: grid;

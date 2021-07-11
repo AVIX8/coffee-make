@@ -46,26 +46,23 @@ export default {
   width: 100%;
   height: 100%;
 
-  border-radius: 20px;
-  box-shadow: 0 0 0.25rem black;
+  border-radius: 10px;
+  // box-shadow: 0 0 0.25rem black;
 
   background: white;
   background: #e74623;
 
   cursor: pointer;
-  transition: all 0.1s;
+  transition: all 0.2s;
 }
 .card:hover {
-  box-shadow: 0 0 0.5rem black;
-  transition: all 0.1s;
+  box-shadow: 1px 0.1rem 0.4rem black;
 }
 
 .preview {
   overflow: hidden;
-  // margin: 14% 11% 5% 11%;
   margin: 1.5%;
   width: 100%;
-  height: 88%;
   background: white;
   border-radius: 10px;
   box-shadow: inset 0 0 0.2rem black;
@@ -75,7 +72,7 @@ export default {
   width: 100%;
   border-radius: 10px;
   // border: 2px solid blue;
-  // transform: scale(1.2);
+  transform: scale(1.02);
   transition: all 0.8s;
 }
 .title-price {
