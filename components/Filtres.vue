@@ -1,6 +1,11 @@
 <template>
   <div id="filtresBox" ref="filtresBox">
     <!-- <div id="filtresBox"> -->
+    <transition name="rolled-top">
+      <button v-if="isSelectedEmpty" id="clearButton" @click="removeAll">
+        Очистить всё
+      </button>
+    </transition>
     <FilterOptions
       v-for="(filter, i) in filtres"
       :key="i"
@@ -11,11 +16,6 @@
       @addFilter="addSelected"
       @removeFilter="removeSelected"
     ></FilterOptions>
-    <transition name="rolled-top">
-      <button v-if="isSelectedEmpty" id="clearButton" @click="removeAll">
-        Очистить всё
-      </button>
-    </transition>
   </div>
 </template>
 
@@ -98,9 +98,11 @@ export default {
   border-color: gray;
 }
 #clearButton {
+  margin-bottom: 1rem;
   padding: 0.3rem 1rem;
-  height: 3rem;
+  height: 2rem;
   width: 100%;
+  font-size: 0.9rem;
   background: white;
   border: 1px black solid;
   border-radius: 20px;

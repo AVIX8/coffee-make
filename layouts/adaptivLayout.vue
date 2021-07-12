@@ -4,7 +4,7 @@
       <Authentication @close="closeAuthentication" />
     </div>
 
-    <div class="HEADER">
+    <div :class="headerStyle">
       <nuxt-link to="/" style="text-decoration: none">
         <img class="logo" title="На Главную" src="/Logo_white_.png" />
       </nuxt-link>
@@ -24,12 +24,24 @@
       />
     </div>
 
-    <nuxt-link id="blueLink" tag="div" to="/business">
-      Для Бизнеса
-      <div class="eyelet" @click="setRightActive">
-        <v-icon large>mdi-chevron-left</v-icon>
+    <nuxt-link :class="sideLinkStyle" tag="div" :to="linkRoute">
+      <div class="eyelet" :class="[isLeft ? 'eyelet-left' : 'eyelet-right']">
+        <v-icon v-if="isLeft" large>mdi-chevron-left</v-icon>
+        <v-icon v-else large>mdi-chevron-right</v-icon>
+      </div>
+
+      <div
+        class="back-box"
+        :class="[isLeft ? 'back-box-left' : 'back-box-right']"
+      />
+      <div
+        class="frontbox"
+        :style="isLeft ? 'background: #4494b6a1' : 'background: #e5765791'"
+      >
+        {{ isLeft ? 'Для Бизнеса' : 'Каталог' }}
       </div>
     </nuxt-link>
+
     <nuxt />
 
     <div v-if="$device.isDesktop" class="FOOTER">
@@ -50,6 +62,7 @@
 
 <script>
 export default {
+  // layoutTransition: 'right',
   data() {
     return {
       isAuthentication: false,
@@ -70,7 +83,30 @@ export default {
       menuIcon: 'mdi-menu',
     }
   },
-  computed: {},
+  computed: {
+    isLeft() {
+      return this.$route.name === 'catalog'
+    },
+    headerStyle() {
+      return {
+        HEADER: true,
+        'left-color': this.isLeft,
+        'right-color': !this.isLeft,
+      }
+    },
+    sideLinkStyle() {
+      return {
+        sideLink: true,
+        blueLink: this.isLeft,
+        redLink: !this.isLeft,
+      }
+    },
+    linkRoute() {
+      if (this.isLeft) return 'business'
+      if (!this.isLeft) return 'catalog'
+      return null
+    },
+  },
   methods: {
     MenuClick() {
       this.isMenuOn = !this.isMenuOn
@@ -113,15 +149,20 @@ export default {
   .HEADER {
     position: fixed;
     top: 0;
-    // left: 0;
-    // right: 0;
     display: flex;
     align-items: center;
     justify-content: center;
 
     padding: 0 15%;
-    background: $main-color;
     z-index: 2;
+  }
+  .left-color {
+    background: $main-color;
+    transition: background-color 1s;
+  }
+  .right-color {
+    background: $side-dark-color;
+    transition: background-color 1s;
   }
   .logo {
     margin: 0.2rem;
@@ -148,44 +189,35 @@ export default {
   .account:hover,
   .cart:hover {
     cursor: pointer;
-    background-color: $main-light-color;
     transition: all 0.4s;
     box-shadow: 0 0 0.5rem black;
   }
-  #blueLink {
+  .sideLink {
     position: fixed;
     top: 0;
     bottom: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
     width: 15%;
-
     cursor: pointer;
-    color: white;
-    font-weight: bold;
-    font-size: 2rem;
-    text-shadow: 0 0 0.5rem black;
-
     z-index: 2;
-    // background: $side-dark-color;
-    background-image: url(static\right-background.jpg);
-    background-position: 75% 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
-
-    box-shadow: inset 50px 50px 50px 50px $side-dark-color;
     filter: drop-shadow(0 0 0.3rem $dark-packege);
-
-    transform: translateX(99%);
-    transition: all 0.8s cubic-bezier(0.075, 0.82, 0.165, 1);
+    transition: all 0.8s cubic-bezier(0.075, 0.82, 0.165, 1), width 0s;
   }
-  #blueLink:hover {
-    // box-shadow: 0 0 1rem black;
+  .blueLink {
+    right: 0;
+    transform: translateX(99%);
+  }
+  .redLink {
+    left: 0;
+    transform: translateX(-99%);
+  }
+  .redLink:hover,
+  .blueLink:hover {
     filter: drop-shadow(0 0 0.5rem black);
     transform: translateX(0%);
+  }
+  .sideLink:hover .eyelet {
+    transform: translateX(0);
+    opacity: 0;
   }
   .eyelet {
     display: flex;
@@ -198,9 +230,46 @@ export default {
     text-shadow: none;
     border-radius: 100%;
     z-index: -2;
+    transition: all 0.5s;
+  }
+  .eyelet-left {
     padding: 0 2.5rem 0 0;
     background: $side-dark-color;
-    transform: translateX(-140%);
+    transform: translateX(-50%);
+  }
+  .eyelet-right {
+    padding: 0 0 0 2.5rem;
+    background: $main-light-color;
+    transform: translateX(240%);
+  }
+  .back-box {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    filter: blur(2px);
+    background-position: 75% 50%;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+  .back-box-left {
+    background-image: url(static\right-background.jpg);
+    border-left: 5px $side-dark-color solid;
+  }
+  .back-box-right {
+    background-image: url(static\left-background.jpg);
+    border-right: 5px $main-light-color solid;
+  }
+  .frontbox {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    color: white;
+    font-weight: bold;
+    font-size: 2rem;
+    text-shadow: 0 0 1rem black;
   }
 
   .FOOTER {

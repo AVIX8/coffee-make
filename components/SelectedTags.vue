@@ -1,21 +1,21 @@
 <template>
-  <div id="selectedBox">
-    <transition name="rolled">
+  <div class="selectedBox">
+    <!-- <transition name="rolled">
       <button v-if="isSelectedNotEmpty" id="clearButton" @click="removeAll">
         Очистить всё
       </button>
-    </transition>
-    <transition name="rolled">
+    </transition> -->
+    <transition-group name="rolled">
       <button
         v-for="(value, title) in notEmptySelected"
-        :key="title"
+        :key="title + 1"
         class="selectedFilter"
         @click="removeCategory(title)"
       >
         {{ title }}: {{ value.join('; ') }}
         <v-icon small>mdi-close</v-icon>
       </button>
-    </transition>
+    </transition-group>
     <!-- <transition name="rolled">
       <span v-if="!isSelectedNotEmpty">Нет фильтров</span>
     </transition> -->
@@ -35,7 +35,9 @@ export default {
     notEmptySelected() {
       const obj = {}
       for (const key in this.selected)
-        if (this.selected[key].length > 0) obj[key] = this.selected[key]
+        if (this.selected[key].length === 1) obj[key] = this.selected[key]
+        else if (this.selected[key].length > 1)
+          obj[key] = [this.selected[key].length + ' значения']
       return obj
     },
     isSelectedNotEmpty() {
@@ -65,16 +67,17 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#selectedBox {
-  display: flex;
-  align-items: center;
-  // justify-content: center;
-  min-height: 3.6rem;
-  padding: 0.5rem;
+.selectedBox {
+  overflow-y: hidden;
+  overflow-x: scroll;
+  -webkit-overflow-scrolling: touch;
+  height: 2.5rem;
+  // padding: 0.5rem;
+  // background: seagreen;
 }
 .selectedFilter {
-  margin: 0.4rem 0.5rem 0.4rem 0;
-  padding: 0.3rem 1rem;
+  margin: 0.4rem 0.3rem 0.4rem 0;
+  padding: 0.3rem 0.5rem;
   font-size: 0.8rem;
   text-align: left;
   background: lightgray;

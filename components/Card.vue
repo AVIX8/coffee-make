@@ -85,12 +85,13 @@ export default {
   margin-bottom: 1rem;
 }
 .title {
-  padding: 0 0.5rem;
+  padding: 0 1rem;
   // width: 100%;
   // float: left;
 
   color: $main-color;
   color: white;
+  // text-align: center;
   font-size: 1.3rem;
   text-shadow: 0 0 0.2rem gray;
   // font-weight: bold;

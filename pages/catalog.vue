@@ -2,13 +2,15 @@
   <div id="catalogBox">
     <div id="path">Каталог/Кофе</div>
     <div id="searchBox" class="hd shadowBox">
-      <!-- <SelectedTags :selected="selected" /> -->
       <div id="sortBox">
         Сортировать по:
         <button class="sortButton">Дате добавления</button>
         <button class="sortButton">Цене</button>
       </div>
       <SearchBox />
+    </div>
+    <div ref="selectedTags" class="selectedTags hd">
+      <SelectedTags :selected="selected" />
     </div>
     <!-- <div class="fake-shadow"></div> -->
     <div class="content">
@@ -26,9 +28,11 @@
 // import SelectedTags from '../components/SelectedTags.vue'
 export default {
   // components: { SelectedTags },
-  layout: 'leftLayout',
+  layout: 'adaptivLayout',
+  transition: 'catalog',
   data() {
     return {
+      path: {},
       selected: {
         Купаж: [],
         Обжарка: [],
@@ -87,6 +91,7 @@ export default {
   mounted() {
     window.addEventListener('resize', this.resizeHandler)
     window.addEventListener('scroll', this.scrollHandler)
+    this.$nextTick(this.resizeHandler())
     // this.$store.dispatch('api/getCategories', '').then((res) => {
     //   console.log(res)
     // })
@@ -97,11 +102,21 @@ export default {
   },
   methods: {
     resizeHandler() {
+      const remSize = parseFloat(
+        getComputedStyle(document.documentElement).fontSize
+      )
       this.$refs.filtres.style.width =
-        (this.$store.state.windowWidth - 30 * 16) / 4 + 'px'
+        (this.$store.state.windowWidth - 30 * remSize) / 4 + 'px'
+      this.$refs.selectedTags.style.left =
+        (this.$store.state.windowWidth - 30 * remSize) / 4 +
+        remSize * 15 +
+        25 +
+        'px'
+      this.$refs.selectedTags.style.width =
+        ((this.$store.state.windowWidth - 30 * remSize) / 4) * 3 - 50 + 'px'
     },
     scrollHandler() {
-      if (window.scrollY > 50) this.$refs.filtres.style.top = '3%'
+      if (window.scrollY > 50) this.$refs.filtres.style.top = '1%'
       else this.$refs.filtres.style.top = '15%'
     },
   },
@@ -125,16 +140,20 @@ export default {
 }
 #searchBox {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   // position: absolute;
   // right: 13%;
   align-items: center;
   width: 71%;
 
   margin-left: 27%;
-  margin-bottom: 0.8rem;
-  padding: 1rem;
+  margin-bottom: 0.1rem;
+  padding: 0.5rem 2rem;
   background: white;
+}
+.selectedTags {
+  position: absolute;
+  // background: blue;
 }
 .content {
   display: grid;
@@ -142,6 +161,7 @@ export default {
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas: 'fl pr pr pr';
+  margin-top: 1rem;
   height: 100%;
   // background: white;
   // background: $main-light-color;

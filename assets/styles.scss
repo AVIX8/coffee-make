@@ -50,3 +50,39 @@ p {
 .v-card__text, .v-card__title {
   word-break: normal !important;
 }
+/*
+// .right-enter-active, .right-leave-active {
+//   transition: all 3s
+// }
+// .right-enter, .right-leave-active {
+//   opacity: 0
+// }
+*/
+.catalog-enter-active, .catalog-leave-active,
+.business-enter-active, .business-leave-active {
+  transition: all 0.2s !important;
+}
+.catalog-leave-to {
+  transform: translateX(15%);
+  opacity: 0;
+}
+.catalog-enter {
+  transform: translateX(-15%);
+  opacity: 0;
+}
+.business-enter {
+  transform: translateX(15%);
+  opacity: 0;
+}
+.business-leave-to {
+  transform: translateX(-15%);
+  opacity: 0;
+}
+
+.layout-enter-active, .layout-leave-active {
+  transition: all 0.3s, opacity 0.2s;
+}
+.layout-enter, .layout-leave-active {
+  filter: blur(5px) hue-rotate(30deg);
+  opacity: 0;
+}
