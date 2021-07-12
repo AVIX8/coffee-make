@@ -1,18 +1,12 @@
 <template>
   <v-app>
     <v-app-bar app height="64px">
-      <template v-slot:img="{ props }">
-        <v-img
-          v-bind="props"
-          gradient="to top right, rgba(128,128,255,.9), rgba(255,128,128,.9)"
-        ></v-img>
-      </template>
       <v-app-bar-nav-icon
         v-show="!drawer"
         @click="drawer = !drawer"
       ></v-app-bar-nav-icon>
 
-      <v-toolbar-title>Coffee Make</v-toolbar-title>
+      <v-toolbar-title class="title">Coffee Make</v-toolbar-title>
 
       <v-spacer></v-spacer>
 
@@ -24,7 +18,7 @@
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
 
-      <v-menu left bottom>
+      <v-menu left>
         <template v-slot:activator="{ on, attrs }">
           <v-btn icon v-bind="attrs" v-on="on">
             <v-icon>mdi-dots-vertical</v-icon>
@@ -113,5 +107,3 @@ export default {
   },
 }
 </script>
-
-<style scoped></style>

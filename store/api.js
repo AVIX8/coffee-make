@@ -59,35 +59,11 @@ export const actions = {
   /**
    * PRODUCTS
    */
-  getProducts({ commit }, filters, skip) {
-    return this.$axios.$post('/products/get', { filters, skip })
+  getProducts({ commit }, filters, skip, limit) {
+    return this.$axios.$post('/products/get', { filters, skip, limit })
   },
   getProductBySlug({ commit }, slug) {
     return this.$axios.$post('/products/getBySlug', { slug })
-  },
-  getCharacteristics({ coomit }, category) {
-    return this.$axios
-      .$post('/products/getCharacteristics', { category })
-      .then((characteristics) => {
-        const tmp = {}
-        characteristics.forEach((element) => {
-          if (!tmp[element.title]) tmp[element.title] = [element.value]
-          else tmp[element.title].push(element.value)
-        })
-        return tmp
-      })
-  },
-  getAttributes({ coomit }, category) {
-    return this.$axios
-      .$post('/products/getAttributes', { category })
-      .then((attributes) => {
-        const tmp = {}
-        attributes.forEach((element) => {
-          if (!tmp[element.title]) tmp[element.title] = [element.value]
-          else tmp[element.title].push(element.value)
-        })
-        return tmp
-      })
   },
   createProduct({ commit }, data) {
     return this.$axios.$post('/products/create', data)
@@ -100,7 +76,23 @@ export const actions = {
    * CATEGORIES
    */
   getCategories({ commit }, parentPath) {
-    return this.$axios.$post('categories/', { parentPath })
+    return this.$axios.$post('categories/get', { parentPath })
+  },
+  getCategoryInfo({ commit }, category) {
+    return this.$axios
+      .$post('/categories/getInfo', { category })
+      .then((data) => {
+        const res = {}
+        for (const [name, elements] of Object.entries(data)) {
+          res[name] = {}
+          elements.forEach((element) => {
+            ;(res[name][element.title] || (res[name][element.title] = [])).push(
+              element.value
+            )
+          })
+        }
+        return res
+      })
   },
   updateCategory({ commit }, data) {
     const fd = new FormData()
