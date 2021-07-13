@@ -1,5 +1,5 @@
 <template>
-  <v-card outlined min-width="550">
+  <v-card outlined min-width="550" class="mb-8">
     <v-card-title class="pa-3"
       >{{ title }} <v-spacer></v-spacer>
 

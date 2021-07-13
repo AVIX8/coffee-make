@@ -50,52 +50,63 @@
           </v-col>
 
           <v-col>
-            <v-text-field
-              v-model="product.price"
-              outlined
-              label="Цена"
-              prefix="₽"
-            ></v-text-field>
-
-            <A-SmallTable
-              v-model="product.attributes"
-              :title="'Атрибуты'"
-              :examples="attributeExamples"
-            ></A-SmallTable>
-
             <v-switch
               v-model="severalOptions"
-              class="mx-2"
+              class="mx-2 mt-0"
               inset
               outlined
               label="Несколько опций"
             ></v-switch>
 
-            <div v-if="severalOptions">
-              <A-Autocomplete
-                v-model="product.optionTitle"
-                outlined
-                label="Название атрибута для выбора опции"
-                :items="Object.keys(attributeExamples)"
-              />
+            <A-Autocomplete
+              v-if="severalOptions"
+              v-model="product.optionTitle"
+              outlined
+              label="Название атрибута для выбора опции"
+              :items="optionTitleExamples"
+            />
 
-              <A-SmallTable
-                v-model="product.options"
-                :title="'Опции'"
-                :castom-headers="[
-                  {
-                    text: product.optionTitle || 'Атрибут',
-                    sortable: false,
-                    value: 'value',
-                  },
-                  {
-                    text: 'Цена',
-                    sortable: false,
-                    value: 'price',
-                  },
-                ]"
-              ></A-SmallTable>
-            </div>
+            <A-SmallTable
+              v-model="product.attributes"
+              :title="severalOptions ? 'Дополнительные атрибуты' : 'Атрибуты'"
+              :examples="filteredAttributeExamples"
+            />
+
+            <A-SmallTable
+              v-if="severalOptions"
+              v-model="product.options"
+              :title="'Опции'"
+              :castom-headers="[
+                {
+                  text: product.optionTitle || 'Атрибут',
+                  sortable: false,
+                  value: 'value',
+                },
+                {
+                  text: 'Цена',
+                  sortable: false,
+                  value: 'price',
+                },
+              ]"
+            />
+
+            <v-text-field
+              v-model="product.price"
+              outlined
+              :disabled="severalOptions"
+              :label="severalOptions ? 'Отображаемая цена' : 'Цена'"
+              prefix="₽"
+            ></v-text-field>
+
+            <v-file-input
+              multiple
+              label="Изображения"
+              outlined
+              show-size
+              chips
+              counter
+              accept="image/*"
+            />
           </v-col>
         </v-row>
       </v-card-text>
@@ -125,6 +136,7 @@ export default {
     product: {},
     isNew: false,
     nextCategories: [],
+    optionTitleExamples: [],
     characteristicExamples: {},
     attributeExamples: {},
     severalOptions: false,
@@ -133,6 +145,18 @@ export default {
   computed: {
     productCategory() {
       return this.product.category
+    },
+    filteredAttributeExamples() {
+      if (!this.attributeExamples[this.product.optionTitle])
+        return this.attributeExamples
+      const tmp = { ...this.attributeExamples }
+      delete tmp[this.product.optionTitle]
+      return tmp
+    },
+    displayedPrice() {
+      if (this.severalOptions && this.product.options.length)
+        return this.product.options[0].price
+      return null
     },
   },
 
@@ -145,6 +169,11 @@ export default {
       if (val === false) {
         this.product.options = []
         this.product.optionTitle = ''
+      }
+    },
+    displayedPrice(val) {
+      if (val != null) {
+        this.product.price = val
       }
     },
   },
@@ -183,6 +212,7 @@ export default {
         .then((res) => {
           this.characteristicExamples = res.characteristics
           this.attributeExamples = res.attributes
+          this.optionTitleExamples = res.optionTitles
         })
     },
   },

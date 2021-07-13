@@ -92,9 +92,17 @@ export default {
     window.addEventListener('resize', this.resizeHandler)
     window.addEventListener('scroll', this.scrollHandler)
     this.$nextTick(this.resizeHandler())
-    // this.$store.dispatch('api/getCategories', '').then((res) => {
-    //   console.log(res)
-    // })
+
+    // + avix
+    this.$store.dispatch('api/getCategoryFilters', '/Кофе').then((res) => {
+      console.log('Фильтры:', res)
+    })
+    this.$store
+      .dispatch('api/getProducts', { category: '/Кофе' })
+      .then((res) => {
+        console.log('Товары:', res)
+      })
+    // - avix
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeHandler)

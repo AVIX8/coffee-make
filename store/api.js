@@ -78,19 +78,29 @@ export const actions = {
   getCategories({ commit }, parentPath) {
     return this.$axios.$post('categories/get', { parentPath })
   },
+  getCategoryFilters({ commit }, category) {
+    return this.$axios
+      .$post('/categories/getFilters', { category })
+      .then((data) => {
+        const res = data.reduce((rv, x) => {
+          ;(rv[x.title] = rv[x.title] || []).push(x.value)
+          return rv
+        }, {})
+        return res
+      })
+  },
   getCategoryInfo({ commit }, category) {
     return this.$axios
       .$post('/categories/getInfo', { category })
       .then((data) => {
         const res = {}
-        for (const [name, elements] of Object.entries(data)) {
-          res[name] = {}
-          elements.forEach((element) => {
-            ;(res[name][element.title] || (res[name][element.title] = [])).push(
-              element.value
-            )
-          })
+        for (const name of ['characteristics', 'attributes']) {
+          res[name] = data[name].reduce((rv, x) => {
+            ;(rv[x.title] = rv[x.title] || []).push(x.value)
+            return rv
+          }, {})
         }
+        res.optionTitles = data.optionTitles
         return res
       })
   },
