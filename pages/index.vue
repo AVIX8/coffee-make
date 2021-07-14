@@ -48,11 +48,11 @@ export default {
     resizeHandler() {
       this.$refs.leftEyelet.style.left =
         this.$refs.left.clientWidth -
-        this.$refs.leftEyelet.clientWidth / 2 +
+        this.$refs.leftEyelet.clientWidth / 1.6 +
         'px'
       this.$refs.rightEyelet.style.right =
         this.$refs.right.clientWidth -
-        this.$refs.rightEyelet.clientWidth / 2 +
+        this.$refs.rightEyelet.clientWidth / 1.6 +
         'px'
     },
   },
@@ -116,10 +116,10 @@ export default {
   left: 0;
 }
 .sideLink:hover .eyelet-left {
-  transform: translateX(-50%);
+  // transform: translateX(-50%);
 }
 .sideLink:hover .eyelet-right {
-  transform: translateX(50%);
+  // transform: translateX(50%);
 }
 .eyelet {
   display: flex;
@@ -135,27 +135,29 @@ export default {
 .eyelet-left {
   padding: 0 0 0 2.5rem;
   background: $main-light-color;
+  background: #db9b8e;
 }
 .eyelet-right {
   padding: 0 2.5rem 0 0;
   background: $side-dark-color;
+  background: #6eacc6;
 }
 .back-box {
   position: absolute;
   height: 100%;
   width: 100%;
-  filter: blur(2px);
+  // filter: blur(0px);
   background-position: 75% 50%;
   background-repeat: no-repeat;
   background-size: cover;
 }
 .back-box-left {
   background-image: url(static\left-background.jpg);
-  border-right: 5px $main-light-color solid;
+  // border-right: 5px $main-light-color solid;
 }
 .back-box-right {
   background-image: url(static\right-background.jpg);
-  border-left: 5px $side-dark-color solid;
+  // border-left: 5px $side-dark-color solid;
 }
 .frontbox {
   position: absolute;
@@ -166,7 +168,10 @@ export default {
   width: 100%;
   color: white;
   font-weight: bold;
-  font-size: 2rem;
-  text-shadow: 0 0 1rem black;
+  font-size: 3rem;
+  text-align: center;
+  // text-shadow: 0 0 2rem black;
+  text-shadow: 0 0 5px gray;
+  text-decoration: underline;
 }
 </style>

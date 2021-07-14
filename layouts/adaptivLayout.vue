@@ -246,7 +246,7 @@ export default {
     position: absolute;
     height: 100%;
     width: 100%;
-    filter: blur(2px);
+    // filter: blur(2px);
     background-position: 75% 50%;
     background-repeat: no-repeat;
     background-size: cover;

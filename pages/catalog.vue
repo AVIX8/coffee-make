@@ -150,7 +150,8 @@ export default {
   mounted() {
     window.addEventListener('resize', this.resizeHandler)
     window.addEventListener('scroll', this.scrollHandler)
-    this.$nextTick(this.resizeHandler())
+    this.resizeHandler()
+    // this.scrollHandler()
 
     // + avix
     this.$store.dispatch('api/getCategoryFilters', '/Кофе').then((res) => {
@@ -165,7 +166,7 @@ export default {
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeHandler)
-    window.removeEventListener('scroll', this.scrollHandler)
+    // window.removeEventListener('scroll', this.scrollHandler)
   },
   methods: {
     resizeHandler() {
@@ -174,20 +175,20 @@ export default {
       )
       this.$refs.filtres.style.width =
         (this.$store.state.windowWidth - 30 * remSize) / 4 + 'px'
+
       this.$refs.selectedTags.style.left =
         (this.$store.state.windowWidth - 30 * remSize) / 4 +
-        remSize * 15 +
-        25 +
-        'px'
+        // eslint-disable-next-line prettier/prettier
+        remSize * 15 + 25 + 'px'
       this.$refs.selectedTags.style.width =
         ((this.$store.state.windowWidth - 30 * remSize) / 4) * 3 - 50 + 'px'
     },
     scrollHandler() {
-      if (window.scrollY > 50) this.$refs.filtres.style.top = '1%'
-      else this.$refs.filtres.style.top = '15%'
+      // this.$refs.filtres.style.position = 'fixed'
+      // if (window.scrollY > 50) this.$refs.filtres.style.top = '1%'
+      // else this.$refs.filtres.style.top = '15%'
     },
     setViewProduct(product) {
-      // console.log(product)
       this.viewProduct = product
       this.isView = true
     },
@@ -269,19 +270,19 @@ export default {
   box-shadow: 0 1px 0.15rem gray;
 }
 .filtres {
-  position: relative;
-  position: fixed;
-  top: 15%;
+  // position: fixed;
+  // position: absolute;
+  position: sticky;
+  // top: 15%;
+  // top: -48px;
+  top: 1%;
+  margin-top: -4rem;
   width: 360px;
-  // width: 100%;
   height: fit-content;
-
-  // text-align: center;
 
   background: whitesmoke;
   background: white;
-  // background: $main-light-color;
-  transition: top 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 .categoryTitle {
   margin: 1rem 0 0 2rem;

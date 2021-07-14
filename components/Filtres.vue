@@ -1,6 +1,5 @@
 <template>
   <div id="filtresBox" ref="filtresBox">
-    <!-- <div id="filtresBox"> -->
     <transition name="rolled-top">
       <button v-if="isSelectedEmpty" id="clearButton" @click="removeAll">
         Очистить всё
@@ -68,8 +67,6 @@ export default {
 <style scoped lang="scss">
 #filtresBox {
   padding: 1rem;
-  // background: blue;
-  // height: 40rem;
   overflow: scroll;
 }
 .filter {
