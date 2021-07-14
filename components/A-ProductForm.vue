@@ -98,16 +98,6 @@
               prefix="₽"
             ></v-text-field>
 
-            <!-- <v-file-input
-              multiple
-              label="Изображения"
-              outlined
-              chips
-              accept="image/*"
-              :value="imageFiles"
-              @change="addImages"
-            /> -->
-
             <A-ImageBox v-model="images" />
           </v-col>
         </v-row>
@@ -168,11 +158,14 @@ export default {
 
   watch: {
     productImgs(imgs) {
-      this.images = imgs.map((id) => {
-        return {
-          imageURL: `${this.$axios.defaults.baseURL}/storage/image/${id}`,
-        }
-      })
+      if (imgs?.length)
+        this.images = imgs.map((id) => {
+          return {
+            imageURL: `${this.$axios.defaults.baseURL}/storage/image/${id}`,
+            id,
+          }
+        })
+      else this.images = []
     },
     productCategory(val) {
       if (val == null) this.product.category = ''
@@ -209,11 +202,8 @@ export default {
     },
     save() {
       this.product.images = this.images
-      this.product.imageFiles = this.images
-        .filter((x) => x.file)
-        .map((x) => x.file)
-      console.log(this.product.imageFiles)
-      this.$emit('save', this.product)
+      const imageFiles = this.images.filter((x) => x.file).map((x) => x.file)
+      this.$emit('save', { product: this.product, imageFiles })
       this.dialog = false
     },
     addCategory(category) {

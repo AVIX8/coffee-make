@@ -45,12 +45,12 @@
                       />
                       <v-card-actions class="justify-end">
                         <v-btn
-                          :download="item.name"
+                          :download="item.name || item.id"
                           :href="item.imageURL"
                           color="primary"
                           small
                           min-width="0"
-                          >{{ item.size }} &nbsp;
+                          >{{ item.size ? `${item.size}&nbsp;` : '' }}
                           <v-icon small> mdi-download </v-icon>
                         </v-btn>
                         <v-btn

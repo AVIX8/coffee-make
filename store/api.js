@@ -67,13 +67,19 @@ export const actions = {
   },
   createProduct({ commit }, data) {
     const fd = new FormData()
-    fd.append('data', JSON.stringify(data))
-    if (data.images.length) {
-      data.imageFiles.forEach((file) => {
-        fd.append('images', file)
-      })
-    }
+    fd.append('data', JSON.stringify(data.product))
+    data.imageFiles.forEach((file) => {
+      fd.append('images', file)
+    })
     return this.$axios.$post('/products/create', fd)
+  },
+  updateProduct({ commit }, data) {
+    const fd = new FormData()
+    fd.append('data', JSON.stringify(data.product))
+    data.imageFiles.forEach((file) => {
+      fd.append('images', file)
+    })
+    return this.$axios.$post('/products/update', fd)
   },
   deleteProduct({ commit }, id) {
     return this.$axios.$post('/products/delete', { id })
