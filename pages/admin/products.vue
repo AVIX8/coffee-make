@@ -133,8 +133,10 @@ export default {
     },
     save(product) {
       if (this.isNew) {
+        console.log('create:', product)
         this.$store.dispatch('api/createProduct', product).then((data) => {
           this.products.push(data)
+          console.log(data)
         })
       } else {
         // this.$store

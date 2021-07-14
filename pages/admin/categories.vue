@@ -23,9 +23,7 @@
               <template v-slot:prepend="{ item }">
                 <v-img
                   v-if="item.image"
-                  :src="
-                    $axios.defaults.baseURL + '/storage/image/' + item.image
-                  "
+                  :src="`${$axios.defaults.baseURL}/storage/image/${item.image}`"
                   contain
                   max-height="48px"
                   max-width="48px"
@@ -47,7 +45,11 @@
             </v-list-item-content>
 
             <v-list-item-avatar tile size="80">
-              <v-img v-if="selected.image" :src="selectedImageURL"></v-img>
+              <v-img
+                v-if="selected.image"
+                ref="image"
+                :src="selectedImageURL"
+              ></v-img>
             </v-list-item-avatar>
           </v-list-item>
           <v-card-text>
@@ -65,6 +67,16 @@
               <a :href="selectedImageURL" target="_blank">{{
                 selected.image
               }}</a>
+              &nbsp;
+              <v-btn
+                :download="selected.image"
+                :href="selectedImageURL"
+                color="primary"
+                small
+                min-width="0"
+              >
+                <v-icon small> mdi-download </v-icon>
+              </v-btn>
             </p>
 
             <v-card-actions class="flex-wrap justify-center">

@@ -66,7 +66,14 @@ export const actions = {
     return this.$axios.$post('/products/getBySlug', { slug })
   },
   createProduct({ commit }, data) {
-    return this.$axios.$post('/products/create', data)
+    const fd = new FormData()
+    fd.append('data', JSON.stringify(data))
+    if (data.images.length) {
+      data.imageFiles.forEach((file) => {
+        fd.append('images', file)
+      })
+    }
+    return this.$axios.$post('/products/create', fd)
   },
   deleteProduct({ commit }, id) {
     return this.$axios.$post('/products/delete', { id })
