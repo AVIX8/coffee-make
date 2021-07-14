@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-autocomplete
-      v-if="items.length > 0"
+      v-if="allItems.length"
       v-model="selected"
       v-click-outside="selectValue"
       validate-on-blur
@@ -44,8 +44,9 @@ export default {
   },
   computed: {
     allItems() {
-      if (this.value.length === 0) return this.items
-      return [this.value].concat(this.items)
+      const filtered = this.items.filter((x) => !!x)
+      if (this.value.length === 0) return filtered
+      return [this.value].concat(filtered)
     },
   },
   methods: {

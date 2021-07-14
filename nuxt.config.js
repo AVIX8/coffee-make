@@ -59,7 +59,7 @@ export default {
 
   loading: {
     color: 'green',
-    height: '5px',
+    height: '1px',
     failedColor: 'yellow',
   },
 

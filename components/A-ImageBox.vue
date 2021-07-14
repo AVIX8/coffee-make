@@ -8,11 +8,8 @@
       accept="images/*"
       @change="onChange"
     />
-
     <div
-      v-click-outside="(hove = false)"
       :class="{ blueBorder: hover }"
-      class="geryBorder"
       @dragover="dragover"
       @dragleave="dragleave"
       @drop="drop"
@@ -97,6 +94,7 @@ export default {
     return {
       files: [],
       hover: false,
+      mouseInside: false,
     }
   },
   methods: {
@@ -113,12 +111,11 @@ export default {
       })
     },
     dragover(event) {
-      event.preventDefault()
-      console.log('dragover')
       this.hover = true
+      event.preventDefault()
     },
     dragleave(event) {
-      console.log('dragleave')
+      this.hover = false
     },
     drop(event) {
       event.preventDefault()
@@ -135,7 +132,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .top-border {
   border-top: 3px solid #1976d2;
   margin-top: -3px;
@@ -150,7 +147,7 @@ export default {
   -moz-border-radius: 6px;
   -webkit-border-radius: 6px;
   border-radius: 6px;
-  border-style: dashed;
+  border-style: dashed !important;
   border: 2px solid #1976d2;
   margin: -2px;
 }

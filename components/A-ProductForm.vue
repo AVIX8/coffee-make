@@ -185,8 +185,10 @@ export default {
   },
   methods: {
     open(product) {
+      console.log(product)
       if (product) this.product = JSON.parse(JSON.stringify(product))
       else this.product = JSON.parse(JSON.stringify(this.defaultProduct))
+      console.log(this.product.optionTitle)
 
       this.isNew = !product
       this.nextCategories = []
