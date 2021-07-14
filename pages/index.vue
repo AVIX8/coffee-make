@@ -1,18 +1,29 @@
 <template>
-  <div class="mainBox">
-    <div class="slider">
-      <Slider :slides="slides" />
-    </div>
-    <div class="bestsellers">
-      <h2>ХИТЫ ПРОДАЖ</h2>
-      <div class="items">
-        <ParalaxCard
-          v-for="(bestseller, i) in bestsellers"
-          :key="i"
-          :product="bestseller"
-        />
+  <div ref="mainBox" class="mainBox">
+    <nuxt-link class="sideLink redLink animation shadow" tag="div" to="catalog">
+      <div ref="left" class="back-box back-box-left" />
+      <div class="frontbox" style="background: #e5765791">Каталог</div>
+      <div ref="leftEyelet" class="eyelet eyelet-left animation">
+        <v-icon large>mdi-chevron-right</v-icon>
       </div>
+    </nuxt-link>
+
+    <div class="centerBox balance">
+      <h1 class="mainTitle">COFFEE MAKE</h1>
+      <div id="tryButton"><h5>Попробовать бесплатно</h5></div>
     </div>
+
+    <nuxt-link
+      class="sideLink blueLink animation shadow"
+      tag="div"
+      to="business"
+    >
+      <div ref="rightEyelet" class="eyelet eyelet-right animation">
+        <v-icon large>mdi-chevron-left</v-icon>
+      </div>
+      <div ref="right" class="back-box back-box-right" />
+      <div class="frontbox" style="background: #4494b6a1">Для Бизнеса</div>
+    </nuxt-link>
   </div>
 </template>
 
@@ -21,193 +32,141 @@ export default {
   layout: 'header&footer',
   data() {
     return {
-      bestsellers: [
-        {
-          title: 'FRESH COFFEE AROME',
-          price: '1100,00',
-          img: '/testCoffee.png',
-        },
-        {
-          title: 'FRESH COFFEE AROME',
-          price: '1100,00',
-          img: '/testCoffee.png',
-        },
-        {
-          title: `Сироп ARGENTO "ЗЕЛЕНЫЙ БАНАН", 1л`,
-          price: '1300,00',
-          img: '/сироп зеленый банан.png',
-        },
-        {
-          title: `Помпа для бутылки сиропа, 10 мл`,
-          price: '320,00',
-          img: '/помпа.png',
-        },
-        {
-          title: 'FRESH COFFEE AROME',
-          price: '1100,00',
-          img: '/testCoffee.png',
-        },
-        {
-          title: 'FRESH COFFEE AROME',
-          price: '1100,00',
-          img: '/testCoffee.png',
-        },
-      ],
-      slides: [
-        {
-          title: '01234567890123456789',
-          description: `0123456789 0123456789 0123456789 0123456789 0123456789
-            0123456789 0123456789 0123456789 0123456789 0123456789 0123456789
-            0123456789 0123456789 0123456789 0123456789 0123456789 0123456789`,
-          button: '0123456789 0123456789',
-          img: '/banner_kofe1.jpg',
-          settings: {
-            left: true,
-          },
-        },
-        {
-          title: 'ЗЕРНОВОЙ КОФЕ СВЕЖЕЙ ОБЖАРКИ С ДОСТАВКОЙ',
-          description: `Поможем Вам насладиться вкусным и ароматным кофе свежей обжарки прямо не выходя из офиса. Устройте у себя мини-кофейню. Дегустация кофе - БЕСПЛАТНО!`,
-          button: 'Узнать подробнее',
-          img: '/banner_kofe1.jpg',
-        },
-        {
-          title: 'ВОЗЬМИТЕ КОФЕМАШИНУ В АРЕНДУ!',
-          description: `Она создаст имидж компании и будет выполнять роль делового инструмента. Повысьте эффективность работы сотрудников и лояльность клиентов.`,
-          button: 'Узнать подробнее',
-          img: '/banner_kofe1.jpg',
-        },
-      ],
+      isCenterActive: true,
     }
   },
   computed: {},
-  methods: {},
+  mounted() {
+    window.addEventListener('resize', this.resizeHandler)
+    this.resizeHandler()
+    this.$refs.mainBox.style.minHeight = this.$store.state.windowHeight + 'px'
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeHandler)
+  },
+  methods: {
+    resizeHandler() {
+      this.$refs.leftEyelet.style.left =
+        this.$refs.left.clientWidth -
+        this.$refs.leftEyelet.clientWidth / 2 +
+        'px'
+      this.$refs.rightEyelet.style.right =
+        this.$refs.right.clientWidth -
+        this.$refs.rightEyelet.clientWidth / 2 +
+        'px'
+    },
+  },
 }
 </script>
 
 <style scoped lang="scss">
 .mainBox {
   position: relative;
-  /* min-height: 100%;
-  width: 100%; */
-}
-.slider {
-  position: relative;
-
-  margin: 2rem 5rem 2rem 5rem;
-
-  border: none;
-
-  filter: drop-shadow(0 0 0.5rem #00241b);
-}
-.bestsellers {
-  /* position: relative; */
   display: flex;
-  /* align-items: center; */
-  justify-content: center;
-  flex-wrap: wrap;
-
-  margin: 1rem 5rem 1rem 5rem;
 }
-.bestsellers h2 {
-  font-family: Arial, Helvetica, sans-serif;
+.shadow {
+  filter: drop-shadow(0 0 0.2rem gray);
+}
+.animation {
+  transition: all 0.6s;
+}
+.centerBox {
+  position: relative;
+  left: 25%;
+  padding: 3rem 0 3rem 0;
   text-align: center;
-  font-weight: bold;
+  width: 50%;
+  background: url(static\Coffee_logotype_styl.png) 47% 10%;
+  // z-index: -1;
 }
-.bestsellers .items {
-  position: relative;
-  /* background-color: red; */
+.mainTitle {
+  margin: 0 0 2rem 0;
+  color: white;
+  text-shadow: 0 5px 8px gray;
+}
+#tryButton {
+  display: inline-block;
+  cursor: pointer;
+  padding: 1rem;
+  color: white;
+  background: $main-color;
+  border: 2px white solid;
+  border-radius: 20px;
+  z-index: 20;
+  transition: all 0.2s;
+}
+#tryButton:hover {
+  transform: scale(1.05);
 }
 
-.slide {
-  position: relative;
-  height: 100%;
-  box-shadow: inset 0px 0px 20px white;
-}
-.slideBackground {
-  position: initial;
-  z-index: 1;
-}
-.slideInfo {
+.sideLink {
   position: absolute;
-  top: 23%;
-  left: 13%;
-
-  padding: 1rem 0 0 2rem;
-
-  min-height: 45%;
-  max-height: 60%;
-  min-width: 25%;
-  max-width: 28%;
-
-  /* background: red; */
+  height: 100%;
+  width: 25%;
+  cursor: pointer;
   z-index: 2;
 }
-.title {
-  margin: 0 0 1rem 0;
-
+.sideLink:hover {
+  width: 27%;
+}
+.blueLink {
+  right: 0;
+}
+.redLink {
+  left: 0;
+}
+.sideLink:hover .eyelet-left {
+  transform: translateX(-50%);
+}
+.sideLink:hover .eyelet-right {
+  transform: translateX(50%);
+}
+.eyelet {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  margin-top: -50px;
+  border-radius: 100%;
+  z-index: -2;
+}
+.eyelet-left {
+  padding: 0 0 0 2.5rem;
+  background: $main-light-color;
+}
+.eyelet-right {
+  padding: 0 2.5rem 0 0;
+  background: $side-dark-color;
+}
+.back-box {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  filter: blur(2px);
+  background-position: 75% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.back-box-left {
+  background-image: url(static\left-background.jpg);
+  border-right: 5px $main-light-color solid;
+}
+.back-box-right {
+  background-image: url(static\right-background.jpg);
+  border-left: 5px $side-dark-color solid;
+}
+.frontbox {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
   color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1.8rem;
   font-weight: bold;
-  border-bottom: 0.3rem white ridge;
-  border-radius: 0;
-}
-.description {
-  color: white;
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 1.5rem;
-
-  /* background: blue; */
-}
-.button {
-  margin: 2rem 0;
-  padding: 0.5rem 0 0.7rem 0;
-
-  width: 70%;
-
-  color: white;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  font-size: 1.5rem;
-  text-align: center;
-  font-weight: bold;
-
-  border: 2px #00b9b0 solid;
-  border-radius: 20px;
-  transition: all 0.3s;
-
-  /* background: yellow; */
-}
-.button:hover {
-  cursor: pointer;
-  background-image: linear-gradient(
-    to top,
-    #009b94,
-    #00a9a1,
-    #00b7ae,
-    #00c5bb,
-    #00d3c8
-  );
-  transition: all 0.3s;
-}
-.button:active {
-  background: steelblue;
-}
-
-@media screen and (max-width: $mobile) {
-  .slider {
-    margin: 2rem 0.8rem 2rem 0.8rem;
-  }
-  .bestsellers h2 {
-    font-size: 1.8rem;
-  }
-  .bestsellers .items {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-
-    margin: 0.5rem 0 3rem 0;
-
-    // background-color: red;
-  }
+  font-size: 2rem;
+  text-shadow: 0 0 1rem black;
 }
 </style>

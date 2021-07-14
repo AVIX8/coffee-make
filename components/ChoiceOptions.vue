@@ -61,6 +61,7 @@ export default {
       this.$emit('changeOption', option)
     },
     close() {
+      if (!this.isOpen || !this.$refs.choice) return
       this.isOpen = false
       this.$refs.choice.style.height = '2rem'
     },

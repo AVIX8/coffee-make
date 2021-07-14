@@ -18,7 +18,7 @@
       >
         <slide v-for="(img, index) in item.imgs" :key="index">
           <div class="container">
-            <v-img :src="img" class="itemImg" />
+            <v-img :src="img" contain class="itemImg" />
           </div>
         </slide>
         <hooper-navigation
@@ -36,7 +36,7 @@
         ></hooper-pagination>
       </hooper>
       <div v-else class="container">
-        <v-img :src="item.imgs[0]" class="itemImg" />
+        <v-img :src="item.imgs[0]" contain class="itemImg" />
       </div>
     </div>
 
@@ -76,7 +76,11 @@
         <div v-for="(attr, i) in item.attributes" :key="i" class="property">
           {{ attr.title }}: {{ attr.value }}
         </div>
-        <div v-for="(chr, i) in item.characteristics" :key="i" class="property">
+        <div
+          v-for="chr in item.characteristics"
+          :key="chr.title + chr.value"
+          class="property"
+        >
           {{ chr.title }}: {{ chr.value }}
         </div>
       </div>
