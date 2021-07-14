@@ -1,12 +1,12 @@
 <template>
-  <v-card outlined min-width="550">
+  <v-card outlined class="mb-8">
     <v-card-title class="pa-3"
       >{{ title }} <v-spacer></v-spacer>
 
       <v-btn color="primary" @click="addItem">
         <v-icon> mdi-plus </v-icon>
-      </v-btn></v-card-title
-    >
+      </v-btn>
+    </v-card-title>
     <div v-if="value.length">
       <v-row class="mx-0" justify="start">
         <v-col v-for="(item, index) in headers" :key="index" md="5">

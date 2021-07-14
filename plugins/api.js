@@ -29,7 +29,7 @@ export default function ({ $axios, store, redirect, $cookies }) {
   $axios.onResponseError(async (error) => {
     const refreshToken = $cookies.get('refreshToken')
 
-    if (!refreshToken || error.response.status !== 401 || error.config.retry) {
+    if (!refreshToken || error.response?.status !== 401 || error.config.retry) {
       throw error
     }
 

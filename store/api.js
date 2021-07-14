@@ -59,38 +59,21 @@ export const actions = {
   /**
    * PRODUCTS
    */
-  getProducts({ commit }, filters, skip) {
-    return this.$axios.$post('/products/get', { filters, skip })
+  getProducts({ commit }, filters, skip, limit) {
+    return this.$axios.$post('/products/get', { filters, skip, limit })
   },
   getProductBySlug({ commit }, slug) {
     return this.$axios.$post('/products/getBySlug', { slug })
   },
-  getCharacteristics({ coomit }, category) {
-    return this.$axios
-      .$post('/products/getCharacteristics', { category })
-      .then((characteristics) => {
-        const tmp = {}
-        characteristics.forEach((element) => {
-          if (!tmp[element.title]) tmp[element.title] = [element.value]
-          else tmp[element.title].push(element.value)
-        })
-        return tmp
-      })
-  },
-  getAttributes({ coomit }, category) {
-    return this.$axios
-      .$post('/products/getAttributes', { category })
-      .then((attributes) => {
-        const tmp = {}
-        attributes.forEach((element) => {
-          if (!tmp[element.title]) tmp[element.title] = [element.value]
-          else tmp[element.title].push(element.value)
-        })
-        return tmp
-      })
-  },
   createProduct({ commit }, data) {
-    return this.$axios.$post('/products/create', data)
+    const fd = new FormData()
+    fd.append('data', JSON.stringify(data))
+    if (data.images.length) {
+      data.imageFiles.forEach((file) => {
+        fd.append('images', file)
+      })
+    }
+    return this.$axios.$post('/products/create', fd)
   },
   deleteProduct({ commit }, id) {
     return this.$axios.$post('/products/delete', { id })
@@ -100,7 +83,33 @@ export const actions = {
    * CATEGORIES
    */
   getCategories({ commit }, parentPath) {
-    return this.$axios.$post('categories/', { parentPath })
+    return this.$axios.$post('categories/get', { parentPath })
+  },
+  getCategoryFilters({ commit }, category) {
+    return this.$axios
+      .$post('/categories/getFilters', { category })
+      .then((data) => {
+        const res = data.reduce((rv, x) => {
+          ;(rv[x.title] = rv[x.title] || []).push(x.value)
+          return rv
+        }, {})
+        return res
+      })
+  },
+  getCategoryInfo({ commit }, category) {
+    return this.$axios
+      .$post('/categories/getInfo', { category })
+      .then((data) => {
+        const res = {}
+        for (const name of ['characteristics', 'attributes']) {
+          res[name] = data[name].reduce((rv, x) => {
+            ;(rv[x.title] = rv[x.title] || []).push(x.value)
+            return rv
+          }, {})
+        }
+        res.optionTitles = data.optionTitles
+        return res
+      })
   },
   updateCategory({ commit }, data) {
     const fd = new FormData()

@@ -3,6 +3,7 @@
     <v-autocomplete
       v-if="items.length > 0"
       v-model="selected"
+      v-click-outside="selectValue"
       validate-on-blur
       hide-no-data
       :outlined="outlined"
@@ -10,6 +11,7 @@
       :label="label"
       :search-input="value"
       @update:search-input="searchInput"
+      @keydown.tab="selectValue"
     ></v-autocomplete>
     <v-text-field
       v-else
@@ -17,7 +19,7 @@
       clearable
       :label="label"
       :value="value"
-      @input="(val) => $emit('input', val || '')"
+      @input="input"
     ></v-text-field>
   </div>
 </template>
@@ -38,28 +40,24 @@ export default {
   data() {
     return {
       selected: '',
-      newItem: '',
     }
   },
   computed: {
     allItems() {
-      if (this.newItem.length === 0) return this.items
-      return [this.newItem].concat(this.items)
-    },
-  },
-  watch: {
-    value(val) {
-      if (val !== null) {
-        this.selected = val
-        this.newItem = val
-      } else if (this.selected !== null) {
-        this.$emit('input', this.selected)
-      }
+      if (this.value.length === 0) return this.items
+      return [this.value].concat(this.items)
     },
   },
   methods: {
     searchInput(val) {
       if (val !== null) this.$emit('input', val)
+      else this.selectValue()
+    },
+    input(val) {
+      this.$emit('input', val || '')
+    },
+    selectValue() {
+      this.selected = this.value
     },
   },
 }
