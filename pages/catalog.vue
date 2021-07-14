@@ -1,5 +1,8 @@
 <template>
   <div id="catalogBox">
+    <div v-if="isView" class="dialogCover" title="Свернуть">
+      <ProductDialog title="" :item="viewProduct" @close="isView = false" />
+    </div>
     <div id="path">Каталог/Кофе</div>
     <div id="searchBox" class="hd shadowBox">
       <div id="sortBox">
@@ -18,7 +21,11 @@
         <div class="categoryTitle">Кофе</div>
         <Filtres :filtres="filtres" :selected="selected" />
       </div>
-      <ProductList ref="productList" class="productList pr" />
+      <ProductList
+        ref="productList"
+        class="productList pr"
+        @openProduct="setViewProduct"
+      />
     </div>
     <!-- <div class="fake-shadow"></div> -->
   </div>
@@ -32,6 +39,7 @@ export default {
   transition: 'catalog',
   data() {
     return {
+      isView: false,
       path: {},
       selected: {
         Купаж: [],
@@ -85,6 +93,57 @@ export default {
           ],
         },
       ],
+      viewProduct: {
+        _id: '054VA72303012P',
+        title: 'Mild',
+        descr:
+          'Смесь арабики с ароматом сладкой карамели, какао и бисквитной выпечки (сладкий).',
+        imgs: ['hz1', 'hz2'],
+        slug: 'mild',
+        price: 1200, // без опций
+        optionTitle: 'Масса (гр)', // null если нет
+        // АТРИБУТ с изменяемым значением
+        options: [
+          {
+            price: 1200,
+            value: 1000,
+          },
+          {
+            price: 300,
+            value: 250,
+          },
+        ],
+        attributes: [
+          // НЕ участвуют в фильтрации
+          {
+            title: 'Объём (л)',
+            value: 1000,
+          },
+        ],
+        characteristics: [
+          // участвуют в фильтации
+          {
+            title: 'Обжарка',
+            value: 'Средняя',
+          },
+          {
+            title: 'Кислотность',
+            value: 'Средняя',
+          },
+          {
+            title: 'Сорт',
+            value: '100% арабика',
+          },
+          {
+            title: 'Купаж',
+            value: 'Смесь',
+          },
+          {
+            title: 'География',
+            value: 'Бразилия, Колумбия, Гватемала.',
+          },
+        ],
+      },
     }
   },
   computed: {},
@@ -119,6 +178,11 @@ export default {
       if (window.scrollY > 50) this.$refs.filtres.style.top = '1%'
       else this.$refs.filtres.style.top = '15%'
     },
+    setViewProduct(product) {
+      // console.log(product)
+      this.viewProduct = product
+      this.isView = true
+    },
   },
 }
 </script>
@@ -129,6 +193,21 @@ export default {
   padding: 0 15rem 5rem 15rem;
   background: whitesmoke;
   // background: $main-light-color;
+}
+.dialogCover {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 100%;
+
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
 }
 #path {
   display: flex;

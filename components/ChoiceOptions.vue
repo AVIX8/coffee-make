@@ -7,22 +7,19 @@
       @mouseenter="mouseIn"
       @mouseleave="mouseOut"
     >
-      <p v-if="this.$props.options.variants.length === 1" class="low">
-        {{ now }}
-      </p>
-      <button v-show="isActive" class="now" @click="btnClick">
-        <p>{{ now }}</p>
+      <button v-show="!isOpen" class="now" @click="btnClick">
+        <p>{{ now.value }}</p>
         <v-icon>mdi-chevron-down</v-icon>
       </button>
       <transition name="down">
         <ul v-if="isOpen" class="list">
           <li
-            v-for="(variant, i) in options.variants"
+            v-for="(option, i) in options"
             :key="i"
             class="option"
-            @click="liClick(variant.option)"
+            @click="liClick(option)"
           >
-            {{ variant.option }}
+            {{ option.value }}
           </li>
         </ul>
       </transition>
@@ -33,25 +30,25 @@
 <script>
 export default {
   props: {
-    options: { type: Object, required: true },
+    options: { type: Array, required: true },
   },
   data() {
     return {
       isOpen: false,
-      now: this.options.variants[0].option,
+      now: this.options[0],
     }
   },
   computed: {
-    isActive() {
-      if (this.$props.options.variants.length > 1 && !this.isOpen) return true
-      else return false
-    },
+    // isActive() {
+    //   if (this.options.variants.length > 1 && !this.isOpen) return true
+    //   else return false
+    // },
   },
   methods: {
     btnClick() {
       this.isOpen = !this.isOpen
       this.$refs.choice.style.height = this.isOpen
-        ? 2.1 * this.options.variants.length + 'rem'
+        ? 2.1 * this.options.length + 'rem'
         : '2rem'
       this.$refs.choice.style.background = 'white'
       this.$refs.choice.style.zIndex = 9
@@ -68,8 +65,8 @@ export default {
       this.$refs.choice.style.height = '2rem'
     },
     mouseIn() {
-      if (this.$props.options.variants.length > 1 && !this.isOpen)
-        this.$refs.choice.style.background = '#32bebd'
+      if (this.$props.options.length > 1 && !this.isOpen)
+        this.$refs.choice.style.background = '#e57657'
       else this.$refs.choice.style.cursor = 'default'
     },
     mouseOut() {
@@ -103,6 +100,7 @@ button {
   // background: blue;
 }
 .choice {
+  box-sizing: border-box;
   position: relative;
   display: grid;
 
@@ -112,7 +110,7 @@ button {
   // background: red;
 
   border-radius: 20px;
-  border: 0.2rem solid #2aa5a5;
+  border: 0.2rem solid $main-color;
 
   box-shadow: 0.1rem 0.1rem 0.3rem gray;
   overflow: hidden;
@@ -140,7 +138,7 @@ button {
   transition: all 0.5s;
 }
 .now:active {
-  background: #31d4d4;
+  background: $main-color;
   transition: all 0s;
 }
 .now p {

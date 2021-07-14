@@ -1,6 +1,11 @@
 <template>
   <div id="catalog-box">
-    <div v-for="(item, index) in items" :key="index" class="card-card">
+    <div
+      v-for="(item, index) in items"
+      :key="index"
+      class="card-card"
+      @click="$emit('openProduct', item)"
+    >
       <Card :item="item" />
     </div>
   </div>
@@ -16,7 +21,7 @@ export default {
           title: 'Mild',
           descr:
             'Смесь арабики с ароматом сладкой карамели, какао и бисквитной выпечки (сладкий).',
-          imgs: ['__Coffee_Make_Mild.png'],
+          imgs: ['__Coffee_Make_Mild.png', 'сироп зеленый банан.png'],
           slug: 'mild',
           price: 1200,
           optionTitle: 'Масса (гр)',
@@ -33,7 +38,7 @@ export default {
           attributes: [
             // не участвуют в фильтрации
             {
-              title: 'Масса (гр)',
+              title: 'Объём (мл)',
               value: 1000,
             },
           ],
@@ -117,49 +122,18 @@ export default {
           descr:
             'Смесь арабики с ароматом сладкой карамели, какао и бисквитной выпечки (сладкий).',
           imgs: ['Молочник «Eternum» 150 мл.png'],
-          slug: 'mild',
+          slug: 'molochnik-eternum',
           price: 1200,
-          optionTitle: 'Масса (гр)',
-          options: [
-            {
-              price: 1200,
-              value: 1000,
-            },
-            {
-              price: 300,
-              value: 250,
-            },
-          ],
+          optionTitle: undefined,
+          options: [],
           attributes: [
             // не участвуют в фильтрации
             {
-              title: 'Масса (гр)',
-              value: 1000,
+              title: 'Объём (мл)',
+              value: 150,
             },
           ],
-          characteristics: [
-            // участвуют в фильтации
-            {
-              title: 'Обжарка',
-              value: 'Средняя',
-            },
-            {
-              title: 'Кислотность',
-              value: 'Средняя',
-            },
-            {
-              title: 'Сорт',
-              value: '100% арабика',
-            },
-            {
-              title: 'Купаж',
-              value: 'Смесь',
-            },
-            {
-              title: 'География',
-              value: 'Бразилия, Колумбия, Гватемала.',
-            },
-          ],
+          characteristics: [],
         },
         {
           _id: '054VA72303012P',

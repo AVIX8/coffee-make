@@ -1,11 +1,12 @@
 <template>
   <div class="cardBox">
-    <nuxt-link
+    <!-- <nuxt-link
       :to="'/product/' + item.slug"
       tag="div"
       class="card"
       style="text-decoration: none"
-    >
+    > -->
+    <div class="card">
       <div class="preview">
         <img :src="item.imgs[0]" :alt="item.title" />
       </div>
@@ -13,7 +14,8 @@
         <div class="title">{{ item.title }}</div>
         <div class="price">{{ item.price }} руб</div>
       </div>
-    </nuxt-link>
+      <!-- </nuxt-link> -->
+    </div>
   </div>
 </template>
 
@@ -65,7 +67,7 @@ export default {
   width: 100%;
   background: white;
   border-radius: 10px;
-  box-shadow: inset 0 0 0.2rem black;
+  // box-shadow: inset 0 0 0.2rem black;
 }
 .preview img {
   // margin: 8%;
