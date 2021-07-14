@@ -66,14 +66,8 @@ export default {
       { text: 'Действия', value: 'actions', sortable: false },
     ],
     index: -1,
-    severalOptions: false,
+    isNew: false,
   }),
-
-  computed: {
-    isNew() {
-      return this.index === -1
-    },
-  },
 
   watch: {
     dialogDelete(val) {
@@ -95,23 +89,15 @@ export default {
           console.log(err)
         })
     },
-
-    productDeepCopy(product) {
-      const newProduct = Object.assign({}, product)
-      newProduct.attributes = [...product.attributes]
-      newProduct.characteristics = [...product.characteristics]
-      newProduct.options = [...product.options]
-      return newProduct
-    },
-
     createItem() {
+      this.isNew = true
       this.$refs.ProductForm.open()
     },
     editItem(item) {
+      this.isNew = false
       this.index = this.products.indexOf(item)
       this.$refs.ProductForm.open(item)
     },
-
     deleteItem(item) {
       this.index = this.products.indexOf(item)
       this.dialogDelete = true
@@ -131,22 +117,28 @@ export default {
       this.index = -1
       this.dialogDelete = false
     },
-    save(product) {
+    save(data) {
       if (this.isNew) {
-        console.log('create:', product)
-        this.$store.dispatch('api/createProduct', product).then((data) => {
-          this.products.push(data)
+        console.log('create:', data)
+        this.$store.dispatch('api/createProduct', data).then((product) => {
+          this.products.push(product)
           console.log(data)
         })
       } else {
-        // this.$store
-        //   .dispatch('api/updateProduct', product)
-        //   .then((res) => {
-        //     this.products[this.index] = this.productDeepCopy(res)
-        //   })
-        //   .catch((err) => {
-        //     console.log(err)
-        //   })
+        console.log('update:', data)
+        this.$store
+          .dispatch('api/updateProduct', data)
+          .then((product) => {
+            console.log(product)
+            this.$set(
+              this.products,
+              this.index,
+              JSON.parse(JSON.stringify(product))
+            )
+          })
+          .catch((err) => {
+            console.log(err)
+          })
       }
     },
   },
