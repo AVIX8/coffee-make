@@ -47,12 +47,12 @@ export default {
   methods: {
     overflow() {
       this.copyValue = this.max
-      this.wrong()
+      this.wrong(this.$refs.choise)
       return this.copyValue
     },
     bottomingOut() {
       this.copyValue = this.min
-      this.wrong()
+      this.wrong(this.$refs.choise)
       return this.copyValue
     },
     minus() {
@@ -61,26 +61,26 @@ export default {
     plus() {
       this.copyValue++
     },
-    wrong() {
-      this.$refs.choise.style.background = 'rgb(253, 150, 150)'
-      this.$refs.choise.style.borderColor = 'rgb(172, 38, 38)'
+    wrong(e) {
+      e.style.background = 'rgb(253, 150, 150)'
+      e.style.borderColor = 'rgb(172, 38, 38)'
 
       setTimeout(() => {
-        this.$refs.choise.style.transform = 'translate(2px, 0px) rotate(3deg)'
+        e.style.transform = 'translate(2px, 0px) rotate(3deg)'
       }, 100)
       setTimeout(() => {
-        this.$refs.choise.style.transform = 'translate(-2px, 0px) rotate(-3deg)'
+        e.style.transform = 'translate(-2px, 0px) rotate(-3deg)'
       }, 100 + 50)
 
       setTimeout(() => {
-        this.$refs.choise.style.transform = 'translate(0px, 0px) rotate(0deg)'
+        e.style.transform = 'translate(0px, 0px) rotate(0deg)'
       }, 200)
 
-      this.$refs.choise.style.transition = 'all 0.1s'
+      e.style.transition = 'all 0.1s'
       setTimeout(() => {
-        this.$refs.choise.style.background = 'white'
-        this.$refs.choise.style.borderColor = '#ff3300'
-        this.$refs.choise.style.transition = 'all 1s'
+        e.style.background = 'white'
+        e.style.borderColor = '#ff3300'
+        e.style.transition = 'all 1s'
       }, 300)
       this.$refs.input.blur()
     },

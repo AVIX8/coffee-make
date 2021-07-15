@@ -149,7 +149,7 @@ export default {
   computed: {},
   mounted() {
     window.addEventListener('resize', this.resizeHandler)
-    window.addEventListener('scroll', this.scrollHandler)
+    // window.addEventListener('scroll', this.scrollHandler)
     this.resizeHandler()
     // this.scrollHandler()
 
