@@ -1,11 +1,11 @@
 <template>
-  <div ref="productDialogBox" class="productDialogBox">
+  <div ref="mainBox" class="mainBox">
     <div class="previewBox">
       <hooper
         v-if="item.imgs.length > 1"
         :style="{
-          height: [hooperHeight],
-          width: [hooperWidth],
+          height: [hooperHeight] + 'rem',
+          width: [hooperWidth] + 'rem',
         }"
         :infinite-scroll="true"
         :mouse-drag="false"
@@ -18,7 +18,10 @@
       >
         <slide v-for="(img, index) in item.imgs" :key="index">
           <div class="container">
-            <v-img :src="img" contain class="itemImg" />
+            <div class="circle">
+              <img :src="img" class="itemImg" />
+              <!-- <v-img :src="img" class="itemImg" /> -->
+            </div>
           </div>
         </slide>
         <hooper-navigation
@@ -36,62 +39,65 @@
         ></hooper-pagination>
       </hooper>
       <div v-else class="container">
-        <v-img :src="item.imgs[0]" contain class="itemImg" />
+        <div class="circle">
+          <img :src="item.imgs[0]" class="itemImg" />
+        </div>
       </div>
     </div>
 
     <div class="infoBox">
-      <h2 class="a-title">
-        {{ item.title }}
-        <v-icon title="Поделиться" class="share">mdi-share-variant</v-icon>
-      </h2>
-      <div class="priceBox">
-        <transition name="priceFade">
-          <div v-if="quantity.value > 1" class="calc">
-            {{ price }} руб &times; {{ quantity.value }} шт =
+      <div>
+        <h1 class="title">{{ item.name }}</h1>
+        <div class="priceBox">
+          <transition name="priceFade">
+            <div v-if="quantity.value > 1" class="calc">
+              <h6>
+                {{ choiceProperty.price }} руб &times; {{ quantity.value }} шт =
+              </h6>
+            </div>
+          </transition>
+          <div ref="price" class="price">
+            <h2>{{ cost }} руб</h2>
           </div>
-        </transition>
-        <div ref="price" class="price">
-          <h3>{{ cost }} руб</h3>
         </div>
-      </div>
 
-      <div class="specificationsBox">
-        <div v-if="!!item.optionTitle" class="a-option">
-          <h5>{{ item.optionTitle }}</h5>
-          <ChoiceOptions
-            :options="item.options"
-            @changeOption="changeOption($event)"
-          ></ChoiceOptions>
+        <div class="specificationsBox">
+          <div class="property">
+            <h4>{{ item.choiceProperty.name }}</h4>
+            <ChoiceOptions
+              :options="item.choiceProperty"
+              @changeOption="changeOption($event)"
+            ></ChoiceOptions>
+          </div>
+          <div class="property">
+            <h4>Количество</h4>
+            <InputOptions
+              :option="quantity"
+              @inputOption="inputOption($event)"
+            ></InputOptions>
+          </div>
+          <div
+            v-for="(property, name) in item.properties"
+            :key="name"
+            class="property"
+          >
+            <h5>{{ name }}:</h5>
+            <PropertiesView :property="property"></PropertiesView>
+          </div>
         </div>
-        <div class="a-option">
-          <h5>Кол-во</h5>
-          <InputOptions
-            :value="1"
-            :max="9999"
-            :min="1"
-            @inputOption="inputOption($event)"
-          ></InputOptions>
-        </div>
-        <div v-for="(attr, i) in item.attributes" :key="i" class="property">
-          {{ attr.title }}: {{ attr.value }}
-        </div>
-        <div
-          v-for="chr in item.characteristics"
-          :key="chr.title + chr.value"
-          class="property"
-        >
-          {{ chr.title }}: {{ chr.value }}
-        </div>
-      </div>
 
-      <div v-if="item.descr" class="descriptionBox">
-        <h5>Описание:</h5>
-        <h6>{{ item.descr }}</h6>
+        <div v-if="!$device.isMobile" class="cartBtn">
+          <button><h6>Добавить в Корзину</h6></button>
+        </div>
       </div>
-      <div v-if="!$device.isMobile" class="cartBtn">
-        <button><h6>Добавить в Корзину</h6></button>
-      </div>
+    </div>
+    <div v-if="item.desc" class="descriptionBox">
+      <h3>Описание</h3>
+      <h5>{{ item.desc }}</h5>
+    </div>
+    <div class="recentlyViewedBox">
+      <h2>Вы недавно смотрели:</h2>
+      <Card v-for="i in $device.isMobile ? 6 : 5" :key="i" :item="item" />
     </div>
     <div v-if="$device.isMobile" class="cartBtn">
       <button><h6>Добавить в Корзину</h6></button>
@@ -114,35 +120,87 @@ export default {
     HooperNavigation,
     HooperPagination,
   },
-  layout: 'adaptivLayout',
-
+  layout: 'header&footer',
   data() {
     return {
       hooperHeight: 0,
       hooperWidth: 0,
-      price: 0,
+      choiceProperty: {
+        price: 0,
+        option: 0,
+      },
       quantity: {
         value: 1,
         minValue: 1,
         maxValue: 9999,
       },
       item: {
-        imgs: [],
+        _id: '054VA72303012P',
+        desc: `Сироп Argento Карамель один из самых популярных и универсальных ароматов.
+        Этот сироп с темным янтарным оттенком можно использовать для создания сладкого кофе, чая и горячего шоколада.
+        Сироп со вкусом карамели цениться как отличная сладкая основа для множества напитков и очень хорошо переплетается с другими ароматами в кофе.
+        Если вы еще ни разу не пробовали готовить напитки с добавлением карамели, то самое время начать экспериментировать!
+        Современные технологии производства сиропов позволяют создать высококачественную продукцию, достойную занять место на у ваших кофемашин.
+        Сироп Argento поставляется в литровых стеклянных бутылках, оборудованных удобной завинчивающейся крышкой.`,
+        name: `Сироп ARGENTO "ЗЕЛЕНЫЙ БАНАН", 1л`,
+        slug: `cироп-argento-зеленый-банан-1л`,
+        category: '/кофе/моносорта',
+        brand: 'Argento',
+        imgs: [
+          '/сироп зеленый банан.png',
+          '/красные стаканы 2.jpg',
+          '/testCoffee.png',
+        ],
+
+        properties: {
+          кислотность: {
+            maxValue: 5,
+            value: 3,
+          },
+          плотность: {
+            maxValue: 5,
+            value: 2,
+          },
+          обжарка: {
+            maxValue: 5,
+            value: 2,
+          },
+        },
+
+        choiceProperty: {
+          name: 'Масса (гр)',
+          variants: [
+            {
+              price: 260.0,
+              option: 250,
+            },
+            {
+              price: 940.0,
+              option: 1000,
+            },
+            // {
+            //   price: 1600.0,
+            //   option: 2000,
+            // },
+            // {
+            //   price: 1600.0,
+            //   option: 2000,
+            // },
+            // {
+            //   price: 1600.0,
+            //   option: 2000,
+            // },
+          ],
+        },
       },
     }
   },
   computed: {
-    productPrice() {
-      return this.item.price
-    },
     cost() {
-      return this.price * this.quantity.value
+      return this.choiceProperty.price * this.quantity.value
     },
   },
   watch: {
-    productPrice(val) {
-      this.price = val
-    },
     quantity(newValue) {
       this.$refs.price.style.transition = 'all 2s'
       if (newValue.value !== 1)
@@ -151,36 +209,27 @@ export default {
     },
   },
   mounted() {
-    this.$store
-      .dispatch('api/getProductBySlug', this.$route.params.slug)
-      .then((product) => {
-        this.item = product
-        this.item.imgs = product.imgs.map(
-          (id) => `${this.$axios.defaults.baseURL}/storage/image/${id}`
-        )
-      })
-      .catch((err) => {
-        console.log('Ошибка')
-        console.log(err.response.data)
-      })
     if (this.$device.isMobile)
       this.hooperHeight =
-        (this.$refs.productDialogBox.clientWidth / parseFloat(16) - 2) * 1.15 +
-        'rem'
-    else this.hooperHeight = '100%'
+        (this.$refs.mainBox.clientWidth / parseFloat(16) - 2) * 1.15
+    else this.hooperHeight = 34
 
     if (this.$device.isMobile)
-      this.hooperWidth =
-        this.$refs.productDialogBox.clientWidth / parseFloat(16) - 2 + 'rem'
-    else this.hooperWidth = '100%'
+      this.hooperWidth = this.$refs.mainBox.clientWidth / parseFloat(16) - 2
+    else this.hooperWidth = 28
   },
   created() {
     require('~/assets/hooperSlug.css')
-    // this.choiceProperty = this.item.choiceProperty.variants[0]
+    this.choiceProperty = this.item.choiceProperty.variants[0]
   },
   methods: {
     changeOption(option) {
-      this.price = option.price
+      this.item.choiceProperty.variants.forEach((variant) => {
+        if (variant.option === option) {
+          this.choiceProperty = variant
+          return 0
+        }
+      })
     },
     inputOption(option) {
       this.quantity.value = option
@@ -188,43 +237,24 @@ export default {
   },
 }
 </script>
-
 <style scoped lang="scss">
-.dialogCover {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 100%;
-
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 100;
-}
-.productDialogBox {
+.mainBox {
   display: grid;
   grid-template-columns: 1fr 1fr;
 
-  padding: 2rem 4rem;
-
-  height: 100%;
-  width: 100%;
-
-  cursor: default;
-
-  background: white;
+  padding: 2rem 22rem 2rem 22rem;
 }
 .previewBox {
-  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 
   grid-column: 1;
+
+  // padding: 1rem 1rem 1rem 40%;
+
+  height: 36rem;
+  width: 100%;
 
   // background: blue;
 }
@@ -234,55 +264,54 @@ export default {
   align-items: center;
   justify-content: center;
 
-  // margin: 1rem;
-  // padding: 5%;
-
   height: 100%;
-  width: 100%;
 
-  border-radius: 20px;
-  // box-shadow: inset 0 0 0.8rem black;
-  // background: white;
+  background: white;
   // background: red;
 }
+.circle {
+  width: 20rem;
+  height: 20rem;
+  background-image: radial-gradient(
+    circle,
+    #00e188,
+    #00b9b0,
+    #008ba9,
+    #435f79,
+    #3d3d3d
+  );
+  border-radius: 50%;
+  box-shadow: inset 0 0 1rem black;
+  z-index: 1;
+}
 .itemImg {
+  // position: absolute;
   height: 100%;
   width: 100%;
-  border-radius: 20px;
+  transform: scale(1.4);
 }
 
 .infoBox {
   position: relative;
-  // display: flex;
-  // flex-wrap: wrap;
-  // justify-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   grid-column: 2;
-  margin: 0 0 0 5%;
+
+  // padding: 1rem 40% 1rem 0;
+  margin: 0 40% 0 0;
+
+  // height: 36rem;
+  width: 100%;
 
   // background: slateblue;
 }
-.a-title {
-  display: flex;
-  align-items: center;
-  justify-content: left;
-  margin: 5% 0 1rem 0;
+.title {
+  margin: 1rem 0 1rem 0;
   width: 100%;
-  font-weight: bold;
   // background: coral;
 }
-.share {
-  position: absolute;
-  right: -3rem;
-  top: -1rem;
-  margin: 0.5rem;
-  padding: 1rem;
-  cursor: pointer;
-  border-radius: 50px;
-  background: whitesmoke;
-}
-.share:hover {
-  box-shadow: 0 0 0.2rem black;
-}
+
 .priceBox {
   // display: flex;
   // align-items: center;
@@ -333,71 +362,57 @@ export default {
 
   // background: yellow;
 }
-.cartBox {
+.property {
   display: grid;
   align-items: center;
-  justify-items: center;
-  grid-template-columns: 1fr 2fr;
-  // grid-template-rows: 1fr 2fr;
-  margin-bottom: 2rem;
-  // background: pink;
+  grid-template-columns: 2fr 3fr;
+
+  margin: 0 0 1rem 0;
+
+  width: 100%;
+  // background: darkorchid;
 }
+
 .cartBtn {
   display: flex;
   justify-content: center;
 
-  margin-top: 2rem;
+  padding: 1rem 30% 1rem 0;
+
   width: 100%;
 
   // background: orange;
 }
 .cartBtn button {
-  padding: 1rem 10%;
-  // height: 4rem;
-  // width: 100%;
+  height: 4rem;
+  width: 100%;
 
-  background-color: $main-light-color;
+  background-color: #00a199;
 
   border-radius: 20px;
 }
 .cartBtn button h6 {
   color: white;
-  // font-weight: bold;
+  font-weight: bold;
 }
 .cartBtn button:hover {
-  background-color: $main-color;
-  // box-shadow: 3px 3px 0.2rem rgb(2, 87, 82);
+  background-color: #00aca3;
+  box-shadow: 3px 3px 0.2rem rgb(2, 87, 82);
   transition: all 0.15s;
-}
-.cartBtn button:hover h6 {
-  font-weight: bold;
 }
 .cartBtn button:active {
   box-shadow: inset 3px 2px 0.2rem rgb(2, 87, 82);
 }
-.a-option {
-  display: grid;
-  grid-template-columns: 1fr 2fr;
-  margin-bottom: 1rem;
-}
-.property {
-  margin-bottom: 1rem;
 
-  width: 100%;
-  font-size: 1.1rem;
-  background: darkorchid;
-  background: whitesmoke;
-}
 .descriptionBox {
   grid-column: 1 / span 2;
-  margin-bottom: 1rem;
-  // padding: 0 2%;
+  // padding: 1rem 20% 1rem 20%;
   width: 100%;
   text-align: justify;
   // background: green;
 }
-.descriptionBox h5 {
-  margin: 0 0 0.5rem 0;
+.descriptionBox h3 {
+  margin: 0 0 1rem 0;
   font-weight: bold;
 }
 
@@ -419,7 +434,7 @@ export default {
 }
 
 @media screen and (max-width: $mobile) {
-  .productDialogBox {
+  .mainBox {
     display: flex;
     flex-direction: column;
 
@@ -447,11 +462,12 @@ export default {
   .itemImg {
     transform: scale(1.3);
   }
-  .a-title {
+
+  .title {
     margin: 1rem 0;
 
     text-align: center;
-    font-size: 150% !important;
+    font-size: 150%;
     font-weight: 900;
     // text-shadow: 0 0 0.1rem black;
     // background: coral;
