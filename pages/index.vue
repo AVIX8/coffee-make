@@ -10,7 +10,7 @@
 
     <div class="centerBox balance">
       <h1 class="mainTitle">COFFEE MAKE</h1>
-      <div id="tryButton"><h5>Попробовать бесплатно</h5></div>
+      <h2 class="subTitle">БОЛЬШЕ ЧЕМ КОФЕ!</h2>
     </div>
 
     <nuxt-link
@@ -60,6 +60,7 @@ export default {
 </script>
 
 <style scoped lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
 .mainBox {
   position: relative;
   display: flex;
@@ -83,6 +84,13 @@ export default {
   margin: 0 0 2rem 0;
   color: white;
   text-shadow: 0 5px 8px gray;
+}
+.subTitle {
+  color: $main-color;
+  font-family: 'Caveat', cursive;
+  font-weight: bold;
+  // text-decoration: underline;
+  transform: rotate(-4deg) translateX(0rem) translateY(-1rem);
 }
 #tryButton {
   display: inline-block;

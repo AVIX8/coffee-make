@@ -81,6 +81,9 @@
     <nuxt />
 
     <div v-if="$device.isDesktop" class="FOOTER">
+      <!-- <yandex-map :coords="coords">
+        <ymap-marker marker-id="1" :coords="coords" hint-content="Мы здесь!" />
+      </yandex-map> -->
       <div class="workingHours">
         <h5>ВРЕМЯ РАБОТЫ</h5>
         ПН - ПТ с 9:00 до 18:00 <br />
@@ -88,10 +91,14 @@
       </div>
       <div class="contacts">
         <h5>КОНТАКТЫ</h5>
-        Телефон: +7 (383) 383-55-42 <br />
+        Телефон: 8 800 550 60 82 <br />
         Email: info@mycfm.ru
       </div>
-      <div class="footerInfo"></div>
+      <div class="address">
+        <h5>НАШ ОФИС</h5>
+        ул. Красногорская, 25, оф. 307, <br />
+        Новосибирск, Россия
+      </div>
     </div>
   </div>
 </template>
@@ -281,9 +288,9 @@ export default {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-wrap: nowrap;
 
-    padding: 1rem;
-    padding-bottom: 2rem;
+    padding: 2rem;
 
     width: 100%;
 
@@ -291,22 +298,21 @@ export default {
     font-size: 0.96rem;
 
     background-color: #16191c;
+    background: $dark-packege;
+    z-index: 1;
   }
-  .workingHours h5 {
-    margin-bottom: 0.5rem;
-    border-bottom: 1px solid white;
-  }
-  .workingHours {
-    margin: 0 2rem 0 10rem;
+  .workingHours,
+  .contacts,
+  .address {
+    margin: 0 2rem;
     color: white;
   }
-  .contacts h5 {
+  .workingHours h5,
+  .contacts h5,
+  .address h5 {
+    // text-align: center;
     margin-bottom: 0.5rem;
     border-bottom: 1px solid white;
-  }
-  .contacts {
-    margin: 0 10rem 0 2rem;
-    color: white;
   }
 }
 @media screen and (max-width: $mobile) {
