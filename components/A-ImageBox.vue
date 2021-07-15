@@ -37,6 +37,7 @@
                       <v-img
                         :src="item.imageURL"
                         contain
+                        class="ma-2"
                         aspect-ratio="1"
                         min-width="150"
                       />
@@ -82,6 +83,7 @@ function formatBytes(bytes, decimals = 2) {
   const i = Math.floor(Math.log(bytes) / Math.log(k))
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + ' ' + sizes[i]
 }
+
 export default {
   components: {
     Drag,

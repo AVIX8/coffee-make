@@ -18,21 +18,12 @@ export const mutations = {
 }
 
 export const actions = {
-  // вызывается каждый раз на СЕРВЕРЕ при загрузке страницы
-  async nuxtServerInit({ commit, dispatch }) {
-    // await dispatch('getUserData')
-    // await Promise.all(dispatch('...'), dispatch('...')) - так лучше делать наверное
-  },
-
-  // вызывается каждый раз на КЛИЕНТЕ при загрузке страницы
-  nuxtClientInit({ commit, dispatch }) {
-    // console.log(this.$axios)
-    // commit('setTokens', { refreshToken: this.$cookies.get('refreshToken') })
-  },
-
   /*
    * AUTH
    */
+  isAuth({ commit }) {
+    return !!this.$cookies.get('refreshToken')
+  },
   login({ commit }, { email, password }) {
     return this.$axios
       .$post('/auth/login', { email, password })
@@ -55,20 +46,23 @@ export const actions = {
   profile({ commit }) {
     return this.$axios.$get('/user/profile')
   },
+  getUserData({ commit }) {
+    return this.$axios.$get('user/getUserData')
+  },
 
   /**
    * PRODUCTS
    */
-  getProducts({ commit }, filters, skip, limit) {
+  getProducts({ commit }, { filters, skip, limit }) {
     return this.$axios.$post('/products/get', { filters, skip, limit })
   },
   getProductBySlug({ commit }, slug) {
     return this.$axios.$post('/products/getBySlug', { slug })
   },
-  createProduct({ commit }, data) {
+  createProduct({ commit }, { product, imageFiles }) {
     const fd = new FormData()
-    fd.append('data', JSON.stringify(data.product))
-    data.imageFiles.forEach((file) => {
+    fd.append('data', JSON.stringify(product))
+    imageFiles.forEach((file) => {
       fd.append('images', file)
     })
     return this.$axios.$post('/products/create', fd)

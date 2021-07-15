@@ -23,7 +23,7 @@
               <template v-slot:prepend="{ item }">
                 <v-img
                   v-if="item.image"
-                  :src="`${$axios.defaults.baseURL}/storage/image/${item.image}`"
+                  :src="imageIdToURL(item.image)"
                   contain
                   max-height="48px"
                   max-width="48px"
@@ -48,7 +48,7 @@
               <v-img
                 v-if="selected.image"
                 ref="image"
-                :src="selectedImageURL"
+                :src="imageIdToURL(selected.image)"
               ></v-img>
             </v-list-item-avatar>
           </v-list-item>
@@ -64,13 +64,13 @@
             </p>
             <p v-if="selected.image">
               <strong> Изображение: </strong>
-              <a :href="selectedImageURL" target="_blank">{{
+              <a :href="imageIdToURL(selected.image)" target="_blank">{{
                 selected.image
               }}</a>
               &nbsp;
               <v-btn
                 :download="selected.image"
-                :href="selectedImageURL"
+                :href="imageIdToURL(selected.image)"
                 color="primary"
                 small
                 min-width="0"
@@ -195,11 +195,6 @@ export default {
       if (!this.active.length) return this.root
       return this.active[0]
     },
-    selectedImageURL() {
-      return (
-        this.$axios.defaults.baseURL + '/storage/image/' + this.selected.image
-      )
-    },
   },
   watch: {
     tmpImage() {
@@ -213,6 +208,9 @@ export default {
     this.fetchAll()
   },
   methods: {
+    imageIdToURL(id) {
+      return `${this.$axios.defaults.baseURL}/storage/image/${id}`
+    },
     addNewItem(parent, category) {
       if (this.categoryById[category._id] === undefined) {
         const newItem = {
@@ -264,7 +262,7 @@ export default {
     },
     edit() {
       this.isNew = false
-      this.tmpImageURL = this.selectedImageURL
+      this.tmpImageURL = this.imageIdToURL(this.selected.image)
       this.tmpItem = Object.assign({}, this.selected)
       this.tmpParent = this.categoryById[this.tmpItem.parentId]
       this.dialog = true

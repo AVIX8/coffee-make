@@ -6,7 +6,6 @@
           isNew ? 'Добавление товара' : 'Редактирование товара'
         }}</span>
       </v-card-title>
-      {{ product }}
       <v-card-text>
         <v-row>
           <v-col>
@@ -161,7 +160,7 @@ export default {
       if (imgs?.length)
         this.images = imgs.map((id) => {
           return {
-            imageURL: `${this.$axios.defaults.baseURL}/storage/image/${id}`,
+            imageURL: this.imageIdToURL(id),
             id,
           }
         })
@@ -184,11 +183,12 @@ export default {
     },
   },
   methods: {
+    imageIdToURL(id) {
+      return `${this.$axios.defaults.baseURL}/storage/image/${id}`
+    },
     open(product) {
-      console.log(product)
       if (product) this.product = JSON.parse(JSON.stringify(product))
       else this.product = JSON.parse(JSON.stringify(this.defaultProduct))
-      console.log(this.product.optionTitle)
 
       this.isNew = !product
       this.nextCategories = []

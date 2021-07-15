@@ -1,8 +1,7 @@
 <template>
   <div id="catalogBox">
-    <div v-if="isView" class="dialogCover" title="Свернуть">
-      <ProductDialog title="" :item="viewProduct" @close="isView = false" />
-    </div>
+    <ProductDialog v-model="isView" title="" :item="viewProduct" />
+
     <div id="path">Каталог/Кофе</div>
     <div id="searchBox" class="hd shadowBox">
       <div id="sortBox">
@@ -202,21 +201,6 @@ export default {
   padding: 0 15rem 5rem 15rem;
   background: whitesmoke;
   // background: $main-light-color;
-}
-.dialogCover {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  height: 100%;
-
-  background: rgba(0, 0, 0, 0.5);
-  z-index: 100;
 }
 #path {
   display: flex;
