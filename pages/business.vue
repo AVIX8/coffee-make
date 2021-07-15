@@ -2,8 +2,16 @@
   <div id="businessBox" class="container">
     <div class="head-row shadow">
       <ContactBox
-        :title="'Бесплатный тест'"
-        :text="'Привезем 3 любых пробника и предоставим автоматическую кофемашину в тест на 7 дней'"
+        title="Бесплатный тест"
+        text="Привезем 3 любых пробника и предоставим автоматическую кофемашину в тест на 7 дней"
+        background-img="red_men.png"
+      />
+      <ContactBox
+        style="margin-top: 1rem"
+        title="МЫ ГОТОВЫ ПОМОЧЬ"
+        title-color="red"
+        text="Оставьте заявку и наши менеджеры помогут подобрать для вас кофе исходя из ваших предпочтений по вкусу и способу приготовления."
+        background-img="coffee_machine3.jpg"
       />
     </div>
     <img

@@ -1,7 +1,23 @@
 <template>
-  <div class="contactBox">
-    <div class="title">{{ title }}</div>
-    <div v-if="text" class="text">{{ text }}</div>
+  <div
+    class="contactBox"
+    :style="[
+      backgroundImg !== null
+        ? {
+            backgroundImage: 'url(' + backgroundImg + ')',
+          }
+        : '',
+    ]"
+  >
+    <div
+      class="title"
+      :style="{ color: titleColor, 'text-shadow': '0 0 0.15rem ' + titleColor }"
+    >
+      {{ title }}
+    </div>
+    <div v-if="text" class="text" :style="{ color: textColor }">
+      {{ text }}
+    </div>
     <div class="inputBox">
       <input
         ref="phone"
@@ -14,6 +30,16 @@
     <div class="inputBox">
       <input ref="name" v-model="name" placeholder="Ваше имя" type="text" />
     </div>
+    <div class="inputBox">
+      <textarea
+        v-if="message"
+        label="One row"
+        auto-grow
+        outlined
+        rows="1"
+        row-height="15"
+      ></textarea>
+    </div>
     <button @click="pushContact">Отправить</button>
     <div>Мы с Вами свяжемся</div>
   </div>
@@ -23,7 +49,11 @@
 export default {
   props: {
     title: { type: String, required: false, default: 'Сообщите о себе' },
+    titleColor: { type: String, required: false, default: 'white' },
     text: { type: String, required: false, default: null },
+    textColor: { type: String, required: false, default: 'white' },
+    backgroundImg: { type: String, required: false, default: null },
+    message: { type: Boolean, required: false, default: false },
   },
   data() {
     return {
@@ -69,7 +99,7 @@ export default {
 
       e.style.transition = 'all 0.1s'
       setTimeout(() => {
-        e.style.background = 'white'
+        e.style.background = 'rgba(255, 255, 255, 0.8)'
         e.style.borderColor = '#ff3300'
         e.style.transition = 'all 1s'
       }, 300)
@@ -91,19 +121,23 @@ export default {
   color: white;
   border-radius: 20px;
   background: $side-color;
+  // background-image: url(static\red_barista.png);
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 .title {
   margin: 1rem;
   font-size: 3rem;
+  font-weight: bold;
   text-align: center;
+  text-shadow: 0 0 3rem black;
 }
 .text {
   margin: 1rem 0;
-  width: 60%;
+  width: 65%;
   font-size: 1.2rem;
   text-align: center;
-  color: $side-dark-color;
-  // background: red;
+  text-shadow: 0 0 0.5rem black;
 }
 .inputBox {
   width: 100%;
@@ -115,17 +149,18 @@ button {
   padding: 10px 30px;
   outline: none;
   border-radius: 20px;
+  // border: 2px solid gray;
 }
 .contactBox input {
   color: black;
   font-size: 1.2rem;
-  background: white;
+  background: rgba(255, 255, 255, 0.8);
 }
 .contactBox button {
   box-sizing: border-box;
-  font-size: 1.5rem;
+  font-size: 1.6rem;
   background: $side-dark-color;
-  border: 2px solid $side-dark-color;
+
   border: 2px solid white;
   transition: all 0.2s;
 }
