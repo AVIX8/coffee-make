@@ -119,9 +119,7 @@ export default {
   .cardBox {
     margin: 0 0 1rem 0;
     // margin: 0 1rem 0;
-
-    height: 95%;
-    width: 90%;
+    width: 95%;
     // background: blue;
   }
   .card {
@@ -136,19 +134,16 @@ export default {
     transition: all 0.4s;
   }
 
-  .title {
-    padding: 1rem 0 0 0;
-    // background: springgreen;
+  .title-price {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    margin: 10px 0;
   }
-  .title {
-    padding: 0 0.2rem 0 0.2rem;
-    font-size: 1rem;
-    // background: yellow;
-  }
-
+  .title,
   .price {
-    margin: 0.5rem 0;
-    // background: orange;
+    padding: 5px 0;
+    text-align: center;
+    font-size: 14px;
   }
 }
 </style>

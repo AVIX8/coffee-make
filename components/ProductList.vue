@@ -600,8 +600,10 @@ export default {
   // overflow: scroll;
   display: grid;
   grid-template-columns: 1fr 1fr;
+  justify-content: center;
+  align-items: center;
   // height: 100rem;
-  width: 100%;
+  // width: 100%;
   // background: forestgreen;
 }
 .card-card {
@@ -616,5 +618,8 @@ export default {
   background: brown;
 }
 @media screen and (max-width: $mobile) {
+  .card-card {
+    margin: 0rem;
+  }
 }
 </style>

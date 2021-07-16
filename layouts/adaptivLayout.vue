@@ -4,7 +4,7 @@
       <Authentication @close="closeAuthentication" />
     </div>
 
-    <div :class="headerStyle">
+    <div v-if="$device.isDesktop" :class="headerStyle">
       <nuxt-link to="/" style="text-decoration: none">
         <img class="logo" title="На Главную" src="/Logo_white_.png" />
       </nuxt-link>
@@ -24,7 +24,12 @@
       />
     </div>
 
-    <nuxt-link :class="sideLinkStyle" tag="div" :to="linkRoute">
+    <nuxt-link
+      v-if="$device.isDesktop"
+      :class="sideLinkStyle"
+      tag="div"
+      :to="linkRoute"
+    >
       <div class="eyelet" :class="[isLeft ? 'eyelet-left' : 'eyelet-right']">
         <v-icon v-if="isLeft" large>mdi-chevron-left</v-icon>
         <v-icon v-else large>mdi-chevron-right</v-icon>
@@ -64,7 +69,18 @@
         Новосибирск, Россия
       </div>
     </div>
-    <div v-else class="mobileMenuBox">menu</div>
+    <div v-else class="mobileMenuBox">
+      <nuxt-link
+        v-for="(nav, i) in navigationBtns"
+        :key="i"
+        :to="nav.to"
+        tag="div"
+        class="navigation"
+      >
+        <v-icon>{{ nav.icon }}</v-icon>
+        <p>{{ nav.title }}</p>
+      </nuxt-link>
+    </div>
   </div>
 </template>
 
@@ -90,7 +106,7 @@ export default {
       ],
       isMenuOn: false,
       menuIcon: 'mdi-menu',
-      coords: [54.82896654088406, 39.831893822753904],
+      // coords: [54.82896654088406, 39.831893822753904],
     }
   },
   computed: {
@@ -140,185 +156,214 @@ export default {
   font-family: 'Dancing Script';
   src: url(/fonts/DancingScript-Bold.ttf); /* Путь к файлу со шрифтом */
 }
-@media screen and (max-width: $laptop) {
-  .authenticationCover {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.authenticationCover {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    height: 100%;
+  height: 100%;
 
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 100;
-  }
-  .HEADER {
-    position: fixed;
-    top: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 100;
+}
+.HEADER {
+  // position: fixed;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
-    padding: 0 15%;
-    z-index: 2;
-  }
-  .left-color {
-    background: $main-color;
-    transition: background-color 1s;
-  }
-  .right-color {
-    background: $side-dark-color;
-    transition: background-color 1s;
-  }
-  .logo {
-    margin: 0.2rem;
-    width: 7rem;
-  }
-  .account {
-    padding: 0.6rem;
-    margin-left: 3rem;
+  padding: 0 15%;
+  z-index: 2;
+}
+.left-color {
+  background: $main-color;
+  transition: background-color 1s;
+}
+.right-color {
+  background: $side-dark-color;
+  transition: background-color 1s;
+}
+.logo {
+  margin: 0.2rem;
+  width: 7rem;
+}
+.account {
+  padding: 0.6rem;
+  margin-left: 3rem;
 
-    width: 3rem;
+  width: 3rem;
 
-    border-radius: 50rem;
-    transition: ease-out 0.5s;
-  }
-  .cart {
-    padding: 0.6rem;
-    margin-left: 1rem;
+  border-radius: 50rem;
+  transition: ease-out 0.5s;
+}
+.cart {
+  padding: 0.6rem;
+  margin-left: 1rem;
 
-    width: 3rem;
+  width: 3rem;
 
-    border-radius: 50rem;
-    transition: ease-out 0.5s;
-  }
-  .account:hover,
-  .cart:hover {
-    cursor: pointer;
-    transition: all 0.4s;
-    box-shadow: 0 0 0.5rem black;
-  }
-  .sideLink {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    width: 15%;
-    cursor: pointer;
-    z-index: 2;
-    filter: drop-shadow(0 0 0.3rem $dark-packege);
-    transition: all 0.8s cubic-bezier(0.075, 0.82, 0.165, 1), width 0s;
-  }
-  .blueLink {
-    right: 0;
-    transform: translateX(99%);
-  }
-  .redLink {
-    left: 0;
-    transform: translateX(-99%);
-  }
-  .redLink:hover,
-  .blueLink:hover {
-    filter: drop-shadow(0 0 0.5rem black);
-    transform: translateX(0%);
-  }
-  .sideLink:hover .eyelet {
-    transform: translateX(0);
-    opacity: 0;
-  }
-  .eyelet {
-    display: flex;
-    justify-content: center;
-    position: absolute;
-    width: 100px;
-    height: 100px;
-    top: 50%;
-    margin-top: -50px;
-    text-shadow: none;
-    border-radius: 100%;
-    z-index: -2;
-    transition: all 0.5s;
-  }
-  .eyelet-left {
-    padding: 0 2.5rem 0 0;
-    background: $side-dark-color;
-    transform: translateX(-50%);
-  }
-  .eyelet-right {
-    padding: 0 0 0 2.5rem;
-    background: $main-light-color;
-    transform: translateX(240%);
-  }
-  .back-box {
-    position: absolute;
-    height: 100%;
-    width: 100%;
-    // filter: blur(2px);
-    background-position: 75% 50%;
-    background-repeat: no-repeat;
-    background-size: cover;
-  }
-  .back-box-left {
-    background-image: url(static\right-background.jpg);
-    border-left: 5px $side-dark-color solid;
-  }
-  .back-box-right {
-    background-image: url(static\left-background.jpg);
-    border-right: 5px $main-light-color solid;
-  }
-  .frontbox {
-    position: absolute;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    width: 100%;
-    color: white;
-    font-weight: bold;
-    font-size: 2rem;
-    text-shadow: 0 0 1rem black;
-  }
+  border-radius: 50rem;
+  transition: ease-out 0.5s;
+}
+.account:hover,
+.cart:hover {
+  cursor: pointer;
+  transition: all 0.4s;
+  box-shadow: 0 0 0.5rem black;
+}
+.sideLink {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  width: 15%;
+  cursor: pointer;
+  z-index: 2;
+  filter: drop-shadow(0 0 0.3rem $dark-packege);
+  transition: all 0.8s cubic-bezier(0.075, 0.82, 0.165, 1), width 0s;
+}
+.blueLink {
+  right: 0;
+  transform: translateX(99%);
+}
+.redLink {
+  left: 0;
+  transform: translateX(-99%);
+}
+.redLink:hover,
+.blueLink:hover {
+  filter: drop-shadow(0 0 0.5rem black);
+  transform: translateX(0%);
+}
+.sideLink:hover .eyelet {
+  transform: translateX(0);
+  opacity: 0;
+}
+.eyelet {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  top: 50%;
+  margin-top: -50px;
+  text-shadow: none;
+  border-radius: 100%;
+  z-index: -2;
+  transition: all 0.5s;
+}
+.eyelet-left {
+  padding: 0 2.5rem 0 0;
+  background: $side-dark-color;
+  transform: translateX(-50%);
+}
+.eyelet-right {
+  padding: 0 0 0 2.5rem;
+  background: $main-light-color;
+  transform: translateX(240%);
+}
+.back-box {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  // filter: blur(2px);
+  background-position: 75% 50%;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.back-box-left {
+  background-image: url(static\right-background.jpg);
+  border-left: 5px $side-dark-color solid;
+}
+.back-box-right {
+  background-image: url(static\left-background.jpg);
+  border-right: 5px $main-light-color solid;
+}
+.frontbox {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  color: white;
+  font-weight: bold;
+  font-size: 2rem;
+  text-shadow: 0 0 1rem black;
+}
 
-  .FOOTER {
-    position: relative;
-    bottom: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: nowrap;
+.FOOTER {
+  position: relative;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: nowrap;
 
-    padding: 2rem;
+  padding: 2rem;
 
-    width: 100%;
+  width: 100%;
 
-    font-family: 'Segoe UI', 'Open Sans', sans-serif;
-    font-size: 0.96rem;
+  font-family: 'Segoe UI', 'Open Sans', sans-serif;
+  font-size: 0.96rem;
 
-    background-color: #16191c;
-    background: $dark-packege;
-    z-index: 1;
-  }
-  .workingHours,
-  .contacts,
-  .address {
-    margin: 0 2rem;
-    color: white;
-  }
-  .workingHours h5,
-  .contacts h5,
-  .address h5 {
-    // text-align: center;
-    margin-bottom: 0.5rem;
-    border-bottom: 1px solid white;
-  }
+  background-color: #16191c;
+  background: $dark-packege;
+  z-index: 1;
+}
+.workingHours,
+.contacts,
+.address {
+  margin: 0 2rem;
+  color: white;
+}
+.workingHours h5,
+.contacts h5,
+.address h5 {
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid white;
+}
+.mobileMenuBox {
+  position: fixed;
+  bottom: 0;
+  background: white;
+
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+
+  padding: 0.1rem;
+
+  height: 3rem;
+  width: 100%;
+
+  background: white;
+  box-shadow: 0 60px 100px 10px #3a3736;
+  z-index: 99;
+}
+.navigation {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  border-radius: 10px;
+}
+.navigation p {
+  width: 100%;
+  font-size: 0.6rem;
+  text-align: center;
 }
 @media screen and (max-width: $mobile) {
+  .HEADER {
+    padding: 0 5%;
+  }
   .nuxt-link-exact-active {
     color: white;
-    background: #32bebd;
+    background: $main-color;
   }
   .nuxt-link-exact-active i {
     color: #32bebd;
@@ -388,30 +433,5 @@ export default {
 
     transition: all 0.1s;
   }
-}
-* {
-  transition: ease-out 0.1s;
-}
-.MAIN {
-  width: 100%;
-}
-.HEADER {
-  position: relative;
-  width: 100%;
-}
-.page-enter-active,
-.page-leave-active {
-  transition: all 0.25s ease-out;
-}
-.page-enter,
-.page-leave-active {
-  opacity: 0;
-}
-
-.mobileMenuBox {
-  position: fixed;
-  height: 100px;
-  width: 100%;
-  background: white;
 }
 </style>

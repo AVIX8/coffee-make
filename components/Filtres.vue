@@ -1,20 +1,40 @@
 <template>
   <div id="filtresBox" ref="filtresBox">
-    <transition name="rolled-top">
-      <button v-if="isSelectedEmpty" id="clearButton" @click="removeAll">
-        Очистить всё
+    <button
+      v-if="!isFiltresOpen && $device.isMobile"
+      class="openButton"
+      :class="{ 'openButton-empty': !isSelectedEmpty }"
+      @click="isFiltresOpen = true"
+    >
+      Фильтры
+      <span v-if="getSelectedCount !== 0">{{
+        '(' + getSelectedCount + ')'
+      }}</span>
+    </button>
+    <div v-if="isFiltresOpen || $device.isDesktop" class="c-filtres">
+      <button
+        v-if="$device.isMobile"
+        class="clearButton"
+        @click="isFiltresOpen = false"
+      >
+        Закрыть
       </button>
-    </transition>
-    <FilterOptions
-      v-for="(filter, i) in filtres"
-      :key="i"
-      class="filter"
-      :filter="filter"
-      :open="i === 0 || i === 1"
-      :selected="selected[filter.title]"
-      @addFilter="addSelected"
-      @removeFilter="removeSelected"
-    ></FilterOptions>
+      <transition name="rolled-top">
+        <button v-if="!isSelectedEmpty" class="clearButton" @click="removeAll">
+          Очистить всё
+        </button>
+      </transition>
+      <FilterOptions
+        v-for="(filter, i) in filtres"
+        :key="i"
+        class="filter"
+        :filter="filter"
+        :open="i === 0 || i === 1"
+        :selected="selected[filter.title]"
+        @addFilter="addSelected"
+        @removeFilter="removeSelected"
+      ></FilterOptions>
+    </div>
   </div>
 </template>
 
@@ -25,7 +45,9 @@ export default {
     selected: { type: Object, required: true },
   },
   data() {
-    return {}
+    return {
+      isFiltresOpen: false,
+    }
   },
   computed: {
     notEmptySelected() {
@@ -36,12 +58,19 @@ export default {
     },
     isSelectedEmpty() {
       for (const key in this.selected)
-        if (this.selected[key].length > 0) return true
-      return false
+        if (this.selected[key].length > 0) return false
+      return true
+    },
+    getSelectedCount() {
+      let count = 0
+      for (const key in this.selected)
+        if (this.selected[key].length > 0) count++
+      return count
     },
   },
   watch: {},
   mounted() {
+    if (this.$device.isMobile) return
     this.$refs.filtresBox.style.maxHeight =
       this.$store.state.windowHeight - 200 + 'px'
   },
@@ -76,25 +105,7 @@ export default {
 .filter:last-child {
   margin-bottom: 0;
 }
-#selectedFiltresBox {
-  margin-top: 3rem;
-}
-.selectedFilter {
-  display: inline-block;
-  margin: 0 0.5rem 0.4rem 0;
-  padding: 0.3rem 1rem;
-  text-align: left;
-  background: lightgray;
-  border-radius: 20px;
-  border: 1px lightgray solid;
-  transition: all 0.3s;
-}
-.selectedFilter:hover {
-  // background: $main-light-color;
-  // background: white;
-  border-color: gray;
-}
-#clearButton {
+.clearButton {
   margin-bottom: 1rem;
   padding: 0.3rem 1rem;
   height: 2rem;
@@ -106,11 +117,29 @@ export default {
   transition: all 0.3s;
   z-index: 0;
 }
-#clearButton:hover {
+.clearButton:hover {
   color: white;
   background: black;
   background: $main-color;
   border-color: $main-light-color;
+}
+.openButton {
+  padding: 0.3rem 1rem;
+  height: 2rem;
+  width: 100%;
+  font-size: 0.9rem;
+  text-align: center;
+  background: $main-light-color;
+  background: white;
+  border: 1px black solid;
+  border-radius: 20px;
+  transition: all 0.3s;
+  z-index: 0;
+}
+.openButton-empty {
+  color: white;
+  background: $main-color;
+  border-color: $main-color;
 }
 .rolled-top-enter-active,
 .rolled-top-leave-active {
@@ -122,5 +151,17 @@ export default {
   opacity: 0;
 }
 @media screen and (max-width: $mobile) {
+  .c-filtres {
+    position: absolute;
+    top: 0;
+    left: 0;
+    margin-top: 0;
+    padding: 1rem;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    background: whitesmoke;
+    z-index: 1;
+  }
 }
 </style>
