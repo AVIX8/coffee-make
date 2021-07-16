@@ -4,11 +4,17 @@ export const state = () => ({
   tablet: 1023,
   mobile: 765,
   smallMobile: 400,
+  windowWidth: 0,
+  windowHeight: 0,
 })
 
 export const mutations = {
   setUser(state, data) {
     state.user = data
+  },
+  updateSize(state) {
+    state.windowWidth = window.innerWidth
+    state.windowHeight = window.innerHeight
   },
 }
 
@@ -20,20 +26,26 @@ export const actions = {
 
   // вызывается каждый раз на КЛИЕНТЕ при загрузке страницы
   nuxtClientInit({ commit, dispatch }) {
-    setTimeout(dispatch('getUserData'), 1000)
-    //
-  },
+    // лисенеры изменения окна
+    window.addEventListener('resize', () => {
+      commit('updateSize')
+    })
+    commit('updateSize')
 
-  // запрашивает у сервера информацию о текущем пользователе и сохраняет в state.user
-  getUserData({ commit }) {
-    return this.$axios
-      .$get('user/getUserData', { timeout: 200 })
-      .then((res) => {
-        commit('setUser', res.user)
-      })
-      .catch(() => {
+    // запрашивает данные о пользователе
+    setImmediate(async () => {
+      if (await dispatch('api/isAuth')) {
+        dispatch('api/getUserData')
+          .then((res) => {
+            commit('setUser', res.user)
+          })
+          .catch(() => {
+            commit('setUser', {})
+          })
+      } else {
         commit('setUser', {})
-      })
+      }
+    })
   },
 }
 

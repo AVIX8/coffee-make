@@ -93,8 +93,7 @@ export default {
         })
     },
     hide() {
-      if (this.isAlive) this.$emit('close')
-      else this.isAlive = true
+      this.$emit('close')
     },
   },
 }

@@ -4,7 +4,7 @@
       <button v-if="minusOn" ref="minus" class="minus" @click="minus">
         <v-icon>mdi-minus</v-icon>
       </button>
-      <input ref="input" v-model="value" placeholder="1" />
+      <input ref="input" v-model="copyValue" placeholder="1" />
       <button v-if="plusOn" ref="plus" class="plus" @click="plus">
         <v-icon>mdi-plus</v-icon>
       </button>
@@ -15,76 +15,72 @@
 <script>
 export default {
   props: {
-    option: { type: Object, required: true },
+    value: { type: Number, default: 1, required: false },
+    max: { type: Number, required: true },
+    min: { type: Number, required: true },
   },
   data() {
     return {
-      value: null,
-
+      copyValue: this.value,
       plusOn: true,
       minusOn: false,
     }
   },
   computed: {},
   watch: {
-    value(newValue) {
-      if (this.option.maxValue && newValue === this.option.maxValue)
-        this.plusOn = false
+    copyValue(newValue) {
+      if (this.max && newValue === this.max) this.plusOn = false
       else this.plusOn = true
-      if (this.option.minValue && newValue === this.option.minValue)
-        this.minusOn = false
+      if (this.min && newValue === this.min) this.minusOn = false
       else this.minusOn = true
 
-      if (this.option.maxValue && parseInt(newValue) > this.option.maxValue)
+      if (this.max && parseInt(newValue) > this.max)
         return this.$emit('inputOption', this.overflow())
-      if (this.option.minValue && parseInt(newValue) < this.option.minValue)
+      if (this.min && parseInt(newValue) < this.min)
         return this.$emit('inputOption', this.bottomingOut())
       if (newValue === null || newValue === '')
-        return this.$emit('inputOption', this.option.minValue)
+        return this.$emit('inputOption', this.min)
 
       this.$emit('inputOption', newValue)
     },
   },
-  created() {
-    this.value = this.option.value
-  },
   methods: {
     overflow() {
-      this.value = this.option.maxValue
-      this.wrong()
-      return this.value
+      this.copyValue = this.max
+      this.wrong(this.$refs.choise)
+      return this.copyValue
     },
     bottomingOut() {
-      this.value = this.option.minValue
-      this.wrong()
-      return this.value
+      this.copyValue = this.min
+      this.wrong(this.$refs.choise)
+      return this.copyValue
     },
     minus() {
-      this.value--
+      this.copyValue--
     },
     plus() {
-      this.value++
+      this.copyValue++
     },
-    wrong() {
-      this.$refs.choise.style.background = 'rgb(253, 150, 150)'
-      this.$refs.choise.style.borderColor = 'rgb(172, 38, 38)'
+    wrong(e) {
+      e.style.background = 'rgb(253, 150, 150)'
+      e.style.borderColor = 'rgb(172, 38, 38)'
 
       setTimeout(() => {
-        this.$refs.choise.style.transform = 'translate(2px, 0px) rotate(3deg)'
+        e.style.transform = 'translate(2px, 0px) rotate(3deg)'
       }, 100)
       setTimeout(() => {
-        this.$refs.choise.style.transform = 'translate(-2px, 0px) rotate(-3deg)'
+        e.style.transform = 'translate(-2px, 0px) rotate(-3deg)'
       }, 100 + 50)
 
       setTimeout(() => {
-        this.$refs.choise.style.transform = 'translate(0px, 0px) rotate(0deg)'
+        e.style.transform = 'translate(0px, 0px) rotate(0deg)'
       }, 200)
 
-      this.$refs.choise.style.transition = 'all 0.1s'
+      e.style.transition = 'all 0.1s'
       setTimeout(() => {
-        this.$refs.choise.style.background = 'white'
-        this.$refs.choise.style.borderColor = '#32bebd'
-        this.$refs.choise.style.transition = 'all 1s'
+        e.style.background = 'white'
+        e.style.borderColor = '#ff3300'
+        e.style.transition = 'all 1s'
       }, 300)
       this.$refs.input.blur()
     },
@@ -115,7 +111,7 @@ export default {
   // background: red;
 
   border-radius: 20px;
-  border: 3px solid #2aa5a5;
+  border: 3px solid $main-color;
 
   box-shadow: 0.1rem 0.1rem 0.3rem gray;
 
@@ -151,12 +147,12 @@ export default {
 }
 .minus:hover,
 .plus:hover {
-  background: #32bebd;
+  background: $main-light-color;
   transition: all 0.1s;
 }
 .minus:active,
 .plus:active {
-  background: #31d4d4;
+  background: $main-color;
 }
 @media screen and (max-width: $laptop) {
 }

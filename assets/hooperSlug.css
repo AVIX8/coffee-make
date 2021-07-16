@@ -23,7 +23,7 @@
 }
 .hooper-pagination {
   position: absolute;
-  bottom: 0;
+  bottom: 2%;
   right: 50%;
   display: flex;
   padding: 5px 10px;
@@ -57,7 +57,7 @@
 }
 .hooper-indicator:hover,
 .hooper-indicator.is-active {
-  background-color: #3fc6bf;
+  background-color: #ff3300;
 }
 .hooper-pagination.is-vertical {
   bottom: auto;
@@ -96,14 +96,7 @@
 }
 .hooper-next:active,
 .hooper-prev:active {
-  background-image: linear-gradient(
-    to right bottom,
-    #b9ede4,
-    #9fe9dc,
-    #84e5d3,
-    #65e1c9,
-    #3bdcbf
-  );
+  background-color: #ff3300;
   margin: 1rem;
   padding: 1rem 0.5rem 0.85rem 0.5rem;
 

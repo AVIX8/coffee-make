@@ -18,21 +18,12 @@ export const mutations = {
 }
 
 export const actions = {
-  // вызывается каждый раз на СЕРВЕРЕ при загрузке страницы
-  async nuxtServerInit({ commit, dispatch }) {
-    // await dispatch('getUserData')
-    // await Promise.all(dispatch('...'), dispatch('...')) - так лучше делать наверное
-  },
-
-  // вызывается каждый раз на КЛИЕНТЕ при загрузке страницы
-  nuxtClientInit({ commit, dispatch }) {
-    // console.log(this.$axios)
-    // commit('setTokens', { refreshToken: this.$cookies.get('refreshToken') })
-  },
-
   /*
    * AUTH
    */
+  isAuth({ commit }) {
+    return !!this.$cookies.get('refreshToken')
+  },
   login({ commit }, { email, password }) {
     return this.$axios
       .$post('/auth/login', { email, password })
@@ -55,15 +46,34 @@ export const actions = {
   profile({ commit }) {
     return this.$axios.$get('/user/profile')
   },
+  getUserData({ commit }) {
+    return this.$axios.$get('user/getUserData')
+  },
 
   /**
    * PRODUCTS
    */
-  getProducts({ commit }, filters, skip) {
-    return this.$axios.$post('/products/get', { filters, skip })
+  getProducts({ commit }, { filters, skip, limit }) {
+    return this.$axios.$post('/products/get', { filters, skip, limit })
   },
-  createProduct({ commit }, data) {
-    return this.$axios.$post('/products/create', data)
+  getProductBySlug({ commit }, slug) {
+    return this.$axios.$post('/products/getBySlug', { slug })
+  },
+  createProduct({ commit }, { product, imageFiles }) {
+    const fd = new FormData()
+    fd.append('data', JSON.stringify(product))
+    imageFiles.forEach((file) => {
+      fd.append('images', file)
+    })
+    return this.$axios.$post('/products/create', fd)
+  },
+  updateProduct({ commit }, data) {
+    const fd = new FormData()
+    fd.append('data', JSON.stringify(data.product))
+    data.imageFiles.forEach((file) => {
+      fd.append('images', file)
+    })
+    return this.$axios.$post('/products/update', fd)
   },
   deleteProduct({ commit }, id) {
     return this.$axios.$post('/products/delete', { id })
@@ -73,7 +83,33 @@ export const actions = {
    * CATEGORIES
    */
   getCategories({ commit }, parentPath) {
-    return this.$axios.$post('categories/', { parentPath })
+    return this.$axios.$post('categories/get', { parentPath })
+  },
+  getCategoryFilters({ commit }, category) {
+    return this.$axios
+      .$post('/categories/getFilters', { category })
+      .then((data) => {
+        const res = data.reduce((rv, x) => {
+          ;(rv[x.title] = rv[x.title] || []).push(x.value)
+          return rv
+        }, {})
+        return res
+      })
+  },
+  getCategoryInfo({ commit }, category) {
+    return this.$axios
+      .$post('/categories/getInfo', { category })
+      .then((data) => {
+        const res = {}
+        for (const name of ['characteristics', 'attributes']) {
+          res[name] = data[name].reduce((rv, x) => {
+            ;(rv[x.title] = rv[x.title] || []).push(x.value)
+            return rv
+          }, {})
+        }
+        res.optionTitles = data.optionTitles
+        return res
+      })
   },
   updateCategory({ commit }, data) {
     const fd = new FormData()

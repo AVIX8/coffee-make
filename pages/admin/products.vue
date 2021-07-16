@@ -1,213 +1,196 @@
 <template>
-  <v-card>
-    <v-data-table
-      :headers="headers"
-      :items="products"
-      sort-by="calories"
-      class="elevation-1"
-    >
-      <template v-slot:top>
-        <v-toolbar flat>
-          <v-toolbar-title>Товары</v-toolbar-title>
-          <!-- <v-divider class="mx-4" inset vertical></v-divider> -->
-          <v-spacer></v-spacer>
+  <div>
+    <v-card>
+      <A-ProductForm ref="ProductForm" @save="save" />
+      <ProductDialog v-model="isView" :item="selected" />
+      <v-dialog v-model="dialogDelete" max-width="40%">
+        <v-card>
+          <v-card-title class="text-wrap">Подтверждение удаления</v-card-title>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn color="blue" text @click="closeDelete">Отмена</v-btn>
+            <v-btn color="error" text @click="deleteItemConfirm">Удалить</v-btn>
+            <v-spacer></v-spacer>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
 
-          <v-btn color="primary" dark class="ma-2"> Фильтр </v-btn>
+      <v-data-table
+        :headers="headers"
+        :items="products"
+        item-key="slug"
+        class="ma-auto"
+        :loading="loading"
+        single-expand
+        show-expand
+        loading-text="Загрузка... пожалуйста подождите"
+        hide-default-footer
+      >
+        <template v-slot:top>
+          <v-toolbar flat>
+            <v-toolbar-title>Товары</v-toolbar-title>
 
-          <v-dialog v-model="dialog" max-width="80%">
-            <template v-slot:activator="{ on, attrs }">
-              <v-btn color="primary" dark class="ma-2" v-bind="attrs" v-on="on">
-                Добавить
-              </v-btn>
-            </template>
-            <v-card>
-              <v-card-title>
-                <span class="text-h5">{{ formTitle }}</span>
-              </v-card-title>
+            <v-spacer></v-spacer>
 
-              <v-card-text>
-                <v-row>
-                  <v-col sm="12" md="6">
-                    <v-text-field
-                      v-model="editedItem.title"
-                      label="Название"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col sm="12" md="6">
-                    <v-text-field
-                      v-model="editedItem.slug"
-                      label="Слаг"
-                    ></v-text-field>
-                    <v-btn> Проверить </v-btn>
-                  </v-col>
-                  <v-col sm="12" md="6">
-                    <v-text-field
-                      v-model="editedItem.category"
-                      label="Категория"
-                    ></v-text-field>
-                  </v-col>
-                  <v-col sm="12" md="6">
-                    <v-textarea
-                      v-model="editedItem.descr"
-                      rows="2"
-                      label="Описание"
-                    ></v-textarea>
-                  </v-col>
-                </v-row>
-              </v-card-text>
+            <v-btn color="primary" dark class="ma-2"> Фильтр </v-btn>
+            <v-btn color="primary" dark class="ma-2" @click="createItem">
+              Добавить
+            </v-btn>
+          </v-toolbar>
+        </template>
 
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue darken-1" text @click="close">
-                  Отмена
-                </v-btn>
-                <v-btn color="blue darken-1" text @click="save">
-                  Сохранить
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-          <v-dialog v-model="dialogDelete" max-width="40%">
-            <v-card>
-              <v-card-title class="text-wrap"
-                >Подтверждение удаления ({{ editedItem.title }})</v-card-title
-              >
-              <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn color="blue" text @click="closeDelete">Отмена</v-btn>
-                <v-btn color="error" text @click="deleteItemConfirm"
-                  >Удалить</v-btn
-                >
-                <v-spacer></v-spacer>
-              </v-card-actions>
-            </v-card>
-          </v-dialog>
-        </v-toolbar>
-      </template>
-      <template v-slot:item.actions="{ item }">
-        <v-icon small class="mr-2" color="warning" @click="editItem(item)">
-          mdi-pencil
-        </v-icon>
-        <v-icon small color="error" @click="deleteItem(item)">
-          mdi-delete
-        </v-icon>
-      </template>
-      <template v-slot:no-data>
-        <v-btn color="primary" @click="initialize"> Reset </v-btn>
-      </template>
-    </v-data-table>
-  </v-card>
+        <template v-slot:item.image="{ item }">
+          <v-img
+            v-if="item.imgs.length"
+            aspect-ratio="1"
+            contain
+            max-height="48px"
+            :src="imageIdToURL(item.imgs[0])"
+          ></v-img>
+        </template>
+        <template v-slot:item.actions="{ item }">
+          <v-icon small class="mr-2" color="primary" @click="viewItem(item)">
+            mdi-eye
+          </v-icon>
+          <v-icon small class="mr-2" color="warning" @click="editItem(item)">
+            mdi-pencil
+          </v-icon>
+          <v-icon small color="error" @click="deleteItem(item)">
+            mdi-delete
+          </v-icon>
+        </template>
+        <template v-slot:expanded-item="{ headers, item }">
+          <td :colspan="headers.length">
+            <v-img
+              v-if="item.imgs.length"
+              max-width="250"
+              :src="imageIdToURL(item.imgs[0])"
+            ></v-img>
+            {{ item.title }}
+          </td>
+        </template>
+        <template v-slot:no-data>
+          <v-btn color="primary" @click="getProducts"> Получить товары </v-btn>
+        </template>
+      </v-data-table>
+    </v-card>
+    <div v-if="products.length" class="text-center pt-2">
+      <v-btn :loading="loading" @click="loadMore">Загрузить ещё</v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
 export default {
   layout: 'admin',
   data: () => ({
-    dialog: false,
+    isView: false,
+    loading: true,
     dialogDelete: false,
     products: [],
     filters: {},
     skip: 0,
+    selected: {},
     headers: [
-      { text: 'Название', value: 'title' },
       { text: 'Категория', value: 'category' },
+      { text: '', value: 'image' },
+      { text: 'Название', value: 'title' },
+      { text: 'Цена', value: 'price' },
+      { text: '', value: 'data-table-expand' },
       { text: 'Действия', value: 'actions', sortable: false },
     ],
-    editedIndex: -1,
-    editedItem: {},
-    defaultItem: {},
+    index: -1,
+    isNew: false,
   }),
 
-  computed: {
-    formTitle() {
-      return this.editedIndex === -1
-        ? 'Добавление товара'
-        : 'Редактирование товара'
-    },
-  },
-
   watch: {
-    dialog(val) {
-      val || this.close()
-    },
     dialogDelete(val) {
       val || this.closeDelete()
     },
   },
-
-  created() {
-    this.initialize()
+  mounted() {
+    this.getProducts()
   },
 
   methods: {
-    initialize() {
-      this.$store
-        .dispatch('api/getProducts', this.filters, this.skip)
+    async getProducts() {
+      await this.$store
+        .dispatch('api/getProducts', { filters: this.filters, skip: this.skip })
         .then((products) => {
-          this.products = products
+          this.products = this.products.concat(products)
         })
         .catch((err) => {
           console.log(err)
         })
+      this.loading = false
     },
-
+    loadMore() {
+      this.skip = this.products.length
+      this.loading = true
+      this.getProducts()
+    },
+    viewItem(item) {
+      this.selected = JSON.parse(JSON.stringify(item))
+      this.selected.imgs = item.imgs.map((id) => this.imageIdToURL(id))
+      this.isView = true
+    },
+    imageIdToURL(id) {
+      return `${this.$axios.defaults.baseURL}/storage/image/${id}`
+    },
+    createItem() {
+      this.isNew = true
+      this.$refs.ProductForm.open()
+    },
     editItem(item) {
-      this.editedIndex = this.products.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
+      this.isNew = false
+      this.index = this.products.indexOf(item)
+      this.$refs.ProductForm.open(item)
     },
-
     deleteItem(item) {
-      this.editedIndex = this.products.indexOf(item)
-      this.editedItem = Object.assign({}, item)
+      this.index = this.products.indexOf(item)
       this.dialogDelete = true
     },
 
-    deleteItemConfirm() {
-      this.$store
-        .dispatch('api/deleteProduct', this.editedItem._id)
+    async deleteItemConfirm() {
+      await this.$store
+        .dispatch('api/deleteProduct', this.products[this.index]._id)
         .then((deletedProduct) => {
           console.log(deletedProduct)
+          this.products.splice(this.index, 1)
         })
-      this.products.splice(this.editedIndex, 1)
       this.closeDelete()
     },
 
-    close() {
-      this.dialog = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
-    },
-
     closeDelete() {
+      this.index = -1
       this.dialogDelete = false
-      this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-      })
     },
-
-    save() {
-      if (this.editedIndex > -1) {
+    save(data) {
+      if (this.isNew) {
+        console.log('create:', data)
+        this.$store.dispatch('api/createProduct', data).then((product) => {
+          this.products.unshift(product)
+          console.log(data)
+        })
+      } else {
+        console.log('update:', data)
         this.$store
-          .dispatch('api/updateProduct', this.editedItem)
-          .then((res) => {
-            Object.assign(this.products[this.editedIndex], res)
+          .dispatch('api/updateProduct', data)
+          .then((product) => {
+            console.log(product)
+            this.$set(
+              this.products,
+              this.index,
+              JSON.parse(JSON.stringify(product))
+            )
           })
           .catch((err) => {
             console.log(err)
           })
-      } else {
-        this.$store
-          .dispatch('api/createProduct', this.editedItem)
-          .then((data) => {
-            this.products.push(data)
-          })
       }
-      this.close()
     },
   },
 }
 </script>
+
+<style lang="scss" scoped></style>

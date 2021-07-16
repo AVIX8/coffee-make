@@ -1,21 +1,21 @@
 <template>
   <div class="cardBox">
-    <nuxt-link
+    <!-- <nuxt-link
       :to="'/product/' + item.slug"
       tag="div"
       class="card"
       style="text-decoration: none"
-    >
-      <!-- <div class="card"> -->
+    > -->
+    <div class="card">
       <div class="preview">
-        <img :src="item.imgs[0]" :alt="item.name" />
+        <img :src="item.imgs[0]" :alt="item.title" />
       </div>
-      <div class="title">
-        <div class="name">{{ item.name }}</div>
-        <div class="price">{{ item.choiceProperty.variants[0].price }} руб</div>
+      <div class="title-price">
+        <div class="title">{{ item.title }}</div>
+        <div class="price">{{ item.price }} руб</div>
       </div>
-      <!-- </div> -->
-    </nuxt-link>
+      <!-- </nuxt-link> -->
+    </div>
   </div>
 </template>
 
@@ -27,6 +27,7 @@ export default {
   data() {
     return {}
   },
+  computed: {},
   watch: {},
   methods: {},
 }
@@ -34,11 +35,9 @@ export default {
 
 <style scoped lang="scss">
 .cardBox {
-  margin: 1rem;
-
-  height: 19rem;
-  width: 12rem;
-  // background: blue;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
 }
 .card {
   display: flex;
@@ -49,65 +48,70 @@ export default {
   width: 100%;
   height: 100%;
 
-  border-radius: 20px;
-  box-shadow: 0 0 0.5rem lightgray;
+  border-radius: 10px;
+  // box-shadow: 0 0 0.25rem black;
 
   background: white;
+  background: #e74623;
 
   cursor: pointer;
-  transition: all 0.8s;
+  transition: all 0.2s;
 }
 .card:hover {
-  box-shadow: 0 0 0.5rem gray;
-  transition: all 0.4s;
+  box-shadow: 1px 0.1rem 0.4rem black;
 }
-// .card:hover .preview img {
-//   transform: scale(1.2);
-//   transition: all 0.4s;
-// }
 
 .preview {
-  margin: 1.5rem 1.8rem 0 1.8rem;
+  overflow: hidden;
+  margin: 1.5%;
   width: 100%;
-
-  border-radius: 50%;
-  box-shadow: inset 0 0 1rem black;
-
-  background: #188a77;
-  background-image: linear-gradient(
-    to right bottom,
-    #35edeb,
-    #2dd4cc,
-    #26baae,
-    #1fa292,
-    #188a77
-  );
+  background: white;
+  border-radius: 10px;
+  // box-shadow: inset 0 0 0.2rem black;
 }
 .preview img {
+  // margin: 8%;
   width: 100%;
-  transform: scale(1.2);
+  border-radius: 10px;
+  // border: 2px solid blue;
+  transform: scale(1.02);
   transition: all 0.8s;
 }
-
-.title {
-  padding: 1.5rem 0 0 0;
+.title-price {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  align-items: center;
+  width: 90%;
+  // padding: 1.5rem 0 0 0;
   // background: springgreen;
+  margin-bottom: 1rem;
 }
-.name {
-  padding: 0 0.5rem 0 0.5rem;
-  width: 100%;
+.title {
+  padding: 0 1rem;
+  // width: 100%;
+  // float: left;
 
-  text-align: center;
-  font-size: 1.1rem;
-  font-weight: bold;
+  color: $main-color;
+  color: white;
+  // text-align: center;
+  font-size: 1.3rem;
+  text-shadow: 0 0 0.2rem gray;
+  // font-weight: bold;
 
   // background: yellow;
 }
 
 .price {
-  margin: 1rem 0;
+  // margin: 1rem 0;
+  // margin-bottom: 1rem;
   width: 100%;
-  text-align: center;
+  color: white;
+  letter-spacing: 0.2rem;
+  font-size: 130%;
+  text-shadow: 0 0 0.2rem black;
+  font-weight: bold;
+  text-align: right;
+
   // background: orange;
 }
 
@@ -136,7 +140,7 @@ export default {
     padding: 1rem 0 0 0;
     // background: springgreen;
   }
-  .name {
+  .title {
     padding: 0 0.2rem 0 0.2rem;
     font-size: 1rem;
     // background: yellow;

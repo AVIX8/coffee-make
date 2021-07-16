@@ -1,140 +1,243 @@
 <template>
-  <div class="catalog">
-    <div v-for="(category, index) in categories" :key="index" class="container">
-      <div class="card">
-        <div class="visual">
-          <div class="circle" />
-          <img ref="img" :src="category.img" :alt="category.title" />
-        </div>
+  <div id="catalogBox">
+    <ProductDialog v-model="isView" title="" :item="viewProduct" />
 
-        <div class="info">
-          <h5 ref="title" class="title">{{ category.title }}</h5>
-        </div>
+    <div id="path">Каталог/Кофе</div>
+    <div id="searchBox" class="hd shadowBox">
+      <div id="sortBox">
+        Сортировать по:
+        <button class="sortButton">Дате добавления</button>
+        <button class="sortButton">Цене</button>
       </div>
+      <SearchBox />
     </div>
+    <div ref="selectedTags" class="selectedTags hd">
+      <SelectedTags :selected="selected" />
+    </div>
+    <!-- <div class="fake-shadow"></div> -->
+    <div class="content">
+      <div ref="filtres" class="filtres fl shadowBox">
+        <div class="categoryTitle">Кофе</div>
+        <Filtres :filtres="filtres" :selected="selected" />
+      </div>
+      <ProductList
+        ref="productList"
+        class="productList pr"
+        @openProduct="setViewProduct"
+      />
+    </div>
+    <!-- <div class="fake-shadow"></div> -->
   </div>
 </template>
 
 <script>
+// import SelectedTags from '../components/SelectedTags.vue'
 export default {
-  layout: 'header&footer',
+  // components: { SelectedTags },
+  layout: 'adaptivLayout',
+  transition: 'catalog',
   data() {
     return {
-      categories: [
+      isView: false,
+      path: {},
+      selected: {
+        Купаж: [],
+        Обжарка: [],
+        Сорт: [],
+        Кислотность: [],
+        География: [],
+      },
+      filtres: [
         {
-          title: 'Кофе',
-          img: 'testCoffee.png',
-          to: '/products',
+          title: 'Сорт',
+          values: [
+            '100% Арабика',
+            'Арабика + Робуста',
+            'Моносорт',
+            'Смесь моносортов',
+          ],
         },
         {
-          title: 'Сиропы',
-          img: 'сироп зеленый банан.png',
-          to: '/products',
+          title: 'Купаж',
+          values: [
+            'Арабика 100%',
+            'Арабика 50%, Робуста 50%',
+            'Арабика 60%, Робуста 40%',
+            'Арабика 70%, Робуста 30%',
+            'Арабика 80%, Робуста 20%',
+            'Смесь',
+          ],
         },
         {
-          title: 'Аренда',
-          img: 'сироп зеленый банан.png',
-          to: '/products',
+          title: 'Обжарка',
+          values: ['Очень тёмная', 'Средняя', 'Тёмная'],
         },
         {
-          title: 'Аксессуары',
-          img: 'testCoffee.png',
-          to: '/products',
+          title: 'Кислотность',
+          values: ['Без кислотности', 'Низкая', 'Средняя'],
         },
         {
-          title: 'Услуги',
-          img: 'testCoffee.png',
-          to: '/products',
+          title: 'География',
+          values: [
+            'Бразилия',
+            'Бразилия Моджиана, Колумбия Супремо',
+            'Вьетнам',
+            'Гватемала',
+            'Индонезия',
+            'Колумбия',
+            'Уганда',
+            'Вьетнам Тай Нгуен',
+            'Мексика, Чьяпас',
+            'Респ. Гондурас Сан Маркос',
+          ],
         },
       ],
+      viewProduct: {},
     }
+  },
+  computed: {},
+  mounted() {
+    window.addEventListener('resize', this.resizeHandler)
+    // window.addEventListener('scroll', this.scrollHandler)
+    this.resizeHandler()
+    // this.scrollHandler()
+
+    // Получение фильтров
+    this.$store.dispatch('api/getCategoryFilters', '/Кофе').then((res) => {
+      console.log('Фильтры:', res)
+    })
+    // Получение товаров
+    this.$store
+      .dispatch('api/getProducts', { category: '/Кофе' })
+      .then((res) => {
+        console.log('Товары:', res)
+      })
+  },
+  destroyed() {
+    window.removeEventListener('resize', this.resizeHandler)
+    // window.removeEventListener('scroll', this.scrollHandler)
+  },
+  methods: {
+    resizeHandler() {
+      const remSize = parseFloat(
+        getComputedStyle(document.documentElement).fontSize
+      )
+      this.$refs.filtres.style.width =
+        (this.$store.state.windowWidth - 30 * remSize) / 4 + 'px'
+
+      this.$refs.selectedTags.style.left =
+        (this.$store.state.windowWidth - 30 * remSize) / 4 +
+        // eslint-disable-next-line prettier/prettier
+        remSize * 15 + 25 + 'px'
+      this.$refs.selectedTags.style.width =
+        ((this.$store.state.windowWidth - 30 * remSize) / 4) * 3 - 50 + 'px'
+    },
+    scrollHandler() {
+      // this.$refs.filtres.style.position = 'fixed'
+      // if (window.scrollY > 50) this.$refs.filtres.style.top = '1%'
+      // else this.$refs.filtres.style.top = '15%'
+    },
+    setViewProduct(product) {
+      this.viewProduct = product
+      this.isView = true
+    },
   },
 }
 </script>
 
 <style scoped lang="scss">
-@font-face {
+#catalogBox {
+  position: relative;
+  padding: 0 15rem 5rem 15rem;
+  background: whitesmoke;
+  // background: $main-light-color;
 }
-@media screen and (max-width: $laptop) {
-}
-@media screen and (max-width: $mobile) {
-}
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  transition: all 0.5s;
-}
-.catalog {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-
-  padding: 0 2% 0 2%;
-  margin: -1rem 0 4rem 0;
-
-  // background: red;
-}
-.container {
+#path {
   display: flex;
-  justify-content: center;
-}
-.card {
-  transform-style: preserve-3d;
-
-  margin: 5%;
-  padding: 5%;
-
+  align-items: center;
+  padding-left: 2rem;
+  height: 3rem;
   width: 100%;
+  // background: magenta;
+}
+#searchBox {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  // position: absolute;
+  // right: 13%;
+  align-items: center;
+  width: 71%;
 
-  border-radius: 10%;
-  box-shadow: 0 0 1rem 0.1rem lightgray;
-  transition: all 0.1s ease;
+  margin-left: 27%;
+  margin-bottom: 0.1rem;
+  padding: 0.5rem 2rem;
   background: white;
 }
-
-.visual {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
+.selectedTags {
+  position: absolute;
   // background: blue;
 }
-.visual img {
-  width: 100%;
-  z-index: 2;
-  transition: all 0.75s ease-out;
+.content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 0px 0px;
+  grid-auto-flow: row;
+  grid-template-areas: 'fl pr pr pr';
+  margin-top: 1rem;
+  height: 100%;
+  // background: white;
+  // background: $main-light-color;
 }
-.circle {
-  // width: 9rem;
-  // height: 9rem;
-  width: 75%;
-  height: 57%;
-  background-image: radial-gradient(
-    circle,
-    #00e188,
-    #00b9b0,
-    #008ba9,
-    #435f79,
-    #3d3d3d
-  );
+
+.hd {
+  grid-area: hd;
+  margin-bottom: 1rem;
+}
+.fl {
+  grid-area: fl;
+}
+.pr {
+  grid-area: pr;
+}
+.shadowBox {
+  border-radius: 20px;
+  box-shadow: 0 1px 0.15rem gray;
+}
+.filtres {
+  // position: fixed;
+  // position: absolute;
+  position: sticky;
+  // top: 15%;
+  // top: -48px;
+  top: 1%;
+  margin-top: -4rem;
+  width: 360px;
+  height: fit-content;
+
+  background: whitesmoke;
+  background: white;
+  transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+.categoryTitle {
+  margin: 1rem 0 0 2rem;
+  font-size: 2rem;
+  // border-bottom: 1px solid black;
+  // background: blue;
+}
+#sortBox {
+}
+.sortButton {
+  margin: 0 0.5rem;
+  padding: 2px 0;
+  border-bottom: 1px dashed black;
+}
+.fake-shadow {
   position: absolute;
-  border-radius: 100%;
-  z-index: 1;
-}
-.title {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  margin: 0.5rem 0 0 0;
-
-  min-height: 2.5rem;
-
-  color: #2db6b5;
-  font-family: 'Ruda';
-  font-weight: bold;
-  text-align: center;
-
-  transition: all 0.75s ease-out;
+  margin-top: 0.2rem;
+  left: 39%;
+  width: 47%;
+  background: whitesmoke;
+  box-shadow: 0 0 0.4rem 0.8rem whitesmoke;
+  z-index: 2;
 }
 </style>

@@ -16,7 +16,7 @@ export default {
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
       { hid: 'description', name: 'description', content: '' },
     ],
-    link: [{ rel: 'icon', type: 'image/x-icon', href: '/icon32.png' }],
+    link: [{ rel: 'icon', type: 'image/x-icon', href: '/Logo_white_.png' }],
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -27,6 +27,7 @@ export default {
     '~/plugins/nuxt-client-init.client.js',
     '~/plugins/api.js',
     '~/plugins/directives.js',
+    { src: '~/plugins/ymapPlugin.js', mode: 'client' },
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
@@ -59,7 +60,7 @@ export default {
 
   loading: {
     color: 'green',
-    height: '5px',
+    height: '1px',
     failedColor: 'yellow',
   },
 

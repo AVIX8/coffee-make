@@ -1,100 +1,102 @@
 <template>
-  <div ref="productDialogBox" class="productDialogBox">
-    <div class="previewBox">
-      <hooper
-        v-if="item.imgs.length > 1"
-        :style="{
-          height: [hooperHeight],
-          width: [hooperWidth],
-        }"
-        :infinite-scroll="true"
-        :mouse-drag="false"
-        :wheel-control="false"
-        :auto-play="true"
-        :play-speed="10000"
-        :transition="1000"
-        :items-to-show="1"
-        :center-mode="true"
-      >
-        <slide v-for="(img, index) in item.imgs" :key="index">
-          <div class="container">
-            <v-img :src="img" contain class="itemImg" />
-          </div>
-        </slide>
-        <hooper-navigation
-          v-if="!$device.isMobile"
-          slot="hooper-addons"
-        ></hooper-navigation>
-        <hooper-pagination
-          v-if="!$device.isMobile"
-          slot="hooper-addons"
-        ></hooper-pagination>
-        <hooper-pagination
-          v-else
-          slot="hooper-addons"
-          mode="fraction"
-        ></hooper-pagination>
-      </hooper>
-      <div v-else class="container">
-        <v-img :src="item.imgs[0]" contain class="itemImg" />
-      </div>
-    </div>
-
-    <div class="infoBox">
-      <h2 class="a-title">
-        {{ item.title }}
-        <v-icon title="Поделиться" class="share">mdi-share-variant</v-icon>
-      </h2>
-      <div class="priceBox">
-        <transition name="priceFade">
-          <div v-if="quantity.value > 1" class="calc">
-            {{ price }} руб &times; {{ quantity.value }} шт =
-          </div>
-        </transition>
-        <div ref="price" class="price">
-          <h3>{{ cost }} руб</h3>
-        </div>
-      </div>
-
-      <div class="specificationsBox">
-        <div v-if="!!item.optionTitle" class="a-option">
-          <h5>{{ item.optionTitle }}</h5>
-          <ChoiceOptions
-            :options="item.options"
-            @changeOption="changeOption($event)"
-          ></ChoiceOptions>
-        </div>
-        <div class="a-option">
-          <h5>Кол-во</h5>
-          <InputOptions
-            :value="1"
-            :max="9999"
-            :min="1"
-            @inputOption="inputOption($event)"
-          ></InputOptions>
-        </div>
-        <div v-for="(attr, i) in item.attributes" :key="i" class="property">
-          {{ attr.title }}: {{ attr.value }}
-        </div>
-        <div
-          v-for="chr in item.characteristics"
-          :key="chr.title + chr.value"
-          class="property"
+  <div v-if="value" class="dialogCover" title="Свернуть">
+    <div ref="productDialogBox" v-click-outside="hide" class="productDialogBox">
+      <div class="previewBox">
+        <hooper
+          v-if="item.imgs.length > 1"
+          :style="{
+            height: [hooperHeight],
+            width: [hooperWidth],
+          }"
+          :infinite-scroll="true"
+          :mouse-drag="false"
+          :wheel-control="false"
+          :auto-play="true"
+          :play-speed="10000"
+          :transition="1000"
+          :items-to-show="1"
+          :center-mode="true"
         >
-          {{ chr.title }}: {{ chr.value }}
+          <slide v-for="(img, index) in item.imgs" :key="index">
+            <div class="container">
+              <v-img :src="img" contain class="itemImg" />
+            </div>
+          </slide>
+          <hooper-navigation
+            v-if="!$device.isMobile"
+            slot="hooper-addons"
+          ></hooper-navigation>
+          <hooper-pagination
+            v-if="!$device.isMobile"
+            slot="hooper-addons"
+          ></hooper-pagination>
+          <hooper-pagination
+            v-else
+            slot="hooper-addons"
+            mode="fraction"
+          ></hooper-pagination>
+        </hooper>
+        <div v-else class="container">
+          <v-img :src="item.imgs[0]" contain class="itemImg" />
         </div>
       </div>
 
-      <div v-if="item.descr" class="descriptionBox">
-        <h5>Описание:</h5>
-        <h6>{{ item.descr }}</h6>
+      <div class="infoBox">
+        <h2 class="title">
+          {{ item.title }}
+          <v-icon title="Поделиться" class="share">mdi-share-variant</v-icon>
+        </h2>
+        <div class="priceBox">
+          <transition name="priceFade">
+            <div v-if="quantity.value > 1" class="calc">
+              {{ price }} руб &times; {{ quantity.value }} шт =
+            </div>
+          </transition>
+          <div ref="price" class="price">
+            <h3>{{ cost }} руб</h3>
+          </div>
+        </div>
+
+        <div class="specificationsBox">
+          <div v-if="!!item.optionTitle" class="option">
+            <h5>{{ item.optionTitle }}</h5>
+            <ChoiceOptions
+              :options="item.options"
+              @changeOption="changeOption($event)"
+            ></ChoiceOptions>
+          </div>
+          <div class="option">
+            <h5>Кол-во</h5>
+            <InputOptions
+              :value="1"
+              :max="9999"
+              :min="1"
+              @inputOption="inputOption($event)"
+            ></InputOptions>
+          </div>
+          <div v-for="(attr, i) in item.attributes" :key="i" class="property">
+            {{ attr.title }}: {{ attr.value }}
+          </div>
+          <div
+            v-for="chr in item.characteristics"
+            :key="chr.title + chr.value"
+            class="property"
+          >
+            {{ chr.title }}: {{ chr.value }}
+          </div>
+        </div>
+
+        <div v-if="item.descr" class="descriptionBox">
+          <h5>Описание:</h5>
+          <h6>{{ item.descr }}</h6>
+        </div>
+        <div v-if="!$device.isMobile" class="cartBtn">
+          <button><h6>Добавить в Корзину</h6></button>
+        </div>
       </div>
-      <div v-if="!$device.isMobile" class="cartBtn">
+      <div v-if="$device.isMobile" class="cartBtn">
         <button><h6>Добавить в Корзину</h6></button>
       </div>
-    </div>
-    <div v-if="$device.isMobile" class="cartBtn">
-      <button><h6>Добавить в Корзину</h6></button>
     </div>
   </div>
 </template>
@@ -114,8 +116,11 @@ export default {
     HooperNavigation,
     HooperPagination,
   },
-  layout: 'adaptivLayout',
-
+  layout: 'header&footer',
+  props: {
+    item: { type: Object, required: true },
+    value: { type: Boolean, required: true },
+  },
   data() {
     return {
       hooperHeight: 0,
@@ -125,9 +130,6 @@ export default {
         value: 1,
         minValue: 1,
         maxValue: 9999,
-      },
-      item: {
-        imgs: [],
       },
     }
   },
@@ -151,27 +153,12 @@ export default {
     },
   },
   mounted() {
-    this.$store
-      .dispatch('api/getProductBySlug', this.$route.params.slug)
-      .then((product) => {
-        this.item = product
-        this.item.imgs = product.imgs.map(
-          (id) => `${this.$axios.defaults.baseURL}/storage/image/${id}`
-        )
-      })
-      .catch((err) => {
-        console.log('Ошибка')
-        console.log(err.response.data)
-      })
     if (this.$device.isMobile)
       this.hooperHeight =
-        (this.$refs.productDialogBox.clientWidth / parseFloat(16) - 2) * 1.15 +
-        'rem'
+        (document.clientWidth / parseFloat(16) - 2) * 1.15 + 'rem'
     else this.hooperHeight = '100%'
-
     if (this.$device.isMobile)
-      this.hooperWidth =
-        this.$refs.productDialogBox.clientWidth / parseFloat(16) - 2 + 'rem'
+      this.hooperWidth = document.clientWidth / parseFloat(16) - 2 + 'rem'
     else this.hooperWidth = '100%'
   },
   created() {
@@ -184,6 +171,9 @@ export default {
     },
     inputOption(option) {
       this.quantity.value = option
+    },
+    hide() {
+      this.$emit('input', false)
     },
   },
 }
@@ -211,12 +201,14 @@ export default {
 
   padding: 2rem 4rem;
 
-  height: 100%;
-  width: 100%;
+  height: 90%;
+  width: 80%;
 
   cursor: default;
 
   background: white;
+  border-radius: 20px;
+  box-shadow: 0 0 0.5rem black;
 }
 .previewBox {
   overflow: hidden;
@@ -261,7 +253,7 @@ export default {
 
   // background: slateblue;
 }
-.a-title {
+.title {
   display: flex;
   align-items: center;
   justify-content: left;
@@ -375,7 +367,7 @@ export default {
 .cartBtn button:active {
   box-shadow: inset 3px 2px 0.2rem rgb(2, 87, 82);
 }
-.a-option {
+.option {
   display: grid;
   grid-template-columns: 1fr 2fr;
   margin-bottom: 1rem;
@@ -447,11 +439,12 @@ export default {
   .itemImg {
     transform: scale(1.3);
   }
-  .a-title {
+
+  .title {
     margin: 1rem 0;
 
     text-align: center;
-    font-size: 150% !important;
+    font-size: 150%;
     font-weight: 900;
     // text-shadow: 0 0 0.1rem black;
     // background: coral;
