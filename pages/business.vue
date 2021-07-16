@@ -49,7 +49,7 @@ export default {
 
 <style scoped lang="scss">
 #businessBox {
-  padding: 1rem 20% 5rem 20%;
+  padding: 1rem 15% 5rem 15%;
 }
 .container {
   display: grid;
