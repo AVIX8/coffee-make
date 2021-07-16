@@ -53,8 +53,14 @@ export const actions = {
   /**
    * PRODUCTS
    */
-  getProducts({ commit }, { filters, skip, limit }) {
-    return this.$axios.$post('/products/get', { filters, skip, limit })
+  getProducts({ commit }, { category, all, filters, skip, limit }) {
+    return this.$axios.$post('/products/get', {
+      category,
+      all,
+      filters,
+      skip,
+      limit,
+    })
   },
   getProductBySlug({ commit }, slug) {
     return this.$axios.$post('/products/getBySlug', { slug })
