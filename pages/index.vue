@@ -1,6 +1,11 @@
 <template>
   <div ref="mainBox" class="mainBox">
-    <nuxt-link class="sideLink redLink animation shadow" tag="div" to="catalog">
+    <nuxt-link
+      v-if="$device.isDesktop"
+      class="sideLink redLink animation shadow"
+      tag="div"
+      to="catalog"
+    >
       <div ref="left" class="back-box back-box-left" />
       <div class="frontbox" style="background: #e5765791">Каталог</div>
       <div ref="leftEyelet" class="eyelet eyelet-left animation">
@@ -14,6 +19,7 @@
     </div>
 
     <nuxt-link
+      v-if="$device.isDesktop"
       class="sideLink blueLink animation shadow"
       tag="div"
       to="business"
@@ -38,7 +44,7 @@ export default {
   computed: {},
   mounted() {
     window.addEventListener('resize', this.resizeHandler)
-    this.resizeHandler()
+    if (this.$device.isDesktop) this.resizeHandler()
     this.$refs.mainBox.style.minHeight = this.$store.state.windowHeight + 'px'
   },
   destroyed() {
@@ -181,5 +187,20 @@ export default {
   // text-shadow: 0 0 2rem black;
   text-shadow: 0 0 5px gray;
   text-decoration: underline;
+}
+@media screen and (max-width: $mobile) {
+  .centerBox {
+    left: 0;
+    right: 0;
+    padding: 3rem;
+    width: 100%;
+    background-size: cover;
+  }
+  .mainTitle {
+    font-size: 3rem;
+  }
+  .subTitle {
+    font-size: 2rem;
+  }
 }
 </style>

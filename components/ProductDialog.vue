@@ -155,13 +155,10 @@ export default {
   mounted() {
     if (this.$device.isMobile)
       this.hooperHeight =
-        (this.$refs.productDialogBox.clientWidth / parseFloat(16) - 2) * 1.15 +
-        'rem'
+        (document.clientWidth / parseFloat(16) - 2) * 1.15 + 'rem'
     else this.hooperHeight = '100%'
-
     if (this.$device.isMobile)
-      this.hooperWidth =
-        this.$refs.productDialogBox.clientWidth / parseFloat(16) - 2 + 'rem'
+      this.hooperWidth = document.clientWidth / parseFloat(16) - 2 + 'rem'
     else this.hooperWidth = '100%'
   },
   created() {

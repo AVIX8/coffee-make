@@ -102,16 +102,16 @@ export default {
     this.resizeHandler()
     // this.scrollHandler()
 
-    // + avix
+    // Получение фильтров
     this.$store.dispatch('api/getCategoryFilters', '/Кофе').then((res) => {
       console.log('Фильтры:', res)
     })
+    // Получение товаров
     this.$store
       .dispatch('api/getProducts', { category: '/Кофе' })
       .then((res) => {
         console.log('Товары:', res)
       })
-    // - avix
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeHandler)

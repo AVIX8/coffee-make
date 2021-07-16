@@ -64,6 +64,7 @@
         Новосибирск, Россия
       </div>
     </div>
+    <div v-else class="mobileMenuBox">menu</div>
   </div>
 </template>
 
@@ -315,44 +316,6 @@ export default {
   }
 }
 @media screen and (max-width: $mobile) {
-  .HEADER {
-    margin-bottom: 4rem;
-  }
-  .Cover {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 99;
-
-    height: 3rem;
-  }
-  .burger {
-    position: absolute;
-    right: 10%;
-  }
-
-  .NavigationBAR {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-
-    padding: 0.1rem;
-
-    height: 3rem;
-
-    background: white;
-    // border-top: 1px solid #3a3736;
-    box-shadow: 0 60px 100px 10px #3a3736;
-    z-index: 99;
-  }
-  .NavigationBAR p {
-    font-size: 0.5rem;
-  }
   .nuxt-link-exact-active {
     color: white;
     background: #32bebd;
@@ -443,5 +406,12 @@ export default {
 .page-enter,
 .page-leave-active {
   opacity: 0;
+}
+
+.mobileMenuBox {
+  position: fixed;
+  height: 100px;
+  width: 100%;
+  background: white;
 }
 </style>
