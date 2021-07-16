@@ -111,8 +111,8 @@ export default {
       }
     },
     linkRoute() {
-      if (this.isLeft) return 'business'
-      if (!this.isLeft) return 'catalog'
+      if (this.isLeft) return '/business'
+      if (!this.isLeft) return '/catalog'
       return null
     },
   },
