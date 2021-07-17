@@ -49,9 +49,13 @@
           ></v-img>
         </template>
         <template v-slot:item.actions="{ item }">
-          <v-icon small class="mr-2" color="primary" @click="viewItem(item)">
-            mdi-eye
-          </v-icon>
+          <router-link
+            :to="`/product/${item.slug}`"
+            target="_blank"
+            style="text-decoration: none; color: inherit"
+          >
+            <v-icon small class="mr-2" color="primary"> mdi-eye </v-icon>
+          </router-link>
           <v-icon small class="mr-2" color="warning" @click="editItem(item)">
             mdi-pencil
           </v-icon>
@@ -128,11 +132,6 @@ export default {
       this.skip = this.products.length
       this.loading = true
       this.getProducts()
-    },
-    viewItem(item) {
-      this.selected = JSON.parse(JSON.stringify(item))
-      this.selected.imgs = item.imgs.map((id) => this.imageIdToURL(id))
-      this.isView = true
     },
     imageIdToURL(id) {
       return `${this.$axios.defaults.baseURL}/storage/image/${id}`
