@@ -30,6 +30,30 @@
       <div ref="right" class="back-box back-box-right" />
       <div class="frontbox" style="background: #4494b6a1">Для Бизнеса</div>
     </nuxt-link>
+
+    <div v-if="$device.isMobile" id="businessBox" class="container">
+      <div class="head-row shadow">
+        <ContactBox
+          title="Бесплатный тест"
+          text="Привезем 3 любых пробника и предоставим автоматическую кофемашину в тест на 7 дней"
+          background-img="red_men.png"
+        />
+        <ContactBox
+          style="margin-top: 1rem"
+          title="МЫ ГОТОВЫ ПОМОЧЬ"
+          title-color="red"
+          text="Оставьте заявку и наши менеджеры помогут подобрать для вас кофе исходя из ваших предпочтений по вкусу и способу приготовления."
+          background-img="coffee_machine3.jpg"
+        />
+      </div>
+      <img
+        v-for="i in 8"
+        :key="i"
+        class="infoImg shadow"
+        :class="[i % 2 == 0 ? 'right-col' : 'left-col']"
+        :src="'\\business\\' + i + '.png'"
+      />
+    </div>
   </div>
 </template>
 
@@ -189,11 +213,15 @@ export default {
   text-decoration: underline;
 }
 @media screen and (max-width: $mobile) {
+  .mainBox {
+    flex-wrap: wrap;
+  }
   .centerBox {
     left: 0;
     right: 0;
     padding: 3rem;
     width: 100%;
+    height: 100%;
     background-size: cover;
   }
   .mainTitle {
@@ -201,6 +229,39 @@ export default {
   }
   .subTitle {
     font-size: 2rem;
+  }
+
+  #businessBox {
+    padding: 1rem 2% 5rem 2%;
+  }
+  .container {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    grid-template-rows: repeat(auto-fill, 1fr);
+    gap: 10px 0;
+    justify-items: center;
+    align-items: center;
+  }
+
+  .left-col {
+    grid-column: 1;
+  }
+  .right-col {
+    grid-column: 2;
+  }
+  .head-row {
+    grid-row: 1;
+    grid-column: span 2;
+  }
+
+  .shadow {
+    filter: drop-shadow(0 0.05rem 0.2rem gray);
+  }
+  .infoImg {
+    width: 100%;
+    border-radius: 20px;
+    background: gray;
+    transition: all 0.3s;
   }
 }
 </style>
