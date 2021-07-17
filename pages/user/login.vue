@@ -44,8 +44,8 @@ export default {
         })
         .then(() => {
           setTimeout(() => {
-            this.$router.push('profile')
-          }, 11000)
+            this.$router.push('/user/profile')
+          }, 0)
         })
         .catch((err) => {
           console.log(err.response.data)

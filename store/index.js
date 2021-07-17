@@ -1,5 +1,4 @@
 export const state = () => ({
-  user: {},
   smallLaptop: 1400,
   tablet: 1023,
   mobile: 765,
@@ -9,9 +8,6 @@ export const state = () => ({
 })
 
 export const mutations = {
-  setUser(state, data) {
-    state.user = data
-  },
   updateSize(state) {
     state.windowWidth = window.innerWidth
     state.windowHeight = window.innerHeight
@@ -31,21 +27,6 @@ export const actions = {
       commit('updateSize')
     })
     commit('updateSize')
-
-    // запрашивает данные о пользователе
-    setImmediate(async () => {
-      if (await dispatch('api/isAuth')) {
-        dispatch('api/getUserData')
-          .then((res) => {
-            commit('setUser', res.user)
-          })
-          .catch(() => {
-            commit('setUser', {})
-          })
-      } else {
-        commit('setUser', {})
-      }
-    })
   },
 }
 
