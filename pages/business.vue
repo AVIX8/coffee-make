@@ -28,7 +28,7 @@
 export default {
   layout: 'adaptivLayout',
   transition: 'business',
-  middleware: 'device',
+  middleware: 'unavailableOnMobile',
   data() {
     return {}
   },

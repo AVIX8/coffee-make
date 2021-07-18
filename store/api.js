@@ -1,43 +1,36 @@
 export const state = () => ({
-  accessToken: '',
-  refreshRequest: null,
+  // accessToken: '',
+  // refreshRequest: null,
 })
 
 export const mutations = {
-  setTokens(state, data) {
-    state.accessToken = data.accessToken
-    this.$cookies.set('refreshToken', data.refreshToken, {
-      path: '/',
-      maxAge: 60 * 60 * 24 * 35,
-      // httpOnly: true,
-    })
-  },
-  setRefreshRequest(state, date) {
-    state.refreshRequest = date
-  },
+  // setTokens(state, data) {
+  //   state.accessToken = data.accessToken
+  //   this.$cookies.set('refreshToken', data.refreshToken, {
+  //     path: '/',
+  //     maxAge: 60 * 60 * 24 * 35,
+  //     // httpOnly: true,
+  //   })
+  // },
+  // setRefreshRequest(state, date) {
+  //   state.refreshRequest = date
+  // },
 }
 
 export const actions = {
   /*
    * AUTH
    */
-  isAuth({ commit }) {
-    return !!this.$cookies.get('refreshToken')
-  },
-  login({ commit }, { email, password }) {
-    return this.$axios
-      .$post('/auth/login', { email, password })
-      .then((data) => {
-        commit('setTokens', data)
-      })
-  },
   register({ commit }, { email, password }) {
     return this.$axios.$post('/auth/register', { email, password })
   },
+  login({ commit }, { email, password }) {
+    return this.$auth.loginWith('local', { data: { email, password } })
+  },
   logout({ commit }) {
-    const refreshToken = this.$cookies.get('refreshToken')
-    commit('setTokens', { refreshToken: '', accessToken: '' })
-    return this.$axios.$post('/auth/logout', { refreshToken })
+    return this.$auth.logout({
+      data: { refreshToken: this.$auth.strategy.refreshToken.get() },
+    })
   },
 
   /*
@@ -46,17 +39,14 @@ export const actions = {
   profile({ commit }) {
     return this.$axios.$get('/user/profile')
   },
-  getUserData({ commit }) {
-    return this.$axios.$get('user/getUserData')
-  },
 
   /**
    * PRODUCTS
    */
-  getProducts({ commit }, { category, all, filters, skip, limit }) {
+  getProducts({ commit }, { category, deep, filters, skip, limit }) {
     return this.$axios.$post('/products/get', {
       category,
-      all,
+      deep,
       filters,
       skip,
       limit,
@@ -73,10 +63,10 @@ export const actions = {
     })
     return this.$axios.$post('/products/create', fd)
   },
-  updateProduct({ commit }, data) {
+  updateProduct({ commit }, { product, imageFiles }) {
     const fd = new FormData()
-    fd.append('data', JSON.stringify(data.product))
-    data.imageFiles.forEach((file) => {
+    fd.append('data', JSON.stringify(product))
+    imageFiles.forEach((file) => {
       fd.append('images', file)
     })
     return this.$axios.$post('/products/update', fd)

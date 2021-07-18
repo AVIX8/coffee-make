@@ -1,6 +1,5 @@
-export default function ({ store, redirect }) {
-  // console.log(store.state.user)
-  // if (!store.state.user.admin) {
-  //   return redirect('/')
-  // }
+export default function ({ store, redirect, $auth }) {
+  if (!$auth.user?.roles?.includes('admin')) {
+    return redirect('/')
+  }
 }
