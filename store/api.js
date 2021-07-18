@@ -86,14 +86,10 @@ export const actions = {
     return this.$axios
       .$post('/categories/getFilters', { category })
       .then((data) => {
-        const tmp = data.reduce((rv, x) => {
+        const res = data.reduce((rv, x) => {
           ;(rv[x.title] = rv[x.title] || []).push(x.value)
           return rv
         }, {})
-        const res = []
-        for (const [title, values] of Object.entries(tmp)) {
-          res.push({ title, values })
-        }
         return res
       })
   },

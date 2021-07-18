@@ -54,15 +54,18 @@ export default {
 
     // Получение фильтров
     this.$store.dispatch('api/getCategoryFilters', '/Кофе').then((res) => {
-      this.filtres = res
+      this.filtres = []
+      this.selected = {}
+      for (const [title, values] of Object.entries(res)) {
+        this.filtres.push({ title, values })
+        this.selected[title] = []
+      }
     })
-    // Получение товаров
-    this.$store
-      .dispatch('api/getProducts', { category: '/Кофе' })
-      .then((res) => {
-        // this.products
-        console.log('Товары:', res)
-      })
+
+    // this.$nextTick(() => {
+    //   this.$nuxt.$loading.start()
+    //   setTimeout(() => this.$nuxt.$loading.finish(), 800)
+    // })
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeHandler)

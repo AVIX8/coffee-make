@@ -119,7 +119,11 @@ export default {
   methods: {
     async getProducts() {
       await this.$store
-        .dispatch('api/getProducts', { filters: this.filters, skip: this.skip })
+        .dispatch('api/getProducts', {
+          filters: this.filters,
+          skip: this.skip,
+          deep: true,
+        })
         .then((products) => {
           this.products = this.products.concat(products)
         })

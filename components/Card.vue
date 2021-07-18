@@ -8,7 +8,7 @@
     > -->
     <div class="card">
       <div class="preview">
-        <img :src="item.imgs[0]" :alt="item.title" />
+        <img :src="imageIdToURL(item.imgs[0])" :alt="item.title" />
       </div>
       <div class="title-price">
         <div class="title">{{ item.title }}</div>
@@ -29,7 +29,11 @@ export default {
   },
   computed: {},
   watch: {},
-  methods: {},
+  methods: {
+    imageIdToURL(id) {
+      return `${this.$axios.defaults.baseURL}/storage/image/${id}`
+    },
+  },
 }
 </script>
 
