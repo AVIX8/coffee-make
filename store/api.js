@@ -27,7 +27,8 @@ export const actions = {
   login({ commit }, { email, password }) {
     return this.$auth.loginWith('local', { data: { email, password } })
   },
-  logout({ commit }) {
+  async logout({ commit }) {
+    await this.$auth.refreshTokens()
     return this.$auth.logout({
       data: { refreshToken: this.$auth.strategy.refreshToken.get() },
     })
@@ -85,10 +86,14 @@ export const actions = {
     return this.$axios
       .$post('/categories/getFilters', { category })
       .then((data) => {
-        const res = data.reduce((rv, x) => {
+        const tmp = data.reduce((rv, x) => {
           ;(rv[x.title] = rv[x.title] || []).push(x.value)
           return rv
         }, {})
+        const res = []
+        for (const [title, values] of Object.entries(tmp)) {
+          res.push({ title, values })
+        }
         return res
       })
   },
