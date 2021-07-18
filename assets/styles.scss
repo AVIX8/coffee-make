@@ -86,3 +86,9 @@ p {
   filter: blur(5px) hue-rotate(90deg);
   opacity: 0;
 }
+
+@media screen and (max-width: $mobile) {
+  html {
+    font-size: 14px !important;
+  }
+}
