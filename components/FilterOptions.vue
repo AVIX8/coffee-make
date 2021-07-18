@@ -50,7 +50,7 @@ export default {
   computed: {
     getOpen() {
       if (this.$device.isMobile) return true
-      return this.open
+      return this.isOpen
     },
   },
   methods: {
@@ -216,9 +216,6 @@ export default {
   }
   .now {
     padding-left: 0.5rem;
-  }
-  .value {
-    font-size: 0.8rem;
   }
   .value:first-child:hover,
   .value:hover,
