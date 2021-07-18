@@ -70,6 +70,10 @@ export default {
     window.addEventListener('resize', this.resizeHandler)
     if (this.$device.isDesktop) this.resizeHandler()
     this.$refs.mainBox.style.minHeight = this.$store.state.windowHeight + 'px'
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+      setTimeout(() => this.$nuxt.$loading.finish(), 200)
+    })
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeHandler)
@@ -232,6 +236,7 @@ export default {
   }
 
   #businessBox {
+    border-radius: 20px;
     padding: 1rem 2% 5rem 2%;
   }
   .container {

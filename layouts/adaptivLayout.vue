@@ -133,6 +133,12 @@ export default {
       return null
     },
   },
+  mounted() {
+    // this.$nextTick(() => {
+    //   this.$nuxt.$loading.start()
+    //   setTimeout(() => this.$nuxt.$loading.finish(), 1000)
+    // })
+  },
   methods: {
     MenuClick() {
       this.isMenuOn = !this.isMenuOn

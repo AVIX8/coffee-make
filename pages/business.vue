@@ -36,6 +36,10 @@ export default {
   mounted() {
     window.addEventListener('resize', this.resizeHandler)
     window.addEventListener('scroll', this.scrollHandler)
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+      setTimeout(() => this.$nuxt.$loading.finish(), 100)
+    })
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeHandler)

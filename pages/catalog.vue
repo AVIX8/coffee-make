@@ -1,6 +1,6 @@
 <template>
   <div id="catalogBox">
-    <ProductDialog v-model="isView" title="" :item="viewProduct" />
+    <LazyProductDialog v-model="isView" title="" :item="viewProduct" />
 
     <div id="path">Каталог/Кофе</div>
     <div id="searchBox" class="hd shadowBox">
@@ -62,10 +62,10 @@ export default {
       }
     })
 
-    // this.$nextTick(() => {
-    //   this.$nuxt.$loading.start()
-    //   setTimeout(() => this.$nuxt.$loading.finish(), 800)
-    // })
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start()
+      setTimeout(() => this.$nuxt.$loading.finish(), 800)
+    })
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeHandler)

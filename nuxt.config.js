@@ -100,11 +100,7 @@ export default {
     // },
   },
 
-  loading: {
-    color: 'green',
-    height: '1px',
-    failedColor: 'yellow',
-  },
+  loading: '~/components/LoadingBar.vue',
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
