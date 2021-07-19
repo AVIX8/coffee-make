@@ -129,6 +129,9 @@ export default {
         .then((res) => {
           this.items = res
         })
+        .catch(() => {
+          this.items = []
+        })
     },
   },
 }
