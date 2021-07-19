@@ -16,6 +16,7 @@
       </v-dialog>
 
       <v-data-table
+        :disable-sort="!products.length"
         :headers="headers"
         :items="products"
         item-key="slug"
@@ -64,13 +65,76 @@
           </v-icon>
         </template>
         <template v-slot:expanded-item="{ headers, item }">
-          <td :colspan="headers.length">
-            <v-img
-              v-if="item.imgs.length"
-              max-width="250"
-              :src="imageIdToURL(item.imgs[0])"
-            ></v-img>
-            {{ item.title }}
+          <td :colspan="headers.length" class="pa-0">
+            <v-row justify="center">
+              <v-col md="3">
+                <v-img
+                  v-if="item.imgs.length < 2"
+                  :src="imageIdToURL(item.imgs[0])"
+                  contain
+                  height="450"
+                ></v-img>
+                <v-carousel
+                  v-else
+                  height="450"
+                  show-arrows-on-hover
+                  :show-arrows="item.imgs.length > 1"
+                  :hide-delimiters="item.imgs.length == 1"
+                  class="carousel"
+                  :reverse="item.imgs.length == 2"
+                >
+                  <v-carousel-item v-for="(img, i) in item.imgs" :key="i">
+                    <v-img
+                      :src="imageIdToURL(img)"
+                      contain
+                      height="100%"
+                    ></v-img>
+                  </v-carousel-item>
+                </v-carousel>
+              </v-col>
+              <v-col md="4">
+                <v-card-title>{{ item.title }}</v-card-title>
+                <v-card-subtitle>
+                  {{ item.descr }}
+                </v-card-subtitle>
+                <v-card-text>
+                  <v-simple-table class="table" dense>
+                    <tbody>
+                      <tr
+                        v-for="option in item.attributes.concat(
+                          item.characteristics
+                        )"
+                        :key="option.title"
+                      >
+                        <td class="text-left">{{ option.title }}</td>
+                        <td class="text-left">{{ option.value }}</td>
+                      </tr>
+                    </tbody>
+                  </v-simple-table>
+                  <v-card outlined width="fit-content" class="ma-3">
+                    <div v-if="!item.optionTitle" class="title ma-3">
+                      Цена: {{ item.price }} ₽
+                    </div>
+                    <v-simple-table v-else class="title table">
+                      <thead>
+                        <tr>
+                          <th class="text-right">
+                            {{ item.optionTitle }}
+                          </th>
+                          <th class="text-right">Цена</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="option in item.options" :key="option.value">
+                          <td class="text-right">{{ option.value }}</td>
+                          <td class="text-right">{{ option.price }} ₽</td>
+                        </tr>
+                      </tbody>
+                    </v-simple-table>
+                  </v-card>
+                </v-card-text>
+              </v-col>
+            </v-row>
           </td>
         </template>
         <template v-slot:no-data>
@@ -123,7 +187,7 @@ export default {
           filters: this.filters,
           skip: this.skip,
           deep: true,
-          limit: 3,
+          // limit: 3,
         })
         .then((products) => {
           this.products = this.products.concat(products)
@@ -197,4 +261,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.carousel {
+  width: 350px;
+}
+.table {
+  width: fit-content;
+}
+</style>

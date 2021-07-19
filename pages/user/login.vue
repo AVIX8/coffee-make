@@ -38,7 +38,7 @@ export default {
   methods: {
     login() {
       this.$store
-        .dispatch('api/login', {
+        .dispatch('auth/login', {
           email: this.email,
           password: this.password,
         })

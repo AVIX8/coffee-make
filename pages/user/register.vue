@@ -37,7 +37,7 @@ export default {
   methods: {
     register() {
       this.$store
-        .dispatch('api/register', {
+        .dispatch('auth/register', {
           email: this.email,
           password: this.password,
         })
