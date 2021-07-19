@@ -5,18 +5,17 @@ export const state = () => ({
   refreshRequest: null,
 })
 
+const cookiesOptions = {
+  path: '/',
+  maxAge: 60 * 60 * 24 * 35,
+  // httpOnly: true,
+}
+
 export const mutations = {
   setTokens(state, data) {
     state.accessToken = data.accessToken
-    state.accessTokenExp = this.$cookies.set(
-      'refreshToken',
-      data.refreshToken,
-      {
-        path: '/',
-        maxAge: 60 * 60 * 24 * 35,
-        // httpOnly: true,
-      }
-    )
+    this.$cookies.set('refreshToken', data.refreshToken, cookiesOptions)
+    this.$cookies.set('accessToken', data.accessToken, cookiesOptions)
   },
   setRefreshRequest(state, date) {
     state.refreshRequest = date

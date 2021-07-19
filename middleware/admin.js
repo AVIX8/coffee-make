@@ -1,3 +1,5 @@
-export default function ({ store, redirect }) {
-  if (!store.state.auth?.user?.roles?.includes('admin')) redirect('/')
+import jwt from 'jsonwebtoken'
+export default function ({ store, redirect, $cookies }) {
+  const decodedData = jwt.decode($cookies.get('accessToken'))
+  if (!decodedData?.roles?.includes('admin')) redirect('/')
 }
