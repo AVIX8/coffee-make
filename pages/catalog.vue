@@ -19,7 +19,11 @@
         <div v-if="$device.isDesktop" class="categoryTitle">Кофе</div>
         <Filtres :filtres="filtres" :selected="selected" />
       </div>
-      <ProductList class="pr" @openProduct="setViewProduct" />
+      <ProductList
+        class="pr"
+        :selected="selected"
+        @openProduct="setViewProduct"
+      />
     </div>
   </div>
 </template>
@@ -58,14 +62,15 @@ export default {
       this.selected = {}
       for (const [title, values] of Object.entries(res)) {
         this.filtres.push({ title, values })
-        this.selected[title] = []
+        // this.selected[title] = []
+        this.$set(this.selected, title, [])
       }
     })
 
-    this.$nextTick(() => {
-      this.$nuxt.$loading.start()
-      setTimeout(() => this.$nuxt.$loading.finish(), 800)
-    })
+    // this.$nextTick(() => {
+    //   this.$nuxt.$loading.start()
+    //   setTimeout(() => this.$nuxt.$loading.finish(), 1000)
+    // })
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeHandler)

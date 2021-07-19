@@ -31,8 +31,8 @@
         :filter="filter"
         :open="i === 0 || i === 1"
         :selected="selected[filter.title]"
-        @addFilter="addSelected"
-        @removeFilter="removeSelected"
+        @addFilter="addFilter"
+        @removeFilter="removeFilter"
       ></FilterOptions>
     </div>
   </div>
@@ -75,14 +75,13 @@ export default {
       this.$store.state.windowHeight - 200 + 'px'
   },
   methods: {
-    addSelected(option, filter) {
-      this.selected[filter].push(option)
+    addFilter(value, filter) {
+      this.selected[filter].push(value)
+      // this.$emit('addFilter', value, filter)
     },
-    removeSelected(option, filter) {
-      this.selected[filter].splice(this.selected[filter].indexOf(option), 1)
-    },
-    removeCategory(title) {
-      this.selected[title] = []
+    removeFilter(value, filter) {
+      this.selected[filter].splice(this.selected[filter].indexOf(value), 1)
+      // this.$emit('removeFilter', value, filter)
     },
     removeAll() {
       for (const key in this.selected) {

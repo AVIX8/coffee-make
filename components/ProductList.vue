@@ -13,24 +13,41 @@
 
 <script>
 export default {
+  props: {
+    selected: { type: Object, required: true },
+  },
   data() {
     return {
       items: [],
     }
   },
   computed: {},
-  watch: {},
-  mounted() {
-    // Получение товаров
-    this.$store
-      .dispatch('api/getProducts', { category: '/Кофе' })
-      .then((res) => {
-        // this.products
-        // console.log('Товары:', res)
-        this.items = res
-      })
+  watch: {
+    selected: {
+      deep: true,
+      handler() {
+        this.update()
+      },
+    },
   },
-  methods: {},
+  mounted() {
+    this.update()
+  },
+  methods: {
+    update() {
+      // Получение товаров
+      this.$store
+        .dispatch('api/getProducts', {
+          category: '/Кофе',
+          characteristics: JSON.parse(JSON.stringify(this.selected)),
+        })
+        .then((res) => {
+          // this.products
+          // console.log('Товары:', res)
+          this.items = res
+        })
+    },
+  },
 }
 </script>
 

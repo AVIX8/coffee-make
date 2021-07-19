@@ -45,6 +45,9 @@ export const actions = {
    * PRODUCTS
    */
   getProducts({ commit }, { category, deep, characteristics, skip, limit }) {
+    for (const key in characteristics) {
+      if (characteristics[key].length === 0) delete characteristics[key]
+    }
     return this.$axios.$post('/products/get', {
       category,
       deep,
