@@ -8,7 +8,11 @@
     > -->
     <div class="card">
       <div class="preview">
-        <img :src="imageIdToURL(item.imgs[0])" :alt="item.title" />
+        <img
+          class="image"
+          :src="imageIdToURL(item.imgs[0])"
+          :alt="item.title"
+        />
       </div>
       <div class="title-price">
         <div class="title">{{ item.title }}</div>
@@ -73,8 +77,9 @@ export default {
   border-radius: 10px;
   // box-shadow: inset 0 0 0.2rem black;
 }
-.preview img {
+.image {
   // margin: 8%;
+  margin-bottom: -5px;
   width: 100%;
   border-radius: 10px;
   // border: 2px solid blue;
