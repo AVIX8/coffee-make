@@ -146,7 +146,7 @@ export default {
   // background: forestgreen;
 }
 .card-card {
-  margin: 2rem;
+  margin: 1rem;
 }
 #paginationBox {
   height: 10%;

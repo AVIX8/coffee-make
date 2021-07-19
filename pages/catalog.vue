@@ -140,7 +140,7 @@ export default {
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas: 'fl pr pr pr';
-  margin-top: 1rem;
+  margin-top: 2rem;
   height: 100%;
 }
 
