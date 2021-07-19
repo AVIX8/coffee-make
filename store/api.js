@@ -44,11 +44,11 @@ export const actions = {
   /**
    * PRODUCTS
    */
-  getProducts({ commit }, { category, deep, filters, skip, limit }) {
+  getProducts({ commit }, { category, deep, characteristics, skip, limit }) {
     return this.$axios.$post('/products/get', {
       category,
       deep,
-      filters,
+      characteristics,
       skip,
       limit,
     })

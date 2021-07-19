@@ -49,13 +49,13 @@
           ></v-img>
         </template>
         <template v-slot:item.actions="{ item }">
-          <router-link
+          <nuxt-link
             :to="`/product/${item.slug}`"
             target="_blank"
             style="text-decoration: none; color: inherit"
           >
             <v-icon small class="mr-2" color="primary"> mdi-eye </v-icon>
-          </router-link>
+          </nuxt-link>
           <v-icon small class="mr-2" color="warning" @click="editItem(item)">
             mdi-pencil
           </v-icon>
@@ -123,6 +123,7 @@ export default {
           filters: this.filters,
           skip: this.skip,
           deep: true,
+          limit: 3,
         })
         .then((products) => {
           this.products = this.products.concat(products)

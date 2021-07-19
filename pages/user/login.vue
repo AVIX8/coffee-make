@@ -43,9 +43,7 @@ export default {
           password: this.password,
         })
         .then(() => {
-          setTimeout(() => {
-            this.$router.push('/user/profile')
-          }, 0)
+          this.$router.push('/user/profile')
         })
         .catch((err) => {
           console.log(err.response.data)
