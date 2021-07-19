@@ -25,19 +25,21 @@ export default {
     }
   },
   mounted() {
-    this.$store
-      .dispatch('api/profile')
-      .then((data) => {
-        this.userData = data
-      })
-      .catch((err) => {
-        console.error(err.response.data)
-      })
+    setTimeout(() => {
+      this.$store
+        .dispatch('api/profile')
+        .then((data) => {
+          this.userData = data
+        })
+        .catch((err) => {
+          console.error(err.response.data)
+        })
+    }, 6000)
   },
   methods: {
     logout() {
       this.$store
-        .dispatch('api/logout')
+        .dispatch('auth/logout')
         .then((data) => {
           console.log(data)
           this.$router.push('login')

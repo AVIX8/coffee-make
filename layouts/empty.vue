@@ -1,6 +1,6 @@
 <template>
   <div>
-    {{ $auth.user }}
+    {{ $store.state.auth.user }}
     <nuxt />
   </div>
 </template>

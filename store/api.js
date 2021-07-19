@@ -1,39 +1,8 @@
-export const state = () => ({
-  // accessToken: '',
-  // refreshRequest: null,
-})
+export const state = () => ({})
 
-export const mutations = {
-  // setTokens(state, data) {
-  //   state.accessToken = data.accessToken
-  //   this.$cookies.set('refreshToken', data.refreshToken, {
-  //     path: '/',
-  //     maxAge: 60 * 60 * 24 * 35,
-  //     // httpOnly: true,
-  //   })
-  // },
-  // setRefreshRequest(state, date) {
-  //   state.refreshRequest = date
-  // },
-}
+export const mutations = {}
 
 export const actions = {
-  /*
-   * AUTH
-   */
-  register({ commit }, { email, password }) {
-    return this.$axios.$post('/auth/register', { email, password })
-  },
-  login({ commit }, { email, password }) {
-    return this.$auth.loginWith('local', { data: { email, password } })
-  },
-  async logout({ commit }) {
-    await this.$auth.refreshTokens()
-    return this.$auth.logout({
-      data: { refreshToken: this.$auth.strategy.refreshToken.get() },
-    })
-  },
-
   /*
    * USER
    */

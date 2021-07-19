@@ -24,9 +24,10 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    '~/plugins/nuxt-client-init.client.js',
     '~/plugins/api.js',
+    '~/plugins/auth.js',
     '~/plugins/directives.js',
+    '~/plugins/nuxt-client-init.client.js',
     { src: '~/plugins/ymapPlugin.js', mode: 'client' },
   ],
 
@@ -45,8 +46,6 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
-    // https://auth.nuxtjs.org
-    '@nuxtjs/auth-next',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
     // https://github.com/nuxt-community/device-module
@@ -58,46 +57,6 @@ export default {
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
     baseURL: `${process.env.baseURL}`,
-  },
-
-  auth: {
-    strategies: {
-      local: {
-        scheme: 'refresh',
-        token: {
-          property: 'accessToken',
-          // global: true,
-          // name: 'Authorization',
-          // type: 'Bearer',
-          maxAge: 10, // 10s
-        },
-        refreshToken: {
-          property: 'refreshToken',
-          data: 'refreshToken',
-          maxAge: 60 * 60 * 24 * 35, // 35d
-          // required: true,
-          // tokenRequired: false,
-        },
-        user: {
-          property: 'user',
-          // autoFetch: true
-        },
-        endpoints: {
-          login: { url: '/auth/login', method: 'post' },
-          refresh: { url: '/auth/refresh', method: 'post' },
-          user: { url: '/auth/user', method: 'post' },
-          logout: { url: '/auth/logout', method: 'post' },
-        },
-        // autoLogout: false
-      },
-    },
-    redirect: false,
-    // {
-    //   login: '/login', // login is required
-    //   logout: '/', // after logout
-    //   callback: '/login', //
-    //   home: '/', // after login
-    // },
   },
 
   loading: '~/components/LoadingBar.vue',

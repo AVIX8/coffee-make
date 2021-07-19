@@ -1,4 +1,4 @@
-export default function ({ $axios, store, redirect, $cookies }) {
+export default function ({ $axios }) {
   $axios.onError((error) => {
     if (error.response?.status === 500) {
       console.warn('[plugins/api.js] API server returned 500 code')
