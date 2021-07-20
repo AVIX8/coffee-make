@@ -187,16 +187,18 @@ export default {
       return `${this.$axios.defaults.baseURL}/storage/image/${id}`
     },
     open(product) {
-      if (product) this.product = JSON.parse(JSON.stringify(product))
-      else this.product = JSON.parse(JSON.stringify(this.defaultProduct))
-
       this.isNew = !product
       this.nextCategories = []
-      this.updateCategoryInfo()
       this.characteristicExamples = {}
       this.attributeExamples = {}
-      this.severalOptions = !!this.product.optionTitle
+      this.optionTitleExamples = []
 
+      if (this.isNew)
+        this.product = JSON.parse(JSON.stringify(this.defaultProduct))
+      else this.product = JSON.parse(JSON.stringify(product))
+
+      this.updateCategoryInfo()
+      this.severalOptions = !!this.product.optionTitle
       this.dialog = true
     },
     close() {

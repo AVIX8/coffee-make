@@ -25,16 +25,14 @@ export default {
     }
   },
   mounted() {
-    setTimeout(() => {
-      this.$store
-        .dispatch('api/profile')
-        .then((data) => {
-          this.userData = data
-        })
-        .catch((err) => {
-          console.error(err.response.data)
-        })
-    }, 6000)
+    this.$store
+      .dispatch('api/profile')
+      .then((data) => {
+        this.userData = data
+      })
+      .catch((err) => {
+        console.error(err.response.data)
+      })
   },
   methods: {
     logout() {

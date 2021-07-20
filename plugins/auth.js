@@ -1,18 +1,8 @@
 export default function ({ $axios, store, $cookies }) {
   $axios.onRequest((config) => {
-    const accessToken = store.state.auth.accessToken
-
-    if (!accessToken) {
-      return config
-    }
-
-    const newConfig = {
-      headers: {},
-      ...config,
-    }
-
-    newConfig.headers.Authorization = `Bearer ${accessToken}`
-    return newConfig
+    if (!store.state.auth.accessToken) return config
+    config.headers.Authorization = `Bearer ${store.state.auth.accessToken}`
+    return config
   })
 
   $axios.onResponseError(async (error) => {

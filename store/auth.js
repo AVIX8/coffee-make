@@ -1,7 +1,6 @@
 export const state = () => ({
   user: null,
   accessToken: '',
-  accessTokenExp: null,
   refreshRequest: null,
 })
 
@@ -14,8 +13,8 @@ const cookiesOptions = {
 export const mutations = {
   setTokens(state, data) {
     state.accessToken = data.accessToken
-    this.$cookies.set('refreshToken', data.refreshToken, cookiesOptions)
     this.$cookies.set('accessToken', data.accessToken, cookiesOptions)
+    this.$cookies.set('refreshToken', data.refreshToken, cookiesOptions)
   },
   setRefreshRequest(state, date) {
     state.refreshRequest = date
@@ -26,7 +25,11 @@ export const mutations = {
 }
 
 export const actions = {
-  async nuxtClientInit({ dispatch }) {
+  async nuxtClientInit({ dispatch, commit }) {
+    commit('setTokens', {
+      accessToken: this.$cookies.get('accessToken'),
+      refreshToken: this.$cookies.get('refreshToken'),
+    })
     if (await dispatch('isAuth')) dispatch('user')
   },
 
