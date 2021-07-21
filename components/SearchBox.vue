@@ -42,9 +42,16 @@ export default {
     return {
       text: '',
       results: null,
+      timeoutId: null,
     }
   },
   watch: {
+    text(val) {
+      clearTimeout(this.timeoutId)
+      this.timeoutId = setTimeout(() => {
+        this.$emit('input', val)
+      }, 400)
+    },
     // results(newValue) {
     //   // this.$refs.search.style.transition = 'all 0.7s'
     //   if (newValue) this.$refs.search.style.borderRadius = '20px 20px 0 0'

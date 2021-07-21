@@ -11,7 +11,7 @@
         </button>
         <button class="sortButton" @click="setSort('price')">>Цене</button>
       </div>
-      <SearchBox />
+      <SearchBox v-model="searchText" />
     </div>
     <div v-if="$device.isDesktop" ref="selectedTags" class="selectedTags hd">
       <SelectedTags :selected="selected" />
@@ -24,6 +24,7 @@
       <ProductList
         class="pr"
         :sort="sort"
+        :search="searchText"
         :selected="selected"
         @openProduct="setViewProduct"
       />
@@ -50,6 +51,7 @@ export default {
       },
       filtres: [],
       sort: {},
+      searchText: '',
       viewProduct: {},
     }
   },

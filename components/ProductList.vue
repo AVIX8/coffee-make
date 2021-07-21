@@ -90,6 +90,7 @@ export default {
   props: {
     selected: { type: Object, required: true },
     sort: { type: Object, required: true },
+    search: { type: String, required: true },
   },
   data() {
     return {
@@ -111,6 +112,9 @@ export default {
         console.log(this.sort)
         this.update()
       },
+    },
+    search(val) {
+      this.update()
     },
   },
   mounted() {
@@ -137,6 +141,7 @@ export default {
         .dispatch('api/getProducts', {
           category: '/Кофе',
           sort: this.sort,
+          title: this.search,
           characteristics,
         })
         .then((res) => {
