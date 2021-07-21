@@ -79,10 +79,16 @@ p {
   opacity: 0;
 }
 
-.layout-enter-active, .layout-leave-active {
-  transition: all 0.3s, opacity 0.2s;
-}
-.layout-enter, .layout-leave-active {
-  filter: blur(5px) hue-rotate(90deg);
-  opacity: 0;
+// .layout-enter-active, .layout-leave-active {
+//   transition: all 0.3s, opacity 0.2s;
+// }
+// .layout-enter, .layout-leave-active {
+//   filter: blur(5px) hue-rotate(90deg);
+//   opacity: 0;
+// }
+
+@media screen and (max-width: $mobile) {
+  html {
+    font-size: 14px !important;
+  }
 }

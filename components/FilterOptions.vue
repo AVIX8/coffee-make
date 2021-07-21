@@ -9,12 +9,14 @@
       <!-- <transition name="top-bottom"> -->
       <button class="now" @click="btnClick">
         <p>{{ this.$props.filter.title }}</p>
-        <v-icon v-if="!isOpen">mdi-chevron-down</v-icon>
-        <v-icon v-else>mdi-chevron-up</v-icon>
+        <div v-if="$device.isDesktop">
+          <v-icon v-if="!getOpen">mdi-chevron-down</v-icon>
+          <v-icon v-else>mdi-chevron-up</v-icon>
+        </div>
       </button>
       <!-- </transition> -->
       <transition name="down">
-        <div v-show="isOpen" ref="list" class="list">
+        <div v-show="getOpen" ref="list" class="list">
           <div
             v-for="(value, i) in filter.values"
             :key="i"
@@ -36,17 +38,24 @@
 <script>
 export default {
   props: {
-    open: { type: Boolean, required: false },
+    open: { type: Boolean, required: false, default: false },
     filter: { type: Object, required: true },
     selected: { type: Array, required: true },
   },
   data() {
     return {
-      isOpen: this.open === undefined ? false : this.open,
+      isOpen: this.open,
     }
+  },
+  computed: {
+    getOpen() {
+      if (this.$device.isMobile) return true
+      return this.isOpen
+    },
   },
   methods: {
     btnClick() {
+      if (this.$device.isMobile) return
       this.isOpen = !this.isOpen
       // this.$refs.choice.style.height = this.isOpen
       //   ? 2 * (this.filter.values.length + 1) + 0.4 + 'rem'
@@ -61,6 +70,7 @@ export default {
     },
     // hover
     mouseIn() {
+      if (this.$device.isMobile) return
       if (this.$props.filter.values.length > 1 && !this.isOpen)
         this.$refs.choice.style.background = '#e57657'
       else this.$refs.choice.style.cursor = 'default'
@@ -142,13 +152,8 @@ export default {
 .value {
   display: grid;
   grid-template-columns: 1fr 8fr;
-  // display: flex;
-  // display: inline-block;
-  // align-items: left;
-  // justify-content: left;
   padding: 0.5rem 1rem 0.5rem 0.5rem;
-
-  // height: 2rem;
+  align-items: center;
 
   color: gray;
   white-space: wrap;
@@ -206,6 +211,12 @@ export default {
 }
 
 @media screen and (max-width: $mobile) {
+  .choice {
+    width: 100%;
+  }
+  .now {
+    padding-left: 0.5rem;
+  }
   .value:first-child:hover,
   .value:hover,
   .value:last-child:hover {

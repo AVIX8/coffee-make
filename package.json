@@ -17,6 +17,7 @@
     "cookie-universal-nuxt": "^2.1.4",
     "core-js": "^3.6.5",
     "hooper": "^0.3.4",
+    "jsonwebtoken": "^8.5.1",
     "nuxt": "^2.15.7",
     "vue-easy-dnd": "^1.12.1",
     "vue-yandex-maps": "^0.10.12"

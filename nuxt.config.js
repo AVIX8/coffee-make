@@ -24,9 +24,10 @@ export default {
 
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
-    '~/plugins/nuxt-client-init.client.js',
     '~/plugins/api.js',
+    '~/plugins/auth.js',
     '~/plugins/directives.js',
+    '~/plugins/nuxt-client-init.client.js',
     { src: '~/plugins/ymapPlugin.js', mode: 'client' },
   ],
 
@@ -55,14 +56,10 @@ export default {
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {
-    baseURL: 'http://83.246.145.119:4000/api',
+    baseURL: `${process.env.baseURL}`,
   },
 
-  loading: {
-    color: 'green',
-    height: '1px',
-    failedColor: 'yellow',
-  },
+  loading: '~/components/LoadingBar.vue',
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {

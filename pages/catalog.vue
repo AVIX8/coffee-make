@@ -1,32 +1,33 @@
 <template>
   <div id="catalogBox">
-    <ProductDialog v-model="isView" title="" :item="viewProduct" />
+    <LazyProductDialog v-model="isView" title="" :item="viewProduct" />
 
     <div id="path">Каталог/Кофе</div>
     <div id="searchBox" class="hd shadowBox">
       <div id="sortBox">
         Сортировать по:
-        <button class="sortButton">Дате добавления</button>
-        <button class="sortButton">Цене</button>
+        <button class="sortButton" @click="setSort('date')">
+          Дате добавления
+        </button>
+        <button class="sortButton" @click="setSort('price')">>Цене</button>
       </div>
       <SearchBox />
     </div>
-    <div ref="selectedTags" class="selectedTags hd">
+    <div v-if="$device.isDesktop" ref="selectedTags" class="selectedTags hd">
       <SelectedTags :selected="selected" />
     </div>
-    <!-- <div class="fake-shadow"></div> -->
     <div class="content">
       <div ref="filtres" class="filtres fl shadowBox">
-        <div class="categoryTitle">Кофе</div>
+        <div v-if="$device.isDesktop" class="categoryTitle">Кофе</div>
         <Filtres :filtres="filtres" :selected="selected" />
       </div>
       <ProductList
-        ref="productList"
-        class="productList pr"
+        class="pr"
+        :sort="sort"
+        :selected="selected"
         @openProduct="setViewProduct"
       />
     </div>
-    <!-- <div class="fake-shadow"></div> -->
   </div>
 </template>
 
@@ -47,51 +48,8 @@ export default {
         Кислотность: [],
         География: [],
       },
-      filtres: [
-        {
-          title: 'Сорт',
-          values: [
-            '100% Арабика',
-            'Арабика + Робуста',
-            'Моносорт',
-            'Смесь моносортов',
-          ],
-        },
-        {
-          title: 'Купаж',
-          values: [
-            'Арабика 100%',
-            'Арабика 50%, Робуста 50%',
-            'Арабика 60%, Робуста 40%',
-            'Арабика 70%, Робуста 30%',
-            'Арабика 80%, Робуста 20%',
-            'Смесь',
-          ],
-        },
-        {
-          title: 'Обжарка',
-          values: ['Очень тёмная', 'Средняя', 'Тёмная'],
-        },
-        {
-          title: 'Кислотность',
-          values: ['Без кислотности', 'Низкая', 'Средняя'],
-        },
-        {
-          title: 'География',
-          values: [
-            'Бразилия',
-            'Бразилия Моджиана, Колумбия Супремо',
-            'Вьетнам',
-            'Гватемала',
-            'Индонезия',
-            'Колумбия',
-            'Уганда',
-            'Вьетнам Тай Нгуен',
-            'Мексика, Чьяпас',
-            'Респ. Гондурас Сан Маркос',
-          ],
-        },
-      ],
+      filtres: [],
+      sort: {},
       viewProduct: {},
     }
   },
@@ -104,24 +62,38 @@ export default {
 
     // Получение фильтров
     this.$store.dispatch('api/getCategoryFilters', '/Кофе').then((res) => {
-      console.log('Фильтры:', res)
+      this.filtres = []
+      this.selected = {}
+      for (const [title, values] of Object.entries(res)) {
+        this.filtres.push({ title, values })
+        // this.selected[title] = []
+        this.$set(this.selected, title, [])
+      }
     })
-    // Получение товаров
-    this.$store
-      .dispatch('api/getProducts', { category: '/Кофе' })
-      .then((res) => {
-        console.log('Товары:', res)
-      })
+
+    // this.$nextTick(() => {
+    //   this.$nuxt.$loading.start()
+    //   setTimeout(() => this.$nuxt.$loading.finish(), 900)
+    // })
   },
   destroyed() {
     window.removeEventListener('resize', this.resizeHandler)
     // window.removeEventListener('scroll', this.scrollHandler)
   },
   methods: {
+    setSort(data) {
+      if (this.sort[data]) this.sort[data] *= -1
+      else {
+        this.sort = {}
+        this.$set(this.sort, data, 1)
+      }
+    },
     resizeHandler() {
       const remSize = parseFloat(
         getComputedStyle(document.documentElement).fontSize
       )
+
+      if (this.$device.isMobile) return
       this.$refs.filtres.style.width =
         (this.$store.state.windowWidth - 30 * remSize) / 4 + 'px'
 
@@ -158,13 +130,10 @@ export default {
   padding-left: 2rem;
   height: 3rem;
   width: 100%;
-  // background: magenta;
 }
 #searchBox {
   display: grid;
   grid-template-columns: 2fr 1fr;
-  // position: absolute;
-  // right: 13%;
   align-items: center;
   width: 71%;
 
@@ -175,7 +144,6 @@ export default {
 }
 .selectedTags {
   position: absolute;
-  // background: blue;
 }
 .content {
   display: grid;
@@ -183,10 +151,8 @@ export default {
   gap: 0px 0px;
   grid-auto-flow: row;
   grid-template-areas: 'fl pr pr pr';
-  margin-top: 1rem;
+  margin-top: 2rem;
   height: 100%;
-  // background: white;
-  // background: $main-light-color;
 }
 
 .hd {
@@ -204,11 +170,7 @@ export default {
   box-shadow: 0 1px 0.15rem gray;
 }
 .filtres {
-  // position: fixed;
-  // position: absolute;
   position: sticky;
-  // top: 15%;
-  // top: -48px;
   top: 1%;
   margin-top: -4rem;
   width: 360px;
@@ -217,14 +179,11 @@ export default {
   background: whitesmoke;
   background: white;
   transition: all 0.2s cubic-bezier(0.165, 0.84, 0.44, 1);
+  z-index: 1;
 }
 .categoryTitle {
   margin: 1rem 0 0 2rem;
   font-size: 2rem;
-  // border-bottom: 1px solid black;
-  // background: blue;
-}
-#sortBox {
 }
 .sortButton {
   margin: 0 0.5rem;
@@ -239,5 +198,43 @@ export default {
   background: whitesmoke;
   box-shadow: 0 0 0.4rem 0.8rem whitesmoke;
   z-index: 2;
+}
+@media screen and (max-width: $mobile) {
+  #catalogBox {
+    position: relative;
+    padding: 0 1rem;
+    padding-bottom: 5rem;
+    background: whitesmoke;
+  }
+  #path {
+    padding: 0;
+  }
+  #searchBox {
+    grid-template-columns: 1fr 1fr;
+    width: auto;
+    margin: 0;
+    padding: 0.5rem;
+    font-size: 0.6rem;
+  }
+  .content {
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .hd {
+    grid-area: hd;
+    margin-bottom: 1rem;
+  }
+  .fl {
+    grid-area: fl;
+  }
+  .pr {
+    grid-area: pr;
+  }
+  .filtres {
+    position: unset;
+    margin: 0;
+    margin-bottom: 1rem;
+  }
 }
 </style>

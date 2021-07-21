@@ -37,12 +37,13 @@ export default {
   methods: {
     logout() {
       this.$store
-        .dispatch('api/logout')
+        .dispatch('auth/logout')
         .then((data) => {
           console.log(data)
           this.$router.push('login')
         })
         .catch((err) => {
+          console.log(err)
           console.log(err.response.data)
         })
     },

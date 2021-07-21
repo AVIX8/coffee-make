@@ -177,5 +177,25 @@ button {
   opacity: 0;
 }
 @media screen and (max-width: $mobile) {
+  .contactBox {
+    padding: 1rem;
+    min-width: unset;
+    width: 100%;
+    background-position-x: 50%;
+  }
+  .title {
+    font-size: 24px;
+  }
+  .text {
+    font-size: 16px;
+  }
+  .contactBox button {
+    box-sizing: border-box;
+    font-size: 1.2rem;
+    background: $side-dark-color;
+
+    border: 2px solid white;
+    transition: all 0.2s;
+  }
 }
 </style>

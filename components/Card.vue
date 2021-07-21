@@ -8,7 +8,11 @@
     > -->
     <div class="card">
       <div class="preview">
-        <img :src="item.imgs[0]" :alt="item.title" />
+        <img
+          class="image"
+          :src="imageIdToURL(item.imgs[0])"
+          :alt="item.title"
+        />
       </div>
       <div class="title-price">
         <div class="title">{{ item.title }}</div>
@@ -29,7 +33,11 @@ export default {
   },
   computed: {},
   watch: {},
-  methods: {},
+  methods: {
+    imageIdToURL(id) {
+      return `${this.$axios.defaults.baseURL}/storage/image/${id}`
+    },
+  },
 }
 </script>
 
@@ -69,8 +77,9 @@ export default {
   border-radius: 10px;
   // box-shadow: inset 0 0 0.2rem black;
 }
-.preview img {
+.image {
   // margin: 8%;
+  margin-bottom: -5px;
   width: 100%;
   border-radius: 10px;
   // border: 2px solid blue;
@@ -119,9 +128,7 @@ export default {
   .cardBox {
     margin: 0 0 1rem 0;
     // margin: 0 1rem 0;
-
-    height: 95%;
-    width: 90%;
+    width: 95%;
     // background: blue;
   }
   .card {
@@ -136,19 +143,16 @@ export default {
     transition: all 0.4s;
   }
 
-  .title {
-    padding: 1rem 0 0 0;
-    // background: springgreen;
+  .title-price {
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr 1fr;
+    margin: 10px 0;
   }
-  .title {
-    padding: 0 0.2rem 0 0.2rem;
-    font-size: 1rem;
-    // background: yellow;
-  }
-
+  .title,
   .price {
-    margin: 0.5rem 0;
-    // background: orange;
+    padding: 5px 0;
+    text-align: center;
+    font-size: 14px;
   }
 }
 </style>

@@ -44,7 +44,7 @@ export default {
   },
   computed: {
     filtered() {
-      return this.items.filter((x) => !!x)
+      return this.items.filter((x) => !!x).sort()
     },
     allItems() {
       if (this.value.length === 0) return this.filtered

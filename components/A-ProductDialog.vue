@@ -5,6 +5,9 @@
         <span class="text-h5">{{
           isNew ? 'Добавление товара' : 'Редактирование товара'
         }}</span>
+        <v-spacer></v-spacer>
+        <v-btn color="blue darken-1" text @click="close"> Отмена </v-btn>
+        <v-btn color="blue darken-1" text @click="save"> Сохранить </v-btn>
       </v-card-title>
       <v-card-text>
         <v-row>
@@ -50,10 +53,16 @@
 
           <v-col>
             <v-switch
+              v-model="product.inStock"
+              class="mx-2 mt-0"
+              inset
+              label="В наличии"
+            ></v-switch>
+
+            <v-switch
               v-model="severalOptions"
               class="mx-2 mt-0"
               inset
-              outlined
               label="Несколько опций"
             ></v-switch>
 
@@ -101,11 +110,6 @@
           </v-col>
         </v-row>
       </v-card-text>
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="close"> Отмена </v-btn>
-        <v-btn color="blue darken-1" text @click="save"> Сохранить </v-btn>
-      </v-card-actions>
     </v-card>
   </v-dialog>
 </template>
@@ -123,6 +127,7 @@ export default {
       characteristics: [],
       optionTitle: '',
       options: [],
+      inStock: false,
     },
     product: {},
     isNew: false,
@@ -139,7 +144,7 @@ export default {
       return this.product.category
     },
     productImgs() {
-      return this.product.imgs
+      return this.product.imgs || []
     },
     filteredAttributeExamples() {
       if (!this.attributeExamples[this.product.optionTitle])
@@ -157,6 +162,7 @@ export default {
 
   watch: {
     productImgs(imgs) {
+      console.log(imgs)
       if (imgs?.length)
         this.images = imgs.map((id) => {
           return {
@@ -187,16 +193,18 @@ export default {
       return `${this.$axios.defaults.baseURL}/storage/image/${id}`
     },
     open(product) {
-      if (product) this.product = JSON.parse(JSON.stringify(product))
-      else this.product = JSON.parse(JSON.stringify(this.defaultProduct))
-
       this.isNew = !product
       this.nextCategories = []
-      this.updateCategoryInfo()
       this.characteristicExamples = {}
       this.attributeExamples = {}
-      this.severalOptions = !!this.product.optionTitle
+      this.optionTitleExamples = []
 
+      if (this.isNew)
+        this.product = JSON.parse(JSON.stringify(this.defaultProduct))
+      else this.product = JSON.parse(JSON.stringify(product))
+
+      this.updateCategoryInfo()
+      this.severalOptions = !!this.product.optionTitle
       this.dialog = true
     },
     close() {

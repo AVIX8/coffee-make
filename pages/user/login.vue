@@ -38,14 +38,12 @@ export default {
   methods: {
     login() {
       this.$store
-        .dispatch('api/login', {
+        .dispatch('auth/login', {
           email: this.email,
           password: this.password,
         })
         .then(() => {
-          setTimeout(() => {
-            this.$router.push('profile')
-          }, 11000)
+          this.$router.push('/user/profile')
         })
         .catch((err) => {
           console.log(err.response.data)

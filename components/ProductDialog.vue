@@ -19,7 +19,7 @@
         >
           <slide v-for="(img, index) in item.imgs" :key="index">
             <div class="container">
-              <v-img :src="img" contain class="itemImg" />
+              <v-img :src="imageIdToURL(img)" contain class="itemImg" />
             </div>
           </slide>
           <hooper-navigation
@@ -37,7 +37,7 @@
           ></hooper-pagination>
         </hooper>
         <div v-else class="container">
-          <v-img :src="item.imgs[0]" contain class="itemImg" />
+          <v-img :src="imageIdToURL(item.imgs[0])" contain class="itemImg" />
         </div>
       </div>
 
@@ -174,6 +174,9 @@ export default {
     },
     hide() {
       this.$emit('input', false)
+    },
+    imageIdToURL(id) {
+      return `${this.$axios.defaults.baseURL}/storage/image/${id}`
     },
   },
 }
