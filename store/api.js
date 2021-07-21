@@ -15,17 +15,15 @@ export const actions = {
    */
   getProducts(
     { commit },
-    { category, deep, characteristics, title, inStock, skip, limit }
+    { category, deep, characteristics, title, inStock, sort, skip, limit }
   ) {
-    for (const key in characteristics) {
-      if (characteristics[key].length === 0) delete characteristics[key]
-    }
     return this.$axios.$post('/products/get', {
       category,
       deep,
       characteristics,
       title,
       inStock,
+      sort,
       skip,
       limit,
     })

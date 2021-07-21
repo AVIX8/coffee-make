@@ -6,8 +6,10 @@
     <div id="searchBox" class="hd shadowBox">
       <div id="sortBox">
         Сортировать по:
-        <button class="sortButton">Дате добавления</button>
-        <button class="sortButton">Цене</button>
+        <button class="sortButton" @click="setSort('date')">
+          Дате добавления
+        </button>
+        <button class="sortButton" @click="setSort('price')">>Цене</button>
       </div>
       <SearchBox />
     </div>
@@ -21,6 +23,7 @@
       </div>
       <ProductList
         class="pr"
+        :sort="sort"
         :selected="selected"
         @openProduct="setViewProduct"
       />
@@ -46,6 +49,7 @@ export default {
         География: [],
       },
       filtres: [],
+      sort: {},
       viewProduct: {},
     }
   },
@@ -77,6 +81,13 @@ export default {
     // window.removeEventListener('scroll', this.scrollHandler)
   },
   methods: {
+    setSort(data) {
+      if (this.sort[data]) this.sort[data] *= -1
+      else {
+        this.sort = {}
+        this.$set(this.sort, data, 1)
+      }
+    },
     resizeHandler() {
       const remSize = parseFloat(
         getComputedStyle(document.documentElement).fontSize

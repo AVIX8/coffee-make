@@ -89,6 +89,7 @@
 export default {
   props: {
     selected: { type: Object, required: true },
+    sort: { type: Object, required: true },
   },
   data() {
     return {
@@ -101,6 +102,13 @@ export default {
     selected: {
       deep: true,
       handler() {
+        this.update()
+      },
+    },
+    sort: {
+      deep: true,
+      handler() {
+        console.log(this.sort)
         this.update()
       },
     },
@@ -121,10 +129,15 @@ export default {
     },
     async update() {
       // Получение товаров
+      const characteristics = {}
+      for (const [title, values] of Object.entries(this.selected))
+        if (values.length) characteristics[title] = values
+
       await this.$store
         .dispatch('api/getProducts', {
           category: '/Кофе',
-          characteristics: JSON.parse(JSON.stringify(this.selected)),
+          sort: this.sort,
+          characteristics,
         })
         .then((res) => {
           this.items = res
