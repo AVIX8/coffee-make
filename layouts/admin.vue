@@ -93,7 +93,11 @@ export default {
         { title: 'Заказы', icon: 'mdi-clipboard-text', to: '/admin/orders' },
 
         { title: 'Категории', icon: 'mdi-apps', to: '/admin/categories' },
-        { title: 'Товары', icon: 'mdi-basket', to: '/admin/products' },
+        {
+          title: 'Товары',
+          icon: 'mdi-package-variant-closed',
+          to: '/admin/products',
+        },
 
         {
           title: 'Пользователи',

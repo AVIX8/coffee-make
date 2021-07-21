@@ -13,7 +13,10 @@ export const actions = {
   /**
    * PRODUCTS
    */
-  getProducts({ commit }, { category, deep, characteristics, skip, limit }) {
+  getProducts(
+    { commit },
+    { category, deep, characteristics, title, inStock, skip, limit }
+  ) {
     for (const key in characteristics) {
       if (characteristics[key].length === 0) delete characteristics[key]
     }
@@ -21,6 +24,8 @@ export const actions = {
       category,
       deep,
       characteristics,
+      title,
+      inStock,
       skip,
       limit,
     })
