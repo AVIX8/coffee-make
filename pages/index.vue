@@ -59,7 +59,7 @@
 
 <script>
 export default {
-  layout: 'header&footer',
+  layout: 'adaptivLayout',
   data() {
     return {
       isCenterActive: true,
@@ -97,7 +97,6 @@ export default {
 @import url('https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap');
 .mainBox {
   position: relative;
-  height: 800px;
   display: flex;
 }
 .shadow {

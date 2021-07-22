@@ -79,7 +79,7 @@ export default {
 }
 .image {
   // margin: 8%;
-  margin-bottom: -5px;
+  margin-bottom: -7px;
   width: 100%;
   border-radius: 10px;
   // border: 2px solid blue;
@@ -88,8 +88,9 @@ export default {
 }
 .title-price {
   display: grid;
-  grid-template-columns: 2fr 1fr;
+  grid-template-columns: 1fr 1fr;
   align-items: center;
+  margin-top: 0.5rem;
   width: 90%;
   // padding: 1.5rem 0 0 0;
   // background: springgreen;
@@ -125,18 +126,12 @@ export default {
 }
 
 @media screen and (max-width: $mobile) {
-  .cardBox {
-    margin: 0 0 1rem 0;
-    // margin: 0 1rem 0;
-    width: 95%;
-    // background: blue;
-  }
   .card {
-    box-shadow: 0 0 0.3rem gray;
+    box-shadow: 0 0 0.2rem gray;
   }
   .card:hover {
-    box-shadow: 0;
-    transition: 0;
+    box-shadow: 0 0 0.2rem gray;
+    transition: none;
   }
   .card:active {
     box-shadow: 0 0 0.5rem gray;

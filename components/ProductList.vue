@@ -123,10 +123,6 @@ export default {
   },
   methods: {
     load() {
-      this.$nextTick(() => {
-        this.$nuxt.$loading.start()
-        setTimeout(() => this.$nuxt.$loading.finish(), 0)
-      })
       setTimeout(() => {
         this.isLoad = false
       }, 1000)
@@ -159,7 +155,7 @@ export default {
 #catalog-box {
   // overflow: scroll;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
   justify-content: center;
   align-items: center;
   // height: 100rem;
@@ -260,8 +256,13 @@ export default {
 ////////////////////////////////////////////////////////////
 
 @media screen and (max-width: $mobile) {
+  #catalog-box {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.8rem;
+  }
   .card-card {
     margin: 0rem;
+    justify-self: center;
   }
 }
 </style>

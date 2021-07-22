@@ -55,7 +55,6 @@ export default {
 <style scoped lang="scss">
 #businessBox {
   padding: 1rem 15% 5rem 15%;
-  min-height: 800px;
 }
 .container {
   display: grid;

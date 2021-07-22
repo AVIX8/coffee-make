@@ -4,25 +4,31 @@
       <Authentication @close="closeAuthentication" />
     </div>
 
-    <div v-if="$device.isDesktop" :class="headerStyle">
-      <nuxt-link to="/" style="text-decoration: none">
-        <img class="logo" title="На Главную" src="/Logo_white_.png" />
-      </nuxt-link>
-      <div style="width: 75%" />
-      <img
-        class="account"
-        src="/account.png"
-        title="Мой Аккаунт"
-        @click="accountClick"
-      />
-      <nuxt-link
-        class="cart"
-        tag="img"
-        src="/cart.png"
-        to="/"
-        title="Корзина"
-      />
-    </div>
+    <transition name="fadeDown">
+      <div
+        v-if="$device.isDesktop && $route.name !== 'index'"
+        :class="headerStyle"
+      >
+        <nuxt-link to="/" style="text-decoration: none">
+          <img class="logo" title="На Главную" src="/Logo_white_.png" />
+        </nuxt-link>
+        <div style="width: 75%" />
+        <img
+          class="account"
+          src="/account.png"
+          title="Мой Аккаунт"
+          @click="accountClick"
+        />
+        <nuxt-link
+          v-if="this.$route.name !== 'cart'"
+          class="cart"
+          tag="img"
+          src="/cart.png"
+          to="/cart"
+          title="Корзина"
+        />
+      </div>
+    </transition>
 
     <nuxt-link
       v-if="$device.isDesktop"
@@ -30,24 +36,28 @@
       tag="div"
       :to="linkRoute"
     >
-      <div class="eyelet" :class="[isLeft ? 'eyelet-left' : 'eyelet-right']">
-        <v-icon v-if="isLeft" large>mdi-chevron-left</v-icon>
+      <div class="eyelet" :class="[isCatalog ? 'eyelet-left' : 'eyelet-right']">
+        <v-icon v-if="isCatalog" large>mdi-chevron-left</v-icon>
         <v-icon v-else large>mdi-chevron-right</v-icon>
       </div>
 
       <div
         class="back-box"
-        :class="[isLeft ? 'back-box-left' : 'back-box-right']"
+        :class="[isCatalog ? 'back-box-left' : 'back-box-right']"
       />
       <div
         class="frontbox"
-        :style="isLeft ? 'background: #4494b6a1' : 'background: #e5765791'"
+        :style="isCatalog ? 'background: #4494b6a1' : 'background: #e5765791'"
       >
-        {{ isLeft ? 'Для Бизнеса' : 'Каталог' }}
+        <v-icon v-if="!isCatalog" color="#fff" large>mdi-chevron-left</v-icon>
+        {{ isCatalog ? 'Для Бизнеса' : 'Каталог' }}
+        <v-icon v-if="isCatalog" color="#fff" large>mdi-chevron-right</v-icon>
       </div>
     </nuxt-link>
 
-    <nuxt />
+    <div ref="nuxtBox">
+      <nuxt />
+    </div>
 
     <div v-if="$device.isDesktop" class="FOOTER">
       <!-- <yandex-map :coords="coords">
@@ -110,27 +120,30 @@ export default {
     }
   },
   computed: {
-    isLeft() {
+    isBusiness() {
+      return this.$route.name === 'business'
+    },
+    isCatalog() {
       return this.$route.name === 'catalog'
     },
     headerStyle() {
       return {
         HEADER: true,
-        'left-color': this.isLeft,
-        'right-color': !this.isLeft,
+        'left-color': !this.isBusiness,
+        'right-color': this.isBusiness,
       }
     },
     sideLinkStyle() {
       return {
         sideLink: true,
-        blueLink: this.isLeft,
-        redLink: !this.isLeft,
+        blueLink: this.isCatalog,
+        redLink: !this.isCatalog,
       }
     },
     linkRoute() {
-      if (this.isLeft) return '/business'
-      if (!this.isLeft) return '/catalog'
-      return null
+      if (this.isCatalog) return '/business'
+      else return '/catalog'
+      // return null
     },
   },
   mounted() {
@@ -138,6 +151,8 @@ export default {
     //   this.$nuxt.$loading.start()
     //   setTimeout(() => this.$nuxt.$loading.finish(), 1000)
     // })
+    this.$refs.nuxtBox.style.minHeight =
+      this.$store.state.windowHeight - 90 + 'px'
   },
   methods: {
     MenuClick() {
@@ -146,8 +161,7 @@ export default {
       else this.menuIcon = 'mdi-menu'
     },
     accountClick() {
-      if (Object.keys(this.$store.state.user).length === 0)
-        this.isAuthentication = true
+      if (this.$store.state.auth.user) this.isAuthentication = true
       else this.$router.push('/account')
     },
     closeAuthentication() {
@@ -295,6 +309,7 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 1rem;
   height: 100%;
   width: 100%;
   color: white;
@@ -362,6 +377,18 @@ export default {
   width: 100%;
   font-size: 0.6rem;
   text-align: center;
+}
+.fadeDown-enter-active {
+  transition: all 0.5s;
+}
+.fadeDown-leave-active {
+  transition: all 0s;
+}
+.fadeDown-enter,
+.fadeDown-leave-to {
+  position: absolute;
+  transform: translateY(-2rem);
+  opacity: 0;
 }
 @media screen and (max-width: $mobile) {
   .HEADER {

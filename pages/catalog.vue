@@ -123,7 +123,6 @@ export default {
 #catalogBox {
   position: relative;
   padding: 0 15rem 5rem 15rem;
-  min-height: 900px;
   background: whitesmoke;
   // background: $main-light-color;
 }
@@ -175,7 +174,7 @@ export default {
 .filtres {
   position: sticky;
   top: 1%;
-  margin-top: -4rem;
+  margin-top: -5rem;
   width: 360px;
   height: fit-content;
 
