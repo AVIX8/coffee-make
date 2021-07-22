@@ -123,6 +123,7 @@ export default {
 #catalogBox {
   position: relative;
   padding: 0 15rem 5rem 15rem;
+  min-height: 900px;
   background: whitesmoke;
   // background: $main-light-color;
 }

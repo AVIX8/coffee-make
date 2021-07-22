@@ -38,7 +38,7 @@ export default {
     window.addEventListener('scroll', this.scrollHandler)
     this.$nextTick(() => {
       this.$nuxt.$loading.start()
-      setTimeout(() => this.$nuxt.$loading.finish(), 100)
+      setTimeout(() => this.$nuxt.$loading.finish(), 0)
     })
   },
   destroyed() {
@@ -55,6 +55,7 @@ export default {
 <style scoped lang="scss">
 #businessBox {
   padding: 1rem 15% 5rem 15%;
+  min-height: 800px;
 }
 .container {
   display: grid;
