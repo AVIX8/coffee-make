@@ -91,11 +91,11 @@
           <h6>{{ item.descr }}</h6>
         </div>
         <div v-if="!$device.isMobile" class="cartBtn">
-          <button><h6>Добавить в Корзину</h6></button>
+          <button @click="addItem"><h6>Добавить в Корзину</h6></button>
         </div>
       </div>
       <div v-if="$device.isMobile" class="cartBtn">
-        <button><h6>Добавить в Корзину</h6></button>
+        <button @click="addItem"><h6>Добавить в Корзину</h6></button>
       </div>
     </div>
   </div>
@@ -177,6 +177,9 @@ export default {
     },
     imageIdToURL(id) {
       return `${this.$axios.defaults.baseURL}/storage/image/${id}`
+    },
+    addItem() {
+      this.$store.commit('cart/addItem', this.item)
     },
   },
 }
