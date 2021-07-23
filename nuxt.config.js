@@ -59,7 +59,7 @@ export default {
     baseURL: `${process.env.baseURL}`,
   },
 
-  loading: '~/components/LoadingBar.vue',
+  // loading: '~/components/LoadingBar.vue',
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {

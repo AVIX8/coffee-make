@@ -70,7 +70,7 @@
       </div>
     </transition>
 
-    <transition name="loadOut">
+    <transition name="productIn">
       <div v-show="!isLoad" id="catalog-box">
         <div
           v-for="(item, index) in items"
@@ -80,6 +80,12 @@
         >
           <Card :item="item" />
         </div>
+      </div>
+    </transition>
+    <transition name="loadOut">
+      <div v-if="items.length === 0" class="emptyBox">
+        <h1 class="emptyPreview">☹</h1>
+        <h4>Ой! Кажется здесь ничего нет...</h4>
       </div>
     </transition>
   </div>
@@ -109,7 +115,6 @@ export default {
     sort: {
       deep: true,
       handler() {
-        console.log(this.sort)
         this.update()
       },
     },
@@ -118,17 +123,18 @@ export default {
     },
   },
   mounted() {
-    this.load()
+    this.load(1000)
     this.update()
   },
   methods: {
-    load() {
+    load(time) {
       setTimeout(() => {
         this.isLoad = false
-      }, 1000)
+      }, time)
     },
     async update() {
       // Получение товаров
+      this.isLoad = true
       const characteristics = {}
       for (const [title, values] of Object.entries(this.selected))
         if (values.length) characteristics[title] = values
@@ -139,6 +145,7 @@ export default {
           sort: this.sort,
           title: this.search,
           characteristics,
+          limit: 12,
         })
         .then((res) => {
           this.items = res
@@ -146,6 +153,7 @@ export default {
         .catch(() => {
           this.items = []
         })
+      this.load(400)
     },
   },
 }
@@ -178,6 +186,23 @@ export default {
   background: transparent;
   // background: red;
 }
+.emptyBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 14% 2rem;
+  color: gray;
+  // height: 100%;
+  // background: fuchsia;
+}
+.emptyPreview {
+  width: 100%;
+  color: $main-light-color;
+  text-align: center;
+  // background: gold;
+}
+
 .loadOut-enter-active {
   transition: all 1.5s;
 }
@@ -190,6 +215,18 @@ export default {
 }
 .loadOut-leave-to {
   transform: scale(2);
+  opacity: 0;
+}
+
+.productIn-enter-active {
+  transition: all 1.5s;
+}
+.productIn-leave-active {
+  transition: all 0.5s;
+}
+.productIn-enter,
+.productIn-leave-to {
+  transform: scale(0.5);
   opacity: 0;
 }
 ////////////////////////////////////////////////////////////

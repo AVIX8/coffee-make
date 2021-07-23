@@ -379,7 +379,7 @@ export default {
   text-align: center;
 }
 .fadeDown-enter-active {
-  transition: all 0.5s;
+  transition: all 0s;
 }
 .fadeDown-leave-active {
   transition: all 0s;
