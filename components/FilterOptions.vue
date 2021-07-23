@@ -9,9 +9,10 @@
       <!-- <transition name="top-bottom"> -->
       <button class="now" @click="btnClick">
         <p>{{ this.$props.filter.title }}</p>
+        <div style="width: 100%" />
         <div v-if="$device.isDesktop">
-          <v-icon v-if="!getOpen">mdi-chevron-down</v-icon>
-          <v-icon v-else>mdi-chevron-up</v-icon>
+          <v-icon v-if="!getOpen" class="chevron">mdi-chevron-down</v-icon>
+          <v-icon v-else class="chevron">mdi-chevron-up</v-icon>
         </div>
       </button>
       <!-- </transition> -->
@@ -103,6 +104,7 @@ export default {
   display: inline-block;
 
   // height: 2rem;
+  width: 100%;
 
   background: white;
 
@@ -115,11 +117,17 @@ export default {
   transition: all 0.2s;
 }
 .now {
-  display: grid;
+  // display: grid;
+  // align-items: center;
+  // grid-template-columns: 2fr 40fr 1fr;
+  display: flex;
   align-items: center;
-  grid-template-columns: 2fr 100fr 1fr;
+  justify-content: center;
+
+  padding: 0 0.5rem 0 0.6rem;
 
   height: 2rem;
+  width: 100%;
 
   text-align: left;
 
@@ -137,6 +145,10 @@ export default {
   color: black;
   font-size: 1.1rem;
   font-weight: bold;
+}
+.now .chevron {
+  justify-self: right;
+  // background: springgreen;
 }
 
 .list {

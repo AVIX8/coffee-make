@@ -7,9 +7,11 @@
       <div id="sortBox">
         Сортировать по:
         <button class="sortButton" @click="setSort('date')">
-          Дате добавления
+          Дате добавления <v-icon small>{{ sortIcon('date') }}</v-icon>
         </button>
-        <button class="sortButton" @click="setSort('price')">>Цене</button>
+        <button class="sortButton" @click="setSort('price')">
+          Цене <v-icon small>{{ sortIcon('price') }}</v-icon>
+        </button>
       </div>
       <SearchBox v-model="searchText" />
     </div>
@@ -90,6 +92,12 @@ export default {
         this.$set(this.sort, data, 1)
       }
     },
+    sortIcon(sortName) {
+      if (Object.keys(this.sort)[0] === sortName)
+        if (this.sort[sortName] === 1) return 'mdi-chevron-triple-up'
+        else return 'mdi-chevron-triple-down'
+      else return ''
+    },
     resizeHandler() {
       const remSize = parseFloat(
         getComputedStyle(document.documentElement).fontSize
@@ -122,7 +130,8 @@ export default {
 <style scoped lang="scss">
 #catalogBox {
   position: relative;
-  padding: 0 15rem 5rem 15rem;
+  padding: 0 15rem 15rem 15rem;
+  height: 100%;
   background: whitesmoke;
   // background: $main-light-color;
 }

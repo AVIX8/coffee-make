@@ -10,29 +10,7 @@
       <button class="clear" title="Очистить" @click="clear">
         <v-icon class="clear">mdi-close</v-icon>
       </button>
-      <button ref="go" class="searchGo" title="Найти" @click="test">
-        <v-icon class="searchGo">mdi-magnify</v-icon>
-      </button>
     </div>
-
-    <!-- <transition name="resultsDown">
-      <div v-show="results" ref="results" class="results">
-        <nuxt-link
-          v-for="(result, i) in results"
-          :key="i"
-          tag="div"
-          class="result"
-          to="/"
-          @click.native="clear"
-        >
-          <img class="preview" :src="result.imgs[0]" />
-          <div class="info">
-            <h6>{{ result.name }}</h6>
-            <p>Цена: {{ result.choiceProperty.variants[0].price }} руб</p>
-          </div>
-        </nuxt-link>
-      </div>
-    </transition> -->
   </div>
 </template>
 
@@ -52,177 +30,11 @@ export default {
         this.$emit('input', val)
       }, 400)
     },
-    // results(newValue) {
-    //   // this.$refs.search.style.transition = 'all 0.7s'
-    //   if (newValue) this.$refs.search.style.borderRadius = '20px 20px 0 0'
-    //   else this.$refs.search.style.borderRadius = '20px'
-    //   if (newValue && newValue.length > 3)
-    //     this.$refs.results.style.height = '22rem'
-    // },
   },
-  mounted() {
-    // if (this.results && this.results.length > 3)
-    //   this.$refs.results.style.height = '22rem'
-    // else if (this.results)
-    //   this.$refs.results.style.height = 6 * this.results.length + 1.9 + 'rem'
-    // this.$refs.results.style.padding =
-    //   this.$refs.input.clientHeight + 1 + 'px 0 0 0'
-  },
+  mounted() {},
   methods: {
     clear() {
       this.text = ''
-      this.results = null
-      // this.$refs.results.style.transition = 'all 0.5s'
-      // this.$refs.results.style.height = 0
-    },
-    test() {
-      // this.$refs.results.style.transition = 'all 0.6s'
-      this.results = [
-        {
-          _id: '054VA72303012P',
-          desc:
-            "Give your dressy look a lift with these women's Kate high-heel shoes by Metaphor. These playful peep-toe pumps feature satin-wrapped stiletto heels and chiffon pompoms at the toes. Rhinestones on each of the silvertone buckles add just a touch of sparkle to these shoes for a flirty footwear look that's made for your next night out.",
-          name: `Сироп ARGENTO "ЗЕЛЕНЫЙ БАНАН", 1л`,
-          category: '/кофе/моносорта',
-          brand: 'Argento',
-          imgs: [
-            '/сироп зеленый банан.png',
-            '/красные стаканы 2.jpg',
-            '/testCoffee.png',
-          ],
-
-          properties: {
-            кислотность: {
-              maxValue: 5,
-              value: 3,
-            },
-            плотность: {
-              maxValue: 5,
-              value: 2,
-            },
-          },
-
-          choiceProperty: {
-            name: 'Масса (гр)',
-            variants: [
-              {
-                price: 260.0,
-                option: 250,
-              },
-              {
-                price: 940.0,
-                option: 1000,
-              },
-              {
-                price: 1600.0,
-                option: 2000,
-              },
-            ],
-          },
-        },
-        {
-          _id: '054VA72303012P',
-          desc:
-            "Give your dressy look a lift with these women's Kate high-heel shoes by Metaphor. These playful peep-toe pumps feature satin-wrapped stiletto heels and chiffon pompoms at the toes. Rhinestones on each of the silvertone buckles add just a touch of sparkle to these shoes for a flirty footwear look that's made for your next night out.",
-          name: `Кофе FRESH COFFEE AROME`,
-          category: '/кофе/моносорта',
-          brand: 'Argento',
-          imgs: ['/testCoffee.png'],
-
-          properties: {
-            кислотность: {
-              maxValue: 5,
-              value: 3,
-            },
-            плотность: {
-              maxValue: 5,
-              value: 2,
-            },
-          },
-
-          choiceProperty: {
-            name: 'Масса (гр)',
-            variants: [
-              {
-                price: 940.0,
-                option: 1000,
-              },
-              {
-                price: 1600.0,
-                option: 2000,
-              },
-            ],
-          },
-        },
-        {
-          _id: '054VA72303012P',
-          desc:
-            "Give your dressy look a lift with these women's Kate high-heel shoes by Metaphor. These playful peep-toe pumps feature satin-wrapped stiletto heels and chiffon pompoms at the toes. Rhinestones on each of the silvertone buckles add just a touch of sparkle to these shoes for a flirty footwear look that's made for your next night out.",
-          name: `Кофе FRESH COFFEE AROME`,
-          category: '/кофе/моносорта',
-          brand: 'Argento',
-          imgs: ['/testCoffee.png'],
-
-          properties: {
-            кислотность: {
-              maxValue: 5,
-              value: 3,
-            },
-            плотность: {
-              maxValue: 5,
-              value: 2,
-            },
-          },
-
-          choiceProperty: {
-            name: 'Масса (гр)',
-            variants: [
-              {
-                price: 940.0,
-                option: 1000,
-              },
-              {
-                price: 1600.0,
-                option: 2000,
-              },
-            ],
-          },
-        },
-        {
-          _id: '054VA72303012P',
-          desc:
-            "Give your dressy look a lift with these women's Kate high-heel shoes by Metaphor. These playful peep-toe pumps feature satin-wrapped stiletto heels and chiffon pompoms at the toes. Rhinestones on each of the silvertone buckles add just a touch of sparkle to these shoes for a flirty footwear look that's made for your next night out.",
-          name: `Кофе FRESH COFFEE AROME`,
-          category: '/кофе/моносорта',
-          brand: 'Argento',
-          imgs: ['/красные стаканы 2.jpg'],
-
-          properties: {
-            кислотность: {
-              maxValue: 5,
-              value: 3,
-            },
-            плотность: {
-              maxValue: 5,
-              value: 2,
-            },
-          },
-
-          choiceProperty: {
-            name: 'Масса (гр)',
-            variants: [
-              {
-                price: 940.0,
-                option: 1000,
-              },
-              {
-                price: 1600.0,
-                option: 2000,
-              },
-            ],
-          },
-        },
-      ]
     },
   },
 }
@@ -243,6 +55,8 @@ export default {
   // background: blue;
 }
 .search {
+  overflow: hidden;
+  box-sizing: border-box;
   position: relative;
   top: 0;
   left: 0;
@@ -251,6 +65,7 @@ export default {
   justify-content: center;
 
   margin: 0;
+  padding: 0 1% 0 5%;
 
   height: 100%;
   width: 100%;
@@ -272,7 +87,7 @@ export default {
   // box-shadow: inset 0 0 0.5rem gray;
 }
 .input {
-  padding: 0 0 0 5%;
+  // padding: 0 0 0 5%;
 
   height: 100%;
   width: 100%;
@@ -287,6 +102,7 @@ export default {
 .clear {
   padding: 0 1% 0 1%;
   height: 100%;
+  border-radius: 20px;
   // background: white;
   // box-shadow: -1.5rem 0 1rem 0rem white;
   cursor: pointer;
