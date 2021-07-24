@@ -4,6 +4,8 @@
       v-if="filtered.length"
       v-model="selected"
       v-click-outside="selectValue"
+      :dense="dense"
+      :hide-details="hideDetails"
       validate-on-blur
       hide-no-data
       :outlined="outlined"
@@ -15,6 +17,8 @@
     ></v-autocomplete>
     <v-text-field
       v-else
+      :dense="dense"
+      :hide-details="hideDetails"
       :outlined="outlined"
       clearable
       :label="label"
@@ -30,6 +34,8 @@ export default {
     value: { type: String, default: '' },
     label: { type: String, default: '' },
     outlined: { type: Boolean, default: false },
+    dense: { type: Boolean, default: false },
+    hideDetails: { type: Boolean, default: false },
     items: {
       type: Array,
       default: () => {
@@ -44,11 +50,16 @@ export default {
   },
   computed: {
     filtered() {
-      return this.items.filter((x) => !!x).sort()
+      return this.items.filter((x) => !!x)
     },
     allItems() {
       if (this.value.length === 0) return this.filtered
       return [this.value].concat(this.filtered)
+    },
+  },
+  watch: {
+    value(val) {
+      this.selectValue()
     },
   },
   methods: {

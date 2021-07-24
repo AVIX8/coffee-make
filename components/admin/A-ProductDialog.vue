@@ -1,36 +1,57 @@
 <template>
-  <v-dialog v-model="dialog" fullscreen>
+  <v-dialog v-model="dialog" fullscreen scrollable>
     <v-card>
       <v-card-title>
-        <span class="text-h5">{{
-          isNew ? 'Добавление товара' : 'Редактирование товара'
-        }}</span>
-        <v-spacer></v-spacer>
-        <v-btn color="blue darken-1" text @click="close"> Отмена </v-btn>
-        <v-btn color="blue darken-1" text @click="save"> Сохранить </v-btn>
+        {{ isNew ? 'Добавление товара' : 'Редактирование товара' }}
+        <v-spacer />
+        <v-btn
+          depressed
+          color="primary"
+          :loading="waiting"
+          class="mx-2"
+          @click="close"
+        >
+          Отмена
+        </v-btn>
+        <v-btn
+          depressed
+          color="primary"
+          :loading="waiting"
+          class="mx-2"
+          @click="save"
+        >
+          <v-icon>mdi-content-save</v-icon>&nbsp;Сохранить
+        </v-btn>
       </v-card-title>
-      <v-card-text>
-        <v-row>
+      <v-divider />
+      <v-card-text class="pa-3">
+        <v-row class="mx-0">
           <v-col>
             <v-text-field
               v-model="product.title"
+              dense
+              hide-details
+              class="pb-4"
               label="Название"
               outlined
             ></v-text-field>
 
-            <v-row class="mx-0 mb-4">
+            <v-row class="mx-0 mb-2">
               <div
                 v-for="(category, i) in nextCategories"
                 :key="i"
                 class="ma-1"
                 @click="addCategory(category)"
               >
-                <v-chip link>{{ category.title }}</v-chip>
+                <v-chip small link>{{ category.title }}</v-chip>
               </div>
             </v-row>
 
             <v-text-field
               v-model="product.category"
+              dense
+              hide-details
+              class="mb-4"
               label="Категория"
               outlined
               clearable
@@ -38,75 +59,40 @@
 
             <v-textarea
               v-model="product.descr"
+              dense
+              hide-details
+              class="mb-4"
               rows="1"
               outlined
               auto-grow
               label="Описание"
             ></v-textarea>
 
-            <A-SmallTable
-              v-model="product.characteristics"
-              :title="'Характеристики'"
-              :examples="characteristicExamples"
-            ></A-SmallTable>
+            <A-ImageBox v-model="images" />
           </v-col>
 
           <v-col>
-            <v-switch
-              v-model="product.inStock"
-              class="mx-2 mt-0"
-              inset
-              label="В наличии"
-            ></v-switch>
-
-            <v-switch
-              v-model="severalOptions"
-              class="mx-2 mt-0"
-              inset
-              label="Несколько опций"
-            ></v-switch>
-
-            <A-Autocomplete
-              v-if="severalOptions"
-              v-model="product.optionTitle"
-              outlined
-              label="Название атрибута для выбора опции"
-              :items="optionTitleExamples"
-            />
-
-            <A-SmallTable
+            <A-PropertyTable
               v-model="product.attributes"
-              :title="severalOptions ? 'Дополнительные атрибуты' : 'Атрибуты'"
-              :examples="filteredAttributeExamples"
+              title="Атрибуты"
+              class="mb-4"
+              :set-examples="isNew"
+              :examples="attributeExamples"
             />
-
-            <A-SmallTable
-              v-if="severalOptions"
-              v-model="product.options"
-              :title="'Опции'"
-              :castom-headers="[
-                {
-                  text: product.optionTitle || 'Атрибут',
-                  sortable: false,
-                  value: 'value',
-                },
-                {
-                  text: 'Цена',
-                  sortable: false,
-                  value: 'price',
-                },
-              ]"
+            <A-PropertyTable
+              v-model="product.characteristics"
+              title="Характеристики"
+              :set-examples="isNew"
+              :examples="characteristicExamples"
             />
-
-            <v-text-field
-              v-model="product.price"
-              outlined
-              :disabled="severalOptions"
-              :label="severalOptions ? 'Отображаемая цена' : 'Цена'"
-              prefix="₽"
-            ></v-text-field>
-
-            <A-ImageBox v-model="images" />
+          </v-col>
+        </v-row>
+        <v-row class="mx-0">
+          <v-col>
+            <A-ProductVariants
+              v-model="product.variants"
+              :examples="variantsAttributeExamples"
+            />
           </v-col>
         </v-row>
       </v-card-text>
@@ -116,26 +102,29 @@
 
 <script>
 export default {
+  props: {
+    saveFunction: {
+      type: Function,
+      required: true,
+    },
+  },
   data: () => ({
     dialog: false,
+    waiting: false,
     defaultProduct: {
       title: '',
       category: '',
       descr: '',
-      price: null,
       attributes: [],
       characteristics: [],
-      optionTitle: '',
-      options: [],
-      inStock: false,
+      variants: [],
     },
     product: {},
     isNew: false,
     nextCategories: [],
-    optionTitleExamples: [],
     characteristicExamples: {},
     attributeExamples: {},
-    severalOptions: false,
+    variantsAttributeExamples: {},
     images: [],
   }),
 
@@ -145,18 +134,6 @@ export default {
     },
     productImgs() {
       return this.product.imgs || []
-    },
-    filteredAttributeExamples() {
-      if (!this.attributeExamples[this.product.optionTitle])
-        return this.attributeExamples
-      const tmp = { ...this.attributeExamples }
-      delete tmp[this.product.optionTitle]
-      return tmp
-    },
-    displayedPrice() {
-      if (this.severalOptions && this.product.options.length)
-        return this.product.options[0].price
-      return null
     },
   },
 
@@ -176,17 +153,6 @@ export default {
       if (val == null) this.product.category = ''
       else this.updateCategoryInfo()
     },
-    severalOptions(val) {
-      if (val === false) {
-        this.product.options = []
-        this.product.optionTitle = ''
-      }
-    },
-    displayedPrice(val) {
-      if (val != null) {
-        this.product.price = val
-      }
-    },
   },
   methods: {
     imageIdToURL(id) {
@@ -197,12 +163,13 @@ export default {
       this.nextCategories = []
       this.characteristicExamples = {}
       this.attributeExamples = {}
-      this.optionTitleExamples = []
 
       if (this.isNew)
         this.product = JSON.parse(JSON.stringify(this.defaultProduct))
       else this.product = JSON.parse(JSON.stringify(product))
 
+      if (!this.product?.variants?.length)
+        this.$set(this.product, 'variants', [])
       this.updateCategoryInfo()
       this.severalOptions = !!this.product.optionTitle
       this.dialog = true
@@ -210,11 +177,25 @@ export default {
     close() {
       this.dialog = false
     },
-    save() {
+    async save() {
       this.product.images = this.images
       const imageFiles = this.images.filter((x) => x.file).map((x) => x.file)
-      this.$emit('save', { product: this.product, imageFiles })
-      this.dialog = false
+      this.waiting = true
+      try {
+        await this.saveFunction({ product: this.product, imageFiles })
+        this.$toast.success(
+          `Товар был успешно ${this.isNew ? 'создан' : 'обновлён'}`,
+          { duration: 4000 }
+        )
+        this.dialog = false
+      } catch (err) {
+        this.$toast.error(
+          err?.response?.data?.message ||
+            `Не удалось ${this.isNew ? 'создать' : 'изменить'} товар`,
+          { duration: 4000 }
+        )
+      }
+      this.waiting = false
     },
     addCategory(category) {
       this.product.category += '/' + category.title
@@ -230,7 +211,7 @@ export default {
         .then((res) => {
           this.characteristicExamples = res.characteristics
           this.attributeExamples = res.attributes
-          this.optionTitleExamples = res.optionTitles
+          this.variantsAttributeExamples = res.variantsAttributes
         })
     },
   },

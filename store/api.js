@@ -25,7 +25,7 @@ export const actions = {
       inStock,
       sort,
       skip,
-      limit,
+      limit: limit || 12,
     })
   },
   getProductBySlug({ commit }, slug) {
@@ -48,7 +48,18 @@ export const actions = {
     return this.$axios.$post('/products/update', fd)
   },
   deleteProduct({ commit }, id) {
-    return this.$axios.$post('/products/delete', { id })
+    return this.$axios
+      .$post('/products/delete', { id })
+      .then((res) => {
+        this.$toast.success('Товар был успешно удален', { duration: 4000 })
+        return res
+      })
+      .catch((err) => {
+        this.$toast.error(
+          'Не удалось удалить товар. ' + err.response.data.message,
+          { duration: 4000 }
+        )
+      })
   },
 
   /**
@@ -73,13 +84,12 @@ export const actions = {
       .$post('/categories/getInfo', { category })
       .then((data) => {
         const res = {}
-        for (const name of ['characteristics', 'attributes']) {
+        for (const name of Object.keys(data)) {
           res[name] = data[name].reduce((rv, x) => {
             ;(rv[x.title] = rv[x.title] || []).push(x.value)
             return rv
           }, {})
         }
-        res.optionTitles = data.optionTitles
         return res
       })
   },

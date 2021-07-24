@@ -1,11 +1,11 @@
 <template>
   <div>
     <v-card>
-      <A-ProductDialog ref="ProductDialog" @save="saveProduct" />
+      <A-ProductDialog ref="ProductDialog" :save-function="saveProduct" />
       <A-DeleteDialog
         ref="DeleteDialog"
         v-model="deleteDialog"
-        @confirm="deleteConfirm"
+        @confirm="confirmDelete"
       />
       <v-data-table
         :items-per-page="products.length"
@@ -133,6 +133,15 @@
             :src="imageIdToURL(item.imgs[0])"
           ></v-img>
         </template>
+        <template v-slot:item.price="{ item }">
+          {{ getFormatedPrice(item) }}
+        </template>
+        <template v-slot:item.inStock="{ item }">
+          <v-chip>
+            {{ getIsStockNumber(item) }}
+          </v-chip>
+        </template>
+
         <template v-slot:item.actions="{ item }">
           <nuxt-link
             :to="`/product/${item.slug}`"
@@ -148,11 +157,7 @@
             mdi-delete
           </v-icon>
         </template>
-        <template v-slot:item.inStock="{ item }">
-          <v-icon color="grey">{{
-            item.inStock ? 'mdi-checkbox-marked' : 'mdi-checkbox-blank-outline'
-          }}</v-icon>
-        </template>
+
         <template v-slot:expanded-item="{ headers, item }">
           <td :colspan="headers.length" class="pa-0">
             <v-row class="mx-0">
@@ -189,18 +194,18 @@
                   <v-simple-table class="table" dense>
                     <tbody>
                       <tr
-                        v-for="option in item.attributes.concat(
+                        v-for="prop in item.attributes.concat(
                           item.characteristics
                         )"
-                        :key="option.title"
+                        :key="prop.title"
                       >
-                        <td class="text-left">{{ option.title }}</td>
-                        <td class="text-left">{{ option.value }}</td>
+                        <td class="text-left">{{ prop.title }}</td>
+                        <td class="text-left">{{ prop.value }}</td>
                       </tr>
                     </tbody>
                   </v-simple-table>
                   <v-card outlined width="fit-content" class="ma-3">
-                    <div v-if="!item.optionTitle" class="text-h5 ma-3">
+                    <!-- <div v-if="!item.optionTitle" class="text-h5 ma-3">
                       Цена: {{ item.price }} ₽
                     </div>
                     <v-simple-table v-else class="table" dense>
@@ -220,7 +225,7 @@
                           </td>
                         </tr>
                       </tbody>
-                    </v-simple-table>
+                    </v-simple-table> -->
                   </v-card>
                 </v-card-text>
               </v-col>
@@ -369,7 +374,7 @@ export default {
       this.$refs.DeleteDialog.open(item.title)
       this.index = this.products.indexOf(item)
     },
-    async deleteConfirm() {
+    async confirmDelete() {
       await this.$store
         .dispatch('api/deleteProduct', this.products[this.index]._id)
         .then((deletedProduct) => {
@@ -378,16 +383,18 @@ export default {
         })
       this.deleteDialog = false
     },
-    saveProduct(data) {
+    async saveProduct(data) {
       if (this.isNew) {
         console.log('create:', data)
-        this.$store.dispatch('api/createProduct', data).then((product) => {
-          this.loadMore()
-          console.log(product)
-        })
+        await this.$store
+          .dispatch('api/createProduct', data)
+          .then((product) => {
+            this.loadMore()
+            console.log(product)
+          })
       } else {
         console.log('update:', data)
-        this.$store
+        await this.$store
           .dispatch('api/updateProduct', data)
           .then((product) => {
             console.log(product)
@@ -397,16 +404,21 @@ export default {
               JSON.parse(JSON.stringify(product))
             )
           })
-          .catch((err) => {
-            console.log(err)
-          })
       }
     },
     addCategory(cat) {
       this.category += '/' + cat.title
     },
-    openFilters() {},
-    applyFilters() {},
+    getFormatedPrice(item) {
+      const prices = item.variants.map((x) => x.price)
+      const min = Math.min.apply(null, prices)
+      const max = Math.max.apply(null, prices)
+      if (min === max) return min
+      return `${min} - ${max}`
+    },
+    getIsStockNumber(item) {
+      return item.variants.filter((x) => x.inStock).length
+    },
   },
 }
 </script>

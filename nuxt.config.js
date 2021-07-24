@@ -61,6 +61,7 @@ export default {
     '@nuxtjs/device',
     // https://github.com/microcipcip/cookie-universal/tree/master/packages/cookie-universal-nuxt
     ['cookie-universal-nuxt', { parseJSON: false }],
+    '@nuxtjs/toast',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
