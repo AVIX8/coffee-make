@@ -26,7 +26,7 @@
 
             <v-spacer></v-spacer>
             <v-text-field
-              v-model="title"
+              v-model="searchText"
               solo
               dense
               hide-details
@@ -137,9 +137,7 @@
           {{ getFormatedPrice(item) }}
         </template>
         <template v-slot:item.inStock="{ item }">
-          <v-chip>
-            {{ getIsStockNumber(item) }}
-          </v-chip>
+          {{ getInStockNumber(item) }}
         </template>
 
         <template v-slot:item.actions="{ item }">
@@ -256,12 +254,12 @@ export default {
     showLoadMore: true,
     skip: 0,
     selected: {},
-    title: '',
+    searchText: '',
     headers: [
       { text: '', value: 'image', sortable: false },
       { text: 'Название', value: 'title' },
       { text: 'Категория', value: 'category' },
-      { text: 'Цена', value: 'price', align: 'right' },
+      { text: 'Цена, ₽', value: 'price', align: 'right' },
       { text: 'В наличии', value: 'inStock', align: 'center' },
       { text: '', value: 'data-table-expand', sortable: false },
       { text: 'Действия', value: 'actions', sortable: false },
@@ -281,7 +279,7 @@ export default {
   },
 
   watch: {
-    title(val) {
+    searchText(val) {
       clearTimeout(this.searchTimeoutId)
       this.searchTimeoutId = setTimeout(() => {
         this.updateProducts()
@@ -326,13 +324,18 @@ export default {
         })
     },
     getProducts() {
+      let title, SKU
+      if (isNaN(this.searchText)) title = this.searchText
+      else SKU = this.searchText
+
       return this.$store
         .dispatch('api/getProducts', {
           category: this.category,
           characteristics: this.characteristics,
           skip: this.skip,
           deep: this.deep,
-          title: this.title,
+          title,
+          SKU,
           limit: 20,
         })
         .then((products) => {
@@ -414,10 +417,12 @@ export default {
       const min = Math.min.apply(null, prices)
       const max = Math.max.apply(null, prices)
       if (min === max) return min
-      return `${min} - ${max}`
+      return `${min} — ${max}`
     },
-    getIsStockNumber(item) {
-      return item.variants.filter((x) => x.inStock).length
+    getInStockNumber(item) {
+      return `${item.variants.filter((x) => x.inStock).length}/${
+        item.variants.length
+      }`
     },
   },
 }

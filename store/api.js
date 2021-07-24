@@ -15,13 +15,14 @@ export const actions = {
    */
   getProducts(
     { commit },
-    { category, deep, characteristics, title, inStock, sort, skip, limit }
+    { category, deep, characteristics, title, SKU, inStock, sort, skip, limit }
   ) {
     return this.$axios.$post('/products/get', {
       category,
       deep,
       characteristics,
       title,
+      SKU,
       inStock,
       sort,
       skip,
