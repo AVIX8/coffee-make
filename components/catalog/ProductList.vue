@@ -71,11 +71,10 @@
     </transition>
 
     <transition name="productIn">
-      <div v-show="!isLoad" id="catalog-box">
+      <div v-show="!isLoad" id="product-list-box">
         <div
           v-for="(item, index) in items"
           :key="index"
-          class="card-card"
           @click="$emit('openProduct', item)"
         >
           <Card :item="item" />
@@ -83,7 +82,7 @@
       </div>
     </transition>
     <transition name="loadOut">
-      <div v-if="items.length === 0" class="emptyBox">
+      <div v-if="items.length === 0 && !isLoad" class="emptyBox">
         <h1 class="emptyPreview">☹</h1>
         <h4>Ой! Кажется здесь ничего нет...</h4>
       </div>
@@ -145,7 +144,7 @@ export default {
           sort: this.sort,
           title: this.search,
           characteristics,
-          limit: 12,
+          // limit: 12,
         })
         .then((res) => {
           this.items = res
@@ -160,18 +159,16 @@ export default {
 </script>
 
 <style scoped lang="scss">
-#catalog-box {
+#product-list-box {
   // overflow: scroll;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
-  justify-content: center;
+  justify-items: center;
   align-items: center;
-  // height: 100rem;
-  // width: 100%;
+  gap: 1rem;
+  width: 100%;
+  // height: 100%;
   // background: forestgreen;
-}
-.card-card {
-  margin: 1rem;
 }
 #paginationBox {
   height: 10%;
@@ -182,7 +179,8 @@ export default {
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 700px;
+  min-height: 730px;
+  // height: 100%;
   background: transparent;
   // background: red;
 }
@@ -224,9 +222,11 @@ export default {
 .productIn-leave-active {
   transition: all 0.5s;
 }
-.productIn-enter,
+.productIn-enter {
+  transform: scale(0.9);
+  opacity: 0;
+}
 .productIn-leave-to {
-  transform: scale(0.5);
   opacity: 0;
 }
 ////////////////////////////////////////////////////////////
@@ -293,13 +293,21 @@ export default {
 ////////////////////////////////////////////////////////////
 
 @media screen and (max-width: $mobile) {
-  #catalog-box {
+  #product-list-box {
     grid-template-columns: 1fr 1fr;
     gap: 0.8rem;
   }
   .card-card {
     margin: 0rem;
     justify-self: center;
+  }
+  .loadBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: none;
+    background: transparent;
+    // background: red;
   }
 }
 </style>

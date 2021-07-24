@@ -1,11 +1,5 @@
 <template>
-  <div class="cardBox">
-    <!-- <nuxt-link
-      :to="'/product/' + item.slug"
-      tag="div"
-      class="card"
-      style="text-decoration: none"
-    > -->
+  <div class="cardBox" :class="{ outStock: !inStock }">
     <div class="card">
       <div class="preview">
         <img
@@ -16,9 +10,8 @@
       </div>
       <div class="title-price">
         <div class="title">{{ item.title }}</div>
-        <div class="price">{{ item.price }} руб</div>
+        <div class="price">{{ price }} руб</div>
       </div>
-      <!-- </nuxt-link> -->
     </div>
   </div>
 </template>
@@ -31,8 +24,17 @@ export default {
   data() {
     return {}
   },
-  computed: {},
+  computed: {
+    inStock() {
+      // return this.item.variants[0].inStock
+      return true
+    },
+    price() {
+      return this.item.variants[0].price
+    },
+  },
   watch: {},
+  mounted() {},
   methods: {
     imageIdToURL(id) {
       return `${this.$axios.defaults.baseURL}/storage/image/${id}`
@@ -46,6 +48,9 @@ export default {
   height: 100%;
   width: 100%;
   z-index: 1;
+}
+.outStock {
+  filter: grayscale(90%);
 }
 .card {
   display: flex;
@@ -63,10 +68,13 @@ export default {
   background: #e74623;
 
   cursor: pointer;
-  transition: all 0.2s;
+  transition: all 0.1s;
 }
 .card:hover {
-  box-shadow: 1px 0.1rem 0.4rem black;
+  box-shadow: 1px 0.1rem 0.3rem black;
+}
+.outStock .card:hover {
+  box-shadow: none;
 }
 
 .preview {

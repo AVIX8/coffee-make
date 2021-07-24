@@ -15,6 +15,7 @@
       <button
         v-if="$device.isMobile"
         class="clearButton"
+        style="font-weight: bold"
         @click="isFiltresOpen = false"
       >
         Закрыть
@@ -72,7 +73,7 @@ export default {
   mounted() {
     if (this.$device.isMobile) return
     this.$refs.filtresBox.style.maxHeight =
-      this.$store.state.windowHeight - 200 + 'px'
+      this.$store.state.windowHeight - 210 + 'px'
   },
   methods: {
     addFilter(value, filter) {

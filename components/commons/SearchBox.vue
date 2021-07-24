@@ -6,6 +6,8 @@
         v-model="text"
         class="input"
         placeholder="Поиск по каталогу"
+        @click="$refs.input.placeholder = ''"
+        @blur="$refs.input.placeholder = 'Поиск по каталогу'"
       />
       <button class="clear" title="Очистить" @click="clear">
         <v-icon class="clear">mdi-close</v-icon>
