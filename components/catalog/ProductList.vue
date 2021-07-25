@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative">
+  <div class="box">
     <transition name="loadOut">
       <div v-show="isLoad" class="loadBox">
         <svg
@@ -147,13 +147,17 @@ export default {
         .catch(() => {
           this.items = []
         })
-      this.load(400)
+      this.load(700)
     },
   },
 }
 </script>
 
 <style scoped lang="scss">
+.box {
+  position: relative;
+  // background: blue;
+}
 #product-list-box {
   // overflow: scroll;
   display: grid;
@@ -171,13 +175,16 @@ export default {
   background: brown;
 }
 .loadBox {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 730px;
-  // height: 100%;
-  background: transparent;
+  height: 100%;
+  width: 100%;
   // background: red;
+}
+.logo {
+  // width: 100%;
 }
 .emptyBox {
   display: flex;
@@ -212,10 +219,10 @@ export default {
 }
 
 .productIn-enter-active {
-  transition: all 1.5s;
+  transition: all 0.5s;
 }
 .productIn-leave-active {
-  transition: all 0.5s;
+  transition: all 0s;
 }
 .productIn-enter {
   transform: scale(0.9);
