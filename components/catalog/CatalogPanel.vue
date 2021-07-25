@@ -80,5 +80,12 @@ export default {
   opacity: 0;
 }
 @media screen and (max-width: $mobile) {
+  #catalog-panelBox {
+    grid-template-columns: 1fr 1fr;
+    width: auto;
+    margin: 0;
+    padding: 0.5rem;
+    font-size: 0.6rem;
+  }
 }
 </style>

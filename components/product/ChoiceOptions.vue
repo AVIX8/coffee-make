@@ -1,29 +1,28 @@
 <template>
-  <div id="choiseBox">
-    <div
-      ref="choice"
-      v-click-outside="close"
-      class="choice"
-      @mouseenter="mouseIn"
-      @mouseleave="mouseOut"
-    >
-      <button v-show="!isOpen" class="now" @click="btnClick">
-        <p>{{ now.value }}</p>
-        <v-icon>mdi-chevron-down</v-icon>
-      </button>
-      <transition name="down">
-        <ul v-if="isOpen" class="list">
-          <li
-            v-for="(option, i) in options"
-            :key="i"
-            class="option"
-            @click="liClick(option)"
-          >
-            {{ option.value }}
-          </li>
-        </ul>
-      </transition>
-    </div>
+  <div
+    ref="choice"
+    v-click-outside="close"
+    class="choice"
+    @mouseenter="mouseIn"
+    @mouseleave="mouseOut"
+  >
+    <button v-show="!isOpen" class="now" @click="btnClick">
+      <p>{{ now }}</p>
+      <v-icon>mdi-chevron-down</v-icon>
+    </button>
+
+    <transition name="down">
+      <div v-show="isOpen" class="list">
+        <div
+          v-for="(option, i) in options"
+          :key="i"
+          class="option"
+          @click="liClick(option)"
+        >
+          {{ option }}
+        </div>
+      </div>
+    </transition>
   </div>
 </template>
 
@@ -51,7 +50,7 @@ export default {
         ? 2.1 * this.options.length + 'rem'
         : '2rem'
       this.$refs.choice.style.background = 'white'
-      this.$refs.choice.style.zIndex = 9
+      // this.$refs.choice.style.zIndex = 9
     },
     liClick(option) {
       this.isOpen = false
@@ -95,17 +94,13 @@ export default {
 button {
   cursor: default;
 }
-#choiseBox {
-  height: 2rem;
-  width: 8rem;
-  // background: blue;
-}
 .choice {
   box-sizing: border-box;
   position: relative;
   display: grid;
 
-  height: 100%;
+  height: 2rem;
+  width: 15rem;
 
   background: white;
   // background: red;
@@ -133,6 +128,7 @@ button {
   align-items: center;
   grid-template-columns: 1fr 3fr 1fr;
 
+  text-transform: capitalize;
   border-radius: 20px;
 
   cursor: pointer;
@@ -157,14 +153,15 @@ button {
 
   list-style-type: none;
   text-align: center;
-}
-.list li {
-  height: 2rem;
+  text-transform: capitalize;
+  z-index: 99;
 }
 .option {
   display: flex;
   align-items: center;
   justify-content: center;
+
+  height: 2rem;
 
   color: gray;
   font-size: 1.1rem;
