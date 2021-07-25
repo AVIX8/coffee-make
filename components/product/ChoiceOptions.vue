@@ -46,23 +46,24 @@ export default {
   methods: {
     btnClick() {
       this.isOpen = !this.isOpen
+      // this.$refs.choice.style.position = 'absolute'
       this.$refs.choice.style.height = this.isOpen
         ? 2.1 * this.options.length + 'rem'
         : '2rem'
       this.$refs.choice.style.background = 'white'
-      // this.$refs.choice.style.zIndex = 9
+      this.$refs.choice.style.zIndex = 9
     },
     liClick(option) {
-      this.isOpen = false
       this.now = option
-      this.$refs.choice.style.height = '2rem'
-      this.$refs.choice.style.zIndex = 1
+      this.close()
       this.$emit('changeOption', option)
     },
     close() {
       if (!this.isOpen || !this.$refs.choice) return
       this.isOpen = false
       this.$refs.choice.style.height = '2rem'
+      this.$refs.choice.style.zIndex = 1
+      // this.$refs.choice.style.position = 'relative'
     },
     mouseIn() {
       if (this.$props.options.length > 1 && !this.isOpen)
@@ -91,16 +92,13 @@ export default {
 
   transition: all 0.3s;
 }
-button {
-  cursor: default;
-}
 .choice {
   box-sizing: border-box;
   position: relative;
   display: grid;
 
-  height: 2rem;
-  width: 15rem;
+  // height: 2rem;
+  width: 16rem;
 
   background: white;
   // background: red;
@@ -114,15 +112,6 @@ button {
   transition: all 0.5s;
 }
 
-.low {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: black;
-  font-size: 1.1rem;
-  font-weight: bold;
-}
 .now {
   display: grid;
   align-items: center;
@@ -151,7 +140,6 @@ button {
 
   width: 100%;
 
-  list-style-type: none;
   text-align: center;
   text-transform: capitalize;
   z-index: 99;

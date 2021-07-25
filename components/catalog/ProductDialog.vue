@@ -49,16 +49,16 @@
 
         <div class="priceBox">
           <transition name="priceFadeDown">
-            <div v-if="quantity.value > 1" class="calc">
+            <div v-if="quantity.value > 1 && price" class="calc">
               {{ price }} руб &times; {{ quantity.value }} шт =
             </div>
           </transition>
 
           <div ref="price" class="price">
-            <h3>{{ cost }} руб</h3>
+            <h3>{{ cost }} <span v-show="price">руб</span></h3>
           </div>
 
-          <div class="property" style="margin: 0">
+          <div v-show="price" class="property" style="margin: 0">
             <!-- Количество -->
             <InputOptions
               :value="1"
@@ -68,7 +68,7 @@
             ></InputOptions>
           </div>
 
-          <CartButton />
+          <CartButton v-show="price" :item="item" :sku="mySKU" />
         </div>
 
         <div class="specificationsBox">
@@ -76,9 +76,10 @@
             {{ key }}
             <div class="line" />
             <ChoiceOptions
+              style="position: absolute; right: 0"
               :options="Array.from(val)"
               @changeOption="changeOption($event, key)"
-            ></ChoiceOptions>
+            />
           </div>
 
           <!-- <div class="solid-line" /> -->
@@ -148,6 +149,7 @@ export default {
   },
   computed: {
     cost() {
+      if (!this.price) return 'Нет в наличии'
       return this.price * this.quantity.value
     },
   },
@@ -203,7 +205,8 @@ export default {
           return
         }
       }
-      this.price = 0
+      this.price = null
+      this.mySKU = null
       return 0
     },
     changeOption(val, title) {
@@ -219,9 +222,6 @@ export default {
     },
     imageIdToURL(id) {
       return `${this.$axios.defaults.baseURL}/storage/image/${id}`
-    },
-    addItem() {
-      this.$store.commit('cart/addItem', this.item)
     },
   },
 }
@@ -323,7 +323,7 @@ export default {
 .priceBox {
   position: relative;
   display: grid;
-  grid-template-columns: 2fr 1fr 2fr;
+  grid-template-columns: 3fr 1fr 3fr;
   align-items: center;
   gap: 1rem;
 
@@ -385,6 +385,7 @@ export default {
 }
 .option {
   align-items: center;
+  height: 2rem;
   // background: whitesmoke;
   background: linear-gradient(90deg, white 0%, whitesmoke 40%);
 }

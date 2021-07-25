@@ -6,13 +6,21 @@
 
 <script>
 export default {
-  props: {},
+  props: {
+    item: { type: Object, required: true },
+    sku: { type: String, required: true },
+  },
   data() {
     return {}
   },
   computed: {},
   watch: {},
-  methods: {},
+  methods: {
+    addItem() {
+      if (this.sku === null) return
+      this.$store.commit('cart/addItem', this.item)
+    },
+  },
 }
 </script>
 
