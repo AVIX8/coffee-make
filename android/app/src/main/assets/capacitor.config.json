@@ -1,0 +1,6 @@
+{
+	"appId": "com.cm.app",
+	"appName": "Coffee Make",
+	"webDir": "dist",
+	"bundledWebRuntime": false
+}
