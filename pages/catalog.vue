@@ -1,7 +1,5 @@
 <template>
   <div id="catalogBox">
-    <LazyProductDialog v-model="isView" title="" :item="viewProduct" />
-
     <div id="path" class="ph">Каталог/Кофе</div>
     <div class="hd">
       <CatalogPanel
@@ -24,7 +22,6 @@
       :sort="sort"
       :search="searchText"
       :selected="selected"
-      @openProduct="setViewProduct"
     />
   </div>
 </template>
@@ -35,7 +32,6 @@ export default {
   transition: 'catalog',
   data() {
     return {
-      isView: false,
       path: {},
       selected: {},
       filtres: [],
@@ -53,15 +49,12 @@ export default {
         },
       ],
       searchText: '',
-      viewProduct: {},
     }
   },
   computed: {},
   mounted() {
     window.addEventListener('resize', this.resizeHandler)
-    // window.addEventListener('scroll', this.scrollHandler)
     this.resizeHandler()
-    // this.scrollHandler()
 
     // Получение фильтров
     this.$store.dispatch('api/getCategoryFilters', '/Кофе').then((res) => {
@@ -91,10 +84,6 @@ export default {
       if (this.$device.isMobile) return
       this.$refs.filtres.style.width =
         (this.$store.state.windowWidth - 30 * remSize) / 4 + 'px'
-    },
-    setViewProduct(product) {
-      this.viewProduct = product
-      this.isView = true
     },
     setSearch(text) {
       this.searchText = text
@@ -187,13 +176,6 @@ export default {
   }
   #path {
     padding: 0;
-  }
-  #searchBox {
-    grid-template-columns: 1fr 1fr;
-    width: auto;
-    margin: 0;
-    padding: 0.5rem;
-    font-size: 0.6rem;
   }
   .content {
     display: flex;

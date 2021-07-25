@@ -1,6 +1,7 @@
 <template>
-  <div class="cardBox" :class="{ outStock: !inStock }">
-    <div class="card">
+  <div>
+    <LazyProductDialog v-model="isView" title="" :item="item" />
+    <div class="cardBox" :class="{ outStock: !inStock }" @click="open">
       <div class="preview">
         <img
           class="image"
@@ -22,7 +23,9 @@ export default {
     item: { type: Object, required: true },
   },
   data() {
-    return {}
+    return {
+      isView: false,
+    }
   },
   computed: {
     inStock() {
@@ -39,20 +42,16 @@ export default {
     imageIdToURL(id) {
       return `${this.$axios.defaults.baseURL}/storage/image/${id}`
     },
+    open() {
+      this.isView = true
+      console.log(this.item)
+    },
   },
 }
 </script>
 
 <style scoped lang="scss">
 .cardBox {
-  height: 100%;
-  width: 100%;
-  z-index: 1;
-}
-.outStock {
-  filter: grayscale(90%);
-}
-.card {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -62,18 +61,21 @@ export default {
   height: 100%;
 
   border-radius: 10px;
-  // box-shadow: 0 0 0.25rem black;
 
   background: white;
   background: #e74623;
 
   cursor: pointer;
   transition: all 0.1s;
+  z-index: 1;
 }
-.card:hover {
+.cardBox:hover {
   box-shadow: 1px 0.1rem 0.3rem black;
 }
-.outStock .card:hover {
+.outStock {
+  filter: grayscale(90%);
+}
+.outStock .cardBox:hover {
   box-shadow: none;
 }
 
@@ -83,14 +85,11 @@ export default {
   width: 100%;
   background: white;
   border-radius: 10px;
-  // box-shadow: inset 0 0 0.2rem black;
 }
 .image {
-  // margin: 8%;
   margin-bottom: -7px;
   width: 100%;
   border-radius: 10px;
-  // border: 2px solid blue;
   transform: scale(1.02);
   transition: all 0.8s;
 }

@@ -72,15 +72,10 @@
 
     <transition name="productIn">
       <div v-show="!isLoad" id="product-list-box">
-        <div
-          v-for="(item, index) in items"
-          :key="index"
-          @click="$emit('openProduct', item)"
-        >
-          <Card :item="item" />
-        </div>
+        <Card v-for="(item, index) in items" :key="index" :item="item" />
       </div>
     </transition>
+
     <transition name="loadOut">
       <div v-if="items.length === 0 && !isLoad" class="emptyBox">
         <h1 class="emptyPreview">☹</h1>

@@ -1,6 +1,6 @@
 <template>
   <div v-if="value" class="dialogCover" title="Свернуть">
-    <div ref="productDialogBox" v-click-outside="hide" class="productDialogBox">
+    <div v-click-outside="hide" class="productDialogBox">
       <div class="previewBox">
         <hooper
           v-if="item.imgs.length > 1"
@@ -46,27 +46,20 @@
           {{ item.title }}
           <v-icon title="Поделиться" class="share">mdi-share-variant</v-icon>
         </h2>
+
         <div class="priceBox">
-          <transition name="priceFade">
+          <transition name="priceFadeDown">
             <div v-if="quantity.value > 1" class="calc">
               {{ price }} руб &times; {{ quantity.value }} шт =
             </div>
           </transition>
+
           <div ref="price" class="price">
             <h3>{{ cost }} руб</h3>
           </div>
-        </div>
 
-        <div class="specificationsBox">
-          <div v-if="!!item.optionTitle" class="option">
-            <h5>{{ item.optionTitle }}</h5>
-            <ChoiceOptions
-              :options="item.options"
-              @changeOption="changeOption($event)"
-            ></ChoiceOptions>
-          </div>
-          <div class="option">
-            <h5>Кол-во</h5>
+          <div class="property" style="margin: 0">
+            <!-- Количество -->
             <InputOptions
               :value="1"
               :max="9999"
@@ -74,28 +67,43 @@
               @inputOption="inputOption($event)"
             ></InputOptions>
           </div>
+
+          <CartButton />
+        </div>
+
+        <div class="specificationsBox">
+          <div v-for="(val, key) in variants" :key="key" class="option">
+            {{ key }}
+            <div class="line" />
+            <ChoiceOptions
+              :options="Array.from(val)"
+              @changeOption="changeOption($event, key)"
+            ></ChoiceOptions>
+          </div>
+
+          <!-- <div class="solid-line" /> -->
+          <div class="block-line" />
           <div v-for="(attr, i) in item.attributes" :key="i" class="property">
-            {{ attr.title }}: {{ attr.value }}
+            {{ attr.title }}
+            <div class="dashed-line" />
+            {{ attr.value }}
           </div>
           <div
             v-for="chr in item.characteristics"
             :key="chr.title + chr.value"
             class="property"
           >
-            {{ chr.title }}: {{ chr.value }}
+            {{ chr.title }}
+            <div class="dashed-line" />
+            {{ chr.value }}
           </div>
         </div>
-
+        <!-- <div class="solid-line" /> -->
+        <div class="block-line" />
         <div v-if="item.descr" class="descriptionBox">
           <h5>Описание:</h5>
           <h6>{{ item.descr }}</h6>
         </div>
-        <div v-if="!$device.isMobile" class="cartBtn">
-          <button @click="addItem"><h6>Добавить в Корзину</h6></button>
-        </div>
-      </div>
-      <div v-if="$device.isMobile" class="cartBtn">
-        <button @click="addItem"><h6>Добавить в Корзину</h6></button>
       </div>
     </div>
   </div>
@@ -125,26 +133,25 @@ export default {
     return {
       hooperHeight: 0,
       hooperWidth: 0,
+
       price: 0,
       quantity: {
         value: 1,
         minValue: 1,
         maxValue: 9999,
       },
+
+      variants: {},
+      mySKU: '',
+      now: {},
     }
   },
   computed: {
-    productPrice() {
-      return this.item.price
-    },
     cost() {
       return this.price * this.quantity.value
     },
   },
   watch: {
-    productPrice(val) {
-      this.price = val
-    },
     quantity(newValue) {
       this.$refs.price.style.transition = 'all 2s'
       if (newValue.value !== 1)
@@ -164,10 +171,45 @@ export default {
   created() {
     require('~/assets/hooperSlug.css')
     // this.choiceProperty = this.item.choiceProperty.variants[0]
+    this.createVariants()
+    this.createNow()
+    this.getPrice()
   },
   methods: {
-    changeOption(option) {
-      this.price = option.price
+    createVariants() {
+      this.variants = {}
+      for (const variant of this.item.variants) {
+        if (variant.inStock)
+          for (const attr of variant.attributes)
+            if (this.variants[attr.title])
+              this.variants[attr.title].add(attr.value)
+            else this.variants[attr.title] = new Set([attr.value])
+      }
+    },
+    createNow() {
+      this.mySKU = this.item.variants[0].SKU
+      for (const attr of this.item.variants[0].attributes)
+        this.now[attr.title] = attr.value
+    },
+    getPrice() {
+      for (const variant of this.item.variants) {
+        let flag = true
+        for (const attr of variant.attributes)
+          if (this.now[attr.title] !== attr.value) flag = false
+
+        if (flag) {
+          this.mySKU = variant.SKU
+          this.price = variant.price
+          return
+        }
+      }
+      this.price = 0
+      return 0
+    },
+    changeOption(val, title) {
+      this.$set(this.now, title, val)
+      console.log(this.now)
+      this.getPrice()
     },
     inputOption(option) {
       this.quantity.value = option
@@ -204,8 +246,9 @@ export default {
 .productDialogBox {
   display: grid;
   grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 
-  padding: 2rem 4rem;
+  padding: 2rem 5rem 2rem 3rem;
 
   height: 90%;
   width: 80%;
@@ -251,11 +294,7 @@ export default {
 
 .infoBox {
   position: relative;
-  // display: flex;
-  // flex-wrap: wrap;
-  // justify-content: center;
   grid-column: 2;
-  margin: 0 0 0 5%;
 
   // background: slateblue;
 }
@@ -282,12 +321,13 @@ export default {
   box-shadow: 0 0 0.2rem black;
 }
 .priceBox {
-  // display: flex;
-  // align-items: center;
-  // flex-wrap: wrap;
   position: relative;
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr;
+  align-items: center;
+  gap: 1rem;
 
-  margin: 1rem 1rem 2rem 1rem;
+  margin: 2rem 0 2rem 1rem;
 
   height: 4rem;
 
@@ -295,25 +335,27 @@ export default {
 }
 .calc {
   position: absolute;
-  height: 35%;
-  width: 100%;
+  top: -0.5rem;
+  // height: 35%;
+  // width: 100%;
   // background: brown;
 }
-.priceFade-enter-active,
-.priceFade-leave-active {
+.priceFadeDown-enter-active,
+.priceFadeDown-leave-active {
   transition: all 1s;
 }
-.priceFade-enter {
+.priceFadeDown-enter {
   transform: translateY(-1rem);
   opacity: 0;
 }
-.priceFade-leave-to {
+.priceFadeDown-leave-to {
   transform: translateY(-1rem);
   opacity: 0;
 }
 .price {
-  position: absolute;
-  top: 35%;
+  // position: absolute;
+  // top: 35%;
+  // align-self: flex-end;
 
   height: 65%;
   width: 100%;
@@ -325,66 +367,43 @@ export default {
 .specificationsBox {
   grid-column: 1 / span 2;
 
-  margin: 2rem 0 0 0rem;
-
   width: 100%;
 
   // background: yellow;
 }
-.cartBox {
-  display: grid;
-  align-items: center;
-  justify-items: center;
-  grid-template-columns: 1fr 2fr;
-  // grid-template-rows: 1fr 2fr;
-  margin-bottom: 2rem;
-  // background: pink;
-}
-.cartBtn {
-  display: flex;
-  justify-content: center;
-
-  margin-top: 2rem;
-  width: 100%;
-
-  // background: orange;
-}
-.cartBtn button {
-  padding: 1rem 10%;
-  // height: 4rem;
-  // width: 100%;
-
-  background-color: $main-light-color;
-
-  border-radius: 20px;
-}
-.cartBtn button h6 {
-  color: white;
-  // font-weight: bold;
-}
-.cartBtn button:hover {
-  background-color: $main-color;
-  // box-shadow: 3px 3px 0.2rem rgb(2, 87, 82);
-  transition: all 0.15s;
-}
-.cartBtn button:hover h6 {
-  font-weight: bold;
-}
-.cartBtn button:active {
-  box-shadow: inset 3px 2px 0.2rem rgb(2, 87, 82);
-}
+.property,
 .option {
   display: grid;
-  grid-template-columns: 1fr 2fr;
-  margin-bottom: 1rem;
-}
-.property {
-  margin-bottom: 1rem;
+  grid-template-columns: max-content auto max-content;
+
+  margin-bottom: 0.5rem;
 
   width: 100%;
   font-size: 1.1rem;
-  background: darkorchid;
-  background: whitesmoke;
+  // background: darkorchid;
+  // background: whitesmoke;
+}
+.option {
+  align-items: center;
+  // background: whitesmoke;
+  background: linear-gradient(90deg, white 0%, whitesmoke 40%);
+}
+.line {
+  width: 100%;
+}
+.block-line {
+  height: 2.5rem;
+  width: 100%;
+  // background: lightgreen;
+}
+.dashed-line {
+  width: 100%;
+  border-bottom: 2px dotted lightgray;
+}
+.solid-line {
+  margin: 2rem 1% 1.5rem 1%;
+  width: 98%;
+  border-bottom: 2px solid lightgray;
 }
 .descriptionBox {
   grid-column: 1 / span 2;
