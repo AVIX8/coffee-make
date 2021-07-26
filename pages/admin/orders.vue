@@ -1,6 +1,6 @@
 <template>
   <v-card>
-    <v-card-title> Продукты </v-card-title>
+    <v-card-title> Заказы </v-card-title>
   </v-card>
 </template>
 

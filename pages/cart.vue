@@ -11,7 +11,12 @@
         />
       </div>
       <div class="orderBox ob shadowBox">
-        <button class="orderButton">Оформить заказ</button>
+        <button class="orderButton" @click="getValidItems">
+          Оформить заказ
+        </button>
+        <button class="orderButton" @click="confirmOrder">
+          Подтвердить заказ
+        </button>
         <div class="cashiers-check"></div>
       </div>
     </div>
@@ -26,7 +31,23 @@ export default {
   layout: 'adaptivLayout',
   transition: 'catalog',
   data() {
-    return {}
+    return {
+      tmpItems: [
+        {
+          SKU: '0002',
+          quantity: 8,
+        },
+        {
+          SKU: '0003',
+          quantity: 8,
+        },
+        {
+          SKU: '0004',
+          quantity: 3,
+        },
+      ],
+      validItems: {},
+    }
   },
   computed: {
     items() {
@@ -38,7 +59,32 @@ export default {
     //   this.$store.state.windowHeight - 200 + 'px'
   },
   destroyed() {},
-  methods: {},
+  methods: {
+    getValidItems() {
+      console.log(this.tmpItems)
+      this.$store
+        .dispatch('api/getValidItems', this.tmpItems)
+        .then(({ validItems }) => {
+          this.validItems = validItems
+          console.log(validItems)
+          this.validItems.totalPrice = 47474747 // сделал цену не валидной
+        })
+    },
+    confirmOrder() {
+      this.$store
+        .dispatch('api/createOrder', {
+          items: this.tmpItems,
+          validItems: this.validItems,
+        })
+        .then((data) => {
+          console.log(data)
+        })
+        .catch((err) => {
+          this.validItems = err.response.data.validItems
+          console.log(err.response.data)
+        })
+    },
+  },
 }
 </script>
 
