@@ -87,6 +87,11 @@ p {
 //   opacity: 0;
 // }
 
+@media screen and (max-width: $tablet) {
+  html {
+    font-size: 15px !important;
+  }
+}
 @media screen and (max-width: $mobile) {
   html {
     font-size: 14px !important;

@@ -4,10 +4,12 @@
     <div class="content">
       <div class="products pr">
         <CartCard
-          v-for="(item, i) in items"
+          v-for="(value, i) in items"
           :key="i"
           class="shadowBox"
-          :item="item"
+          :sku="value.sku"
+          :item="value.item"
+          :quantity="value.quantity"
         />
       </div>
       <div class="orderBox ob shadowBox">
@@ -51,6 +53,7 @@ export default {
   },
   computed: {
     items() {
+      console.log(this.$store.state.cart.items)
       return this.$store.state.cart.items
     },
   },
@@ -61,7 +64,6 @@ export default {
   destroyed() {},
   methods: {
     getValidItems() {
-      console.log(this.tmpItems)
       this.$store
         .dispatch('api/getValidItems', this.tmpItems)
         .then(({ validItems }) => {

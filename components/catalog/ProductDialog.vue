@@ -61,6 +61,7 @@
           <div v-show="price" class="property" style="margin: 0">
             <!-- Количество -->
             <InputOptions
+              v-show="!inCart"
               :value="1"
               :max="9999"
               :min="1"
@@ -68,7 +69,12 @@
             ></InputOptions>
           </div>
 
-          <CartButton v-show="price" :item="item" :sku="mySKU" />
+          <CartButton
+            v-show="price"
+            :item="item"
+            :sku="mySKU"
+            :quantity="quantity.value"
+          />
         </div>
 
         <div class="specificationsBox">
@@ -151,6 +157,11 @@ export default {
     cost() {
       if (!this.price) return 'Нет в наличии'
       return this.price * this.quantity.value
+    },
+    inCart() {
+      for (const itemData of this.$store.state.cart.items)
+        if (itemData.sku === this.mySKU) return true
+      return false
     },
   },
   watch: {

@@ -106,13 +106,13 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: max-content max-content auto;
-  gap: 10px 10px;
+  gap: 0.6rem;
   grid-auto-flow: row;
   grid-template-areas:
     'ph ph ph ph'
     'fl hd hd hd'
     'fl pr pr pr';
-  padding: 0 15rem 5rem 15rem;
+  padding: 0 12% 5rem 12%;
   width: 100%;
   height: 100%;
   min-height: 800px;
