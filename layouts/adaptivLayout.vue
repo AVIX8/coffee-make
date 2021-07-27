@@ -395,12 +395,15 @@ export default {
     padding: 0 5%;
   }
   .nuxt-link-exact-active {
-    color: white;
-    background: $main-color;
+    // background: $main-color;
   }
   .nuxt-link-exact-active i {
-    color: #32bebd;
-    color: white;
+    color: $main-light-color;
+  }
+  .nuxt-link-exact-active p {
+    color: $main-light-color;
+    font-weight: bold;
+    font-size: 12px;
   }
 
   .MenuTransition-enter-active {

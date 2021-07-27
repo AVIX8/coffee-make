@@ -106,13 +106,13 @@ export default {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-template-rows: max-content max-content auto;
-  gap: 0.6rem;
+  gap: 1rem;
   grid-auto-flow: row;
   grid-template-areas:
     'ph ph ph ph'
     'fl hd hd hd'
     'fl pr pr pr';
-  padding: 0 12% 5rem 12%;
+  padding: 0 10% 5rem 10%;
   width: 100%;
   height: 100%;
   min-height: 800px;
@@ -169,10 +169,17 @@ export default {
 }
 @media screen and (max-width: $mobile) {
   #catalogBox {
-    position: relative;
     padding: 0 1rem;
     padding-bottom: 5rem;
-    background: whitesmoke;
+
+    grid-template-columns: 1fr;
+    grid-template-rows: max-content max-content max-content auto;
+    grid-template-areas:
+      'ph'
+      'hd'
+      'fl'
+      'pr';
+    gap: 0.5rem;
   }
   #path {
     padding: 0;
@@ -182,17 +189,6 @@ export default {
     flex-wrap: wrap;
     justify-content: center;
     margin-top: 1rem;
-  }
-
-  .hd {
-    grid-area: hd;
-    margin-bottom: 1rem;
-  }
-  .fl {
-    grid-area: fl;
-  }
-  .pr {
-    grid-area: pr;
   }
   .filtres {
     position: unset;

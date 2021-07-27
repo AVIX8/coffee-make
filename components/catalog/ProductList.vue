@@ -139,6 +139,7 @@ export default {
           sort: this.sort,
           title: this.search,
           characteristics,
+          inStock: true,
           // limit: 12,
         })
         .then((res) => {
@@ -164,7 +165,7 @@ export default {
   grid-template-columns: 1fr 1fr 1fr;
   justify-items: center;
   align-items: center;
-  gap: 1rem;
+  gap: 3rem 1.5rem;
   width: 100%;
   // height: 100%;
   // background: forestgreen;
@@ -296,8 +297,9 @@ export default {
 
 @media screen and (max-width: $mobile) {
   #product-list-box {
+    grid-template-columns: 1fr;
     grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
+    gap: 2rem 0.8rem;
   }
   .card-card {
     margin: 0rem;
