@@ -115,6 +115,9 @@ export const actions = {
   /**
    * ORDERS
    */
+  getOrders({ commit }, { code, skip, limit }) {
+    return this.$axios.$post('orders/get', { code, skip, limit })
+  },
   getValidItems({ commit }, items) {
     return this.$axios.$post('orders/getValid', { items })
   },
