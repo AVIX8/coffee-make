@@ -111,4 +111,20 @@ export const actions = {
   deleteCategory({ commit }, id) {
     return this.$axios.$post('categories/delete', { id })
   },
+
+  /**
+   * ORDERS
+   */
+  getValidItems({ commit }, items) {
+    return this.$axios.$post('orders/getValid', { items })
+  },
+  createOrder({ commit }, { fullName, phone, address, items, validItems }) {
+    return this.$axios.$post('orders/create', {
+      fullName,
+      phone,
+      address,
+      items,
+      validItems,
+    })
+  },
 }

@@ -4,73 +4,51 @@ export const state = () => ({
 })
 
 export const mutations = {
-  setProducts(state, payload) {
-    state.products = payload
-  },
+  addNewItem(state, { item, sku }) {
+    const itemTemp = JSON.parse(JSON.stringify(item))
+    itemTemp.variants = [itemTemp.variants.find((e) => e.SKU === sku)]
 
-  setCart(state, payload) {
-    state.cart = payload
-  },
+    // {
+    //   sku: "0003",
+    //   item: {},
+    //   quantity: 1
+    // }
 
-  clearCart(state) {
-    state.cart = {}
+    const itemData = {
+      sku,
+      item: itemTemp,
+      quantity: 0,
+    }
+    state.items.push(itemData)
   },
-
-  addItem(state, newItem) {
-    state.items.push(newItem)
+  setQuantity(state, { sku, quantity }) {
+    const temp = getItemBySKU(state, sku)
+    if (temp) temp.quantity = quantity
+  },
+  changeQuantity(state, { sku, newQuantity }) {
+    const temp = getters.getItemBySKU(sku)
+    if (temp) temp.quantity += newQuantity
   },
 }
 
 export const actions = {
-  async nuxtServerInit({ dispatch }) {
-    await dispatch('getProducts')
-  },
-
-  async getProducts({ commit }) {
-    const products = await this.this.Vue.prototype.$commerce.products.list()
-
-    if (products) {
-      commit('setProducts', products.data)
-    }
-  },
-
-  async retrieveCart({ commit }) {
-    const cart = await this.Vue.prototype.$commerce.cart.retrieve()
-
-    if (cart) {
-      commit('setCart', cart)
-    }
-  },
-
-  async addProductToCart({ commit }, id, count) {
-    const addProduct = await this.Vue.prototype.$commerce.cart.add(id, count)
-
-    if (addProduct) {
-      commit('setCart', addProduct.cart)
-    }
-  },
-
-  async removeProductFromCart({ commit }, payload) {
-    const removeProduct = await this.Vue.prototype.$commerce.cart.remove(
-      payload
-    )
-
-    if (removeProduct) {
-      commit('setCart', removeProduct.cart)
-    }
-  },
-
-  async clearCart({ commit }) {
-    const clear = await this.Vue.prototype.$commerce.cart.empty()
-
-    if (clear) {
-      commit('clearCart')
+  setItemToCart({ getters, commit }, { item, sku, quantity }) {
+    const temp = getters.getItemBySKU(sku)
+    if (temp) commit('changeQuantity', { sku, quantity })
+    else {
+      commit('addNewItem', { item, sku })
+      commit('setQuantity', { sku, newQuantity: quantity })
     }
   },
 }
 
+function getItemBySKU(state, sku) {
+  console.log('get:', state, sku)
+  return state.items.find((e) => e.sku === sku)
+}
 // Getters
 export const getters = {
+  getItemBySKU: (state) => (sku) => getItemBySKU(state, sku),
   products(state) {
     return state.products
   },

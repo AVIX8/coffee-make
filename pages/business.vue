@@ -4,7 +4,8 @@
       <ContactBox
         title="Бесплатный тест"
         text="Привезем 3 любых пробника и предоставим автоматическую кофемашину в тест на 7 дней"
-        background-img="red_men.png"
+        background-img="coffee.png"
+        style="margin-bottom: 2rem"
       />
       <ContactBox
         style="margin-top: 1rem"
@@ -54,7 +55,7 @@ export default {
 
 <style scoped lang="scss">
 #businessBox {
-  padding: 1rem 15% 5rem 15%;
+  padding: 2rem 15% 5rem 15%;
 }
 .container {
   display: grid;
@@ -72,6 +73,7 @@ export default {
   grid-column: 2;
 }
 .head-row {
+  margin-bottom: 4rem;
   grid-row: 1;
   grid-column: span 2;
 }

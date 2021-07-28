@@ -1,11 +1,12 @@
 <template>
   <div class="catalog-panelBox">
-    <div>
+    <div class="sortBox">
       Сортировать по:
       <button
         v-for="(s, i) in sort"
         :key="i"
         class="sortButton"
+        :class="{ 'sortButton-active': isActive(s.title) }"
         @click="setSort(s)"
       >
         {{ s.text }}
@@ -35,8 +36,11 @@ export default {
   },
   mounted() {},
   methods: {
+    isActive(sortName) {
+      return Object.keys(this.tempSort)[0] === sortName
+    },
     sortIcon(sortName) {
-      if (Object.keys(this.tempSort)[0] === sortName)
+      if (this.isActive(sortName))
         if (this.tempSort[sortName] === 1) return 'mdi-chevron-triple-up'
         else return 'mdi-chevron-triple-down'
       else return ''
@@ -80,12 +84,30 @@ export default {
   opacity: 0;
 }
 @media screen and (max-width: $mobile) {
-  #catalog-panelBox {
-    grid-template-columns: 1fr 1fr;
-    width: auto;
+  .catalog-panelBox {
+    grid-template-columns: none;
+    grid-template-rows: max-content max-content;
+    gap: 2rem;
+
     margin: 0;
     padding: 0.5rem;
     font-size: 0.6rem;
+  }
+  .sortBox {
+    display: grid;
+    font-size: 0.9rem;
+    // background: aquamarine;
+  }
+  .sortButton {
+    margin: 0.2rem;
+    font-size: 1.1rem;
+    background: whitesmoke;
+    border-radius: 20px;
+    border: 1px solid gray;
+  }
+  .sortButton-active {
+    background: white;
+    border-color: $main-color;
   }
 }
 </style>

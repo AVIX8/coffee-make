@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative">
+  <div class="box">
     <transition name="loadOut">
       <div v-show="isLoad" class="loadBox">
         <svg
@@ -139,6 +139,7 @@ export default {
           sort: this.sort,
           title: this.search,
           characteristics,
+          inStock: true,
           // limit: 12,
         })
         .then((res) => {
@@ -147,20 +148,24 @@ export default {
         .catch(() => {
           this.items = []
         })
-      this.load(400)
+      this.load(700)
     },
   },
 }
 </script>
 
 <style scoped lang="scss">
+.box {
+  position: relative;
+  // background: blue;
+}
 #product-list-box {
   // overflow: scroll;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   justify-items: center;
   align-items: center;
-  gap: 1rem;
+  gap: 3rem 1.5rem;
   width: 100%;
   // height: 100%;
   // background: forestgreen;
@@ -171,13 +176,16 @@ export default {
   background: brown;
 }
 .loadBox {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 730px;
-  // height: 100%;
-  background: transparent;
+  height: 100%;
+  width: 100%;
   // background: red;
+}
+.logo {
+  // width: 100%;
 }
 .emptyBox {
   display: flex;
@@ -212,10 +220,10 @@ export default {
 }
 
 .productIn-enter-active {
-  transition: all 1.5s;
+  transition: all 0.5s;
 }
 .productIn-leave-active {
-  transition: all 0.5s;
+  transition: all 0s;
 }
 .productIn-enter {
   transform: scale(0.9);
@@ -289,8 +297,9 @@ export default {
 
 @media screen and (max-width: $mobile) {
   #product-list-box {
+    grid-template-columns: 1fr;
     grid-template-columns: 1fr 1fr;
-    gap: 0.8rem;
+    gap: 2rem 0.8rem;
   }
   .card-card {
     margin: 0rem;

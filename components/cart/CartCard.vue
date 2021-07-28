@@ -8,23 +8,25 @@
         :key="i"
         class="characteristica"
       >
-        {{ chr.title }}: {{ chr.value }}
+        {{ chr.title }}:
+        <div class="dashed-line" />
+        {{ chr.value }}
       </div>
     </div>
     <div class="optionBox">
-      <span v-if="item.optionTitle">{{ item.optionTitle }}:</span>
-      <ChoiceOptions
-        v-if="item.optionTitle"
-        :options="item.options"
-        @changeOption="changeOption($event)"
-      ></ChoiceOptions>
-      Кол-во:
-      <InputOptions
-        :value="1"
-        :max="9999"
-        :min="1"
-        @inputOption="inputOption($event)"
-      ></InputOptions>
+      <div v-for="(attr, i) in attributes" :key="i">
+        {{ attr.title }}:
+        <span style="border-bottom: 1px gray dashed">{{ attr.value }}</span>
+      </div>
+      <div class="option">
+        Кол-во:
+        <InputOptions
+          :value="quantity"
+          :max="9999"
+          :min="1"
+          @inputOption="inputOption($event)"
+        />
+      </div>
     </div>
     <div class="priceBox">
       Цена:
@@ -39,33 +41,34 @@
 export default {
   props: {
     item: { type: Object, required: true },
+    sku: { type: String, required: true },
+    quantity: { type: Number, required: false, default: 1 },
   },
   data() {
-    return {
-      price: this.item.price,
-      quantity: 1,
-    }
+    return {}
   },
   computed: {
-    productPrice() {
-      console.log(this.item.price)
-      return this.item.price
+    price() {
+      return this.item.variants[0].price
     },
     cost() {
       return this.price * this.quantity
     },
-  },
-  watch: {
-    productPrice(val) {
-      this.price = val
+    attributes() {
+      return this.item.variants[0].attributes
     },
   },
+  watch: {},
   methods: {
     changeOption(option) {
       this.price = option.price
     },
     inputOption(option) {
-      this.quantity = option
+      console.log('cart:', this.sku)
+      this.$store.commit('cart/setQuantity', {
+        sku: this.sku,
+        quantity: option,
+      })
     },
     imageIdToURL(id) {
       return `${this.$axios.defaults.baseURL}/storage/image/${id}`
@@ -76,16 +79,20 @@ export default {
 
 <style scoped lang="scss">
 .cardBox {
-  display: flex;
+  overflow: scroll;
+
+  display: grid;
   align-items: center;
   justify-content: center;
-  display: grid;
   grid-template-columns: 0.5fr 2fr 16.5rem 1fr;
   gap: 1.5rem;
+
   margin-bottom: 1rem;
   padding: 0.5rem;
-  height: 10rem;
+
+  height: 12rem;
   width: 100%;
+
   // background: blue;
   border-radius: 20px;
 }
@@ -94,7 +101,7 @@ export default {
   border-radius: 20px;
 }
 .infoBox {
-  height: 100%;
+  // height: 100%;
   // border: 1px solid fuchsia;
 }
 .title {
@@ -104,21 +111,34 @@ export default {
   border-bottom: 1px solid lightgray;
 }
 .characteristica {
+  display: grid;
+  grid-template-columns: max-content auto max-content;
+  margin-bottom: 0.2rem;
   font-size: 0.8rem;
-}
-.characteristica:nth-child(even) {
-  background: whitesmoke;
 }
 .optionBox {
   display: grid;
   align-items: center;
   // justify-items: center;
-  grid-template-columns: 6rem 8rem;
   grid-template-rows: repeat(auto-fill, 1fr);
   gap: 10px;
-  padding: 2rem 1rem;
+  padding: 5% 9%;
+  min-height: 90%;
   border-left: 1px solid lightgray;
   border-right: 1px solid lightgray;
+}
+.option {
+  display: grid;
+  gap: 0.5rem;
+  align-items: center;
+  justify-content: center;
+  grid-template-columns: max-content auto;
+  margin: 0.5rem 0;
+  padding: 0 0 0 1rem;
+
+  background: whitesmoke;
+  box-shadow: 0 0 0.1rem black;
+  border-radius: 20px;
 }
 .priceBox {
   display: grid;
@@ -130,6 +150,10 @@ export default {
 }
 .cost {
   font-weight: bold;
+}
+.dashed-line {
+  width: 100%;
+  border-bottom: 2px dotted lightgray;
 }
 @media screen and (max-width: $mobile) {
 }

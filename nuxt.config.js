@@ -1,7 +1,7 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  target: 'static',
+  target: 'static', // default is 'server'
   ssr: false,
   server: {
     port: 3000, // default: 3000

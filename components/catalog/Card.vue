@@ -10,7 +10,9 @@
         />
       </div>
       <div class="title-price">
-        <div class="title">{{ item.title }}</div>
+        <div class="title">
+          {{ title }}
+        </div>
         <div class="price">{{ price }} руб</div>
       </div>
     </div>
@@ -35,6 +37,11 @@ export default {
     price() {
       return this.item.variants[0].price
     },
+    title() {
+      const title = this.item.title
+      if (title.length > 15) return title.substring(0, 15).trim() + '...'
+      return title
+    },
   },
   watch: {},
   mounted() {},
@@ -43,6 +50,10 @@ export default {
       return `${this.$axios.defaults.baseURL}/storage/image/${id}`
     },
     open() {
+      if (this.$device.isMobile) {
+        this.$router.push('/product/' + this.item.slug)
+        return
+      }
       this.isView = true
       console.log(this.item)
     },
@@ -61,16 +72,23 @@ export default {
   height: 100%;
 
   border-radius: 10px;
+  // border: 2px solid $main-color;
 
   background: white;
-  background: #e74623;
+  background: whitesmoke;
+  // background: #e74623;
+  // box-shadow: 0 0.1rem 0.1rem gray;
 
   cursor: pointer;
   transition: all 0.1s;
   z-index: 1;
 }
 .cardBox:hover {
-  box-shadow: 1px 0.1rem 0.3rem black;
+  background: white;
+  box-shadow: 0 1px 0.2rem lightgrey;
+}
+.cardBox:hover .image {
+  transform: scale(1.04);
 }
 .outStock {
   filter: grayscale(90%);
@@ -91,28 +109,33 @@ export default {
   width: 100%;
   border-radius: 10px;
   transform: scale(1.02);
-  transition: all 0.8s;
+  transition: all 0.3s;
 }
 .title-price {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: auto max-content;
   align-items: center;
-  margin-top: 0.5rem;
+  // align-items: flex-start;
+  margin: 0.5rem;
+  // margin-bottom: 1rem;
+  height: 1.5rem;
   width: 90%;
   // padding: 1.5rem 0 0 0;
   // background: springgreen;
-  margin-bottom: 1rem;
 }
 .title {
-  padding: 0 1rem;
-  // width: 100%;
+  overflow: hidden;
+  margin-right: 1rem;
+  padding: 0.2rem 0;
+  // width: 200px;
   // float: left;
 
   color: $main-color;
-  color: white;
+  color: black;
+  // color: white;
   // text-align: center;
-  font-size: 1.3rem;
-  text-shadow: 0 0 0.2rem gray;
+  font-size: 1.1rem;
+  // text-shadow: 0 0 0.2rem gray;
   // font-weight: bold;
 
   // background: yellow;
@@ -121,11 +144,13 @@ export default {
 .price {
   // margin: 1rem 0;
   // margin-bottom: 1rem;
+  padding-right: 1rem;
   width: 100%;
   color: white;
+  color: $main-color;
   letter-spacing: 0.2rem;
   font-size: 130%;
-  text-shadow: 0 0 0.2rem black;
+  // text-shadow: 0 0 0.2rem black;
   font-weight: bold;
   text-align: right;
 
@@ -146,15 +171,25 @@ export default {
   }
 
   .title-price {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr 1fr;
-    margin: 10px 0;
+    grid-template-columns: none;
+    grid-template-rows: 1.2rem max-content;
+    align-items: center;
+    gap: 0.5rem;
+    // align-items: flex-start;
+    margin-top: 0.5rem;
+    height: 3rem;
+    width: 100%;
+    // padding: 1.5rem 0 0 0;
+    // background: springgreen;
+    margin-bottom: 1rem;
   }
   .title,
   .price {
-    padding: 5px 0;
+    margin: 0;
+    padding: 0;
+    height: 1.2rem;
     text-align: center;
-    font-size: 14px;
+    // background: blue;
   }
 }
 </style>
