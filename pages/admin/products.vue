@@ -9,7 +9,7 @@
       />
       <v-data-table
         :items-per-page="products.length"
-        disable-sort
+        :disable-sort="$device.isMobile"
         :headers="headers"
         :items="products"
         item-key="slug"
@@ -129,11 +129,12 @@
             v-if="item.imgs.length"
             aspect-ratio="1"
             contain
-            max-height="48px"
+            height="48px"
+            min-width="48px"
             :src="imageIdToURL(item.imgs[0])"
           ></v-img>
         </template>
-        <template v-slot:item.price="{ item }">
+        <template v-slot:item.variants[0].price="{ item }">
           {{ getFormatedPrice(item) }}
         </template>
         <template v-slot:item.inStock="{ item }">
@@ -259,8 +260,12 @@ export default {
       { text: '', value: 'image', sortable: false },
       { text: 'Название', value: 'title' },
       { text: 'Категория', value: 'category' },
-      { text: 'Цена, ₽', value: 'price', align: 'right' },
-      { text: 'В наличии', value: 'inStock', align: 'center' },
+      {
+        text: 'Цена, ₽',
+        value: 'variants[0].price',
+        align: 'right',
+      },
+      { text: 'В наличии', value: 'inStock', align: 'center', sortable: false },
       { text: '', value: 'data-table-expand', sortable: false },
       { text: 'Действия', value: 'actions', sortable: false },
     ],
@@ -417,7 +422,7 @@ export default {
       const min = Math.min.apply(null, prices)
       const max = Math.max.apply(null, prices)
       if (min === max) return min
-      return `${min} — ${max}`
+      return `(${min} — ${max}) ${item.variants[0].price}`
     },
     getInStockNumber(item) {
       return `${item.variants.filter((x) => x.inStock).length}/${
