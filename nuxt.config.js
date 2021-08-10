@@ -1,11 +1,21 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  target: 'static', // default is 'server'
-  ssr: false,
+  target: 'static', // default: 'server'
+  ssr: false, // default: true
   server: {
     port: 3000, // default: 3000
-    host: '0.0.0.0', // default: localhost
+    host: '0.0.0.0', // default: 'localhost'
+  },
+
+  // Build Configuration (https://go.nuxtjs.dev/config-build)
+  build: {
+    // Android Studio doesn't work with underscore
+    publicPath: '/nuxt/', // default: '/_nuxt/'
+  },
+  generate: {
+    // same as in capacitor.config.json
+    dir: 'dist', // default: 'dist'
   },
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -100,10 +110,5 @@ export default {
       name: 'Coffee Make',
       lang: 'ru',
     },
-  },
-
-  // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {
-    publicPath: '/nuxt/',
   },
 }
