@@ -59,7 +59,7 @@
 
 <script>
 export default {
-  layout: 'header&footer',
+  layout: 'adaptivLayout',
   data() {
     return {
       isCenterActive: true,

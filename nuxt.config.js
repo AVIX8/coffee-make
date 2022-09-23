@@ -1,10 +1,11 @@
 import colors from 'vuetify/es5/util/colors'
 
 export default {
-  // target: 'server',
+  target: 'static', // default: 'server'
+  ssr: false, // default: true
   server: {
     port: 3000, // default: 3000
-    host: '0.0.0.0', // default: localhost
+    host: '0.0.0.0', // default: 'localhost'
   },
 
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -32,7 +33,16 @@ export default {
   ],
 
   // Auto import components (https://go.nuxtjs.dev/config-components)
-  components: true,
+  components: {
+    dirs: [
+      '~/components',
+      '~/components/admin',
+      '~/components/cart',
+      '~/components/catalog',
+      '~/components/commons',
+      '~/components/product',
+    ],
+  },
 
   // Modules for dev and build (recommended) (https://go.nuxtjs.dev/config-modules)
   buildModules: [
@@ -52,6 +62,7 @@ export default {
     '@nuxtjs/device',
     // https://github.com/microcipcip/cookie-universal/tree/master/packages/cookie-universal-nuxt
     ['cookie-universal-nuxt', { parseJSON: false }],
+    '@nuxtjs/toast',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
@@ -59,7 +70,7 @@ export default {
     baseURL: `${process.env.baseURL}`,
   },
 
-  loading: '~/components/LoadingBar.vue',
+  // loading: '~/components/LoadingBar.vue',
 
   // Vuetify module configuration (https://go.nuxtjs.dev/config-vuetify)
   vuetify: {
@@ -90,7 +101,4 @@ export default {
       lang: 'ru',
     },
   },
-
-  // Build Configuration (https://go.nuxtjs.dev/config-build)
-  build: {},
 }

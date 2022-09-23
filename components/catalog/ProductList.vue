@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative">
+  <div class="box">
     <transition name="loadOut">
       <div v-show="isLoad" class="loadBox">
         <svg
@@ -70,16 +70,16 @@
       </div>
     </transition>
 
+    <transition name="productIn">
+      <div v-show="!isLoad" id="product-list-box">
+        <Card v-for="(item, index) in items" :key="index" :item="item" />
+      </div>
+    </transition>
+
     <transition name="loadOut">
-      <div v-show="!isLoad" id="catalog-box">
-        <div
-          v-for="(item, index) in items"
-          :key="index"
-          class="card-card"
-          @click="$emit('openProduct', item)"
-        >
-          <Card :item="item" />
-        </div>
+      <div v-if="items.length === 0 && !isLoad" class="emptyBox">
+        <h1 class="emptyPreview">☹</h1>
+        <h4>Ой! Кажется здесь ничего нет...</h4>
       </div>
     </transition>
   </div>
@@ -90,6 +90,7 @@ export default {
   props: {
     selected: { type: Object, required: true },
     sort: { type: Object, required: true },
+    search: { type: String, required: true },
   },
   data() {
     return {
@@ -108,27 +109,26 @@ export default {
     sort: {
       deep: true,
       handler() {
-        console.log(this.sort)
         this.update()
       },
     },
+    search(val) {
+      this.update()
+    },
   },
   mounted() {
-    this.load()
+    this.load(1000)
     this.update()
   },
   methods: {
-    load() {
-      this.$nextTick(() => {
-        this.$nuxt.$loading.start()
-        setTimeout(() => this.$nuxt.$loading.finish(), 0)
-      })
+    load(time) {
       setTimeout(() => {
         this.isLoad = false
-      }, 1000)
+      }, time)
     },
     async update() {
       // Получение товаров
+      this.isLoad = true
       const characteristics = {}
       for (const [title, values] of Object.entries(this.selected))
         if (values.length) characteristics[title] = values
@@ -137,7 +137,10 @@ export default {
         .dispatch('api/getProducts', {
           category: '/Кофе',
           sort: this.sort,
+          title: this.search,
           characteristics,
+          inStock: true,
+          // limit: 12,
         })
         .then((res) => {
           this.items = res
@@ -145,24 +148,27 @@ export default {
         .catch(() => {
           this.items = []
         })
+      this.load(700)
     },
   },
 }
 </script>
 
 <style scoped lang="scss">
-#catalog-box {
+.box {
+  position: relative;
+  // background: blue;
+}
+#product-list-box {
   // overflow: scroll;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-content: center;
+  grid-template-columns: 1fr 1fr 1fr;
+  justify-items: center;
   align-items: center;
-  // height: 100rem;
-  // width: 100%;
+  gap: 3rem 1.5rem;
+  width: 100%;
+  // height: 100%;
   // background: forestgreen;
-}
-.card-card {
-  margin: 1rem;
 }
 #paginationBox {
   height: 10%;
@@ -170,13 +176,34 @@ export default {
   background: brown;
 }
 .loadBox {
+  position: absolute;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 700px;
-  background: transparent;
+  height: 100%;
+  width: 100%;
   // background: red;
 }
+.logo {
+  // width: 100%;
+}
+.emptyBox {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  padding: 14% 2rem;
+  color: gray;
+  // height: 100%;
+  // background: fuchsia;
+}
+.emptyPreview {
+  width: 100%;
+  color: $main-light-color;
+  text-align: center;
+  // background: gold;
+}
+
 .loadOut-enter-active {
   transition: all 1.5s;
 }
@@ -189,6 +216,20 @@ export default {
 }
 .loadOut-leave-to {
   transform: scale(2);
+  opacity: 0;
+}
+
+.productIn-enter-active {
+  transition: all 0.5s;
+}
+.productIn-leave-active {
+  transition: all 0s;
+}
+.productIn-enter {
+  transform: scale(0.9);
+  opacity: 0;
+}
+.productIn-leave-to {
   opacity: 0;
 }
 ////////////////////////////////////////////////////////////
@@ -255,8 +296,22 @@ export default {
 ////////////////////////////////////////////////////////////
 
 @media screen and (max-width: $mobile) {
+  #product-list-box {
+    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem 0.8rem;
+  }
   .card-card {
     margin: 0rem;
+    justify-self: center;
+  }
+  .loadBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: none;
+    background: transparent;
+    // background: red;
   }
 }
 </style>

@@ -1,56 +1,92 @@
-const Item = {
-  _id: '054VA72303012P',
-  desc:
-    "Give your dressy look a lift with these women's Kate high-heel shoes by Metaphor. These playful peep-toe pumps feature satin-wrapped stiletto heels and chiffon pompoms at the toes. Rhinestones on each of the silvertone buckles add just a touch of sparkle to these shoes for a flirty footwear look that's made for your next night out.",
-  name: "Women's Kate Ivory Peep-Toe Stiletto Heel",
-  category: '/кофе/моносорта',
-  brand: 'Metaphor',
-  imgs: [
-    'http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_967112812',
-    'http://c.shld.net/rpx/i/s/i/spin/image/spin_prod_945877912',
-  ],
-
-  properties: {
-    кислотность: {
-      maxValue: 5,
-      value: 3,
-    },
-    плотность: {
-      maxValue: 5,
-      value: 2,
-    },
-  },
-
-  choiceProperty: {
-    name: 'Масса (гр)',
-    variants: [
+module.exports = {
+  item: {
+    _id: '054VA72303012P',
+    title: 'Mild',
+    descr:
+      'Смесь арабики с ароматом сладкой карамели, какао и бисквитной выпечки (сладкий).',
+    imgs: ['hz1', 'hz2'],
+    slug: 'mild',
+    characteristics: [
+      // участвуют в фильтации
       {
-        price: 260.0,
-        option: 250,
+        title: 'Обжарка',
+        value: 'Средняя',
       },
       {
-        price: 940.0,
-        option: 1000,
+        title: 'Кислотность',
+        value: 'Средняя',
+      },
+      {
+        title: 'Сорт',
+        value: '100% арабика',
+      },
+      {
+        title: 'Купаж',
+        value: 'Смесь',
+      },
+      {
+        title: 'География',
+        value: 'Бразилия, Колумбия, Гватемала.',
       },
     ],
-  },
-}
+    attributes: [
+      // не участвуют в фильтрации
+      {
+        title: 'Масса (гр)',
+        value: 1000,
+      },
+    ],
 
-// from clien
-const cart = [
-  {
-    _id: '054VA72303012P',
-    quantity: 8,
-    option: 250,
+    // с вариациями
+    variants: [
+      {
+        SKU: '5474',
+        price: 1200,
+        attributes: [
+          {
+            title: 'Масса (гр)',
+            value: 1000,
+          },
+        ],
+        isStock: true,
+      },
+      {
+        SKU: '5475',
+        price: 300,
+        attributes: {
+          title: 'Масса (гр)',
+          value: 250,
+        },
+        isStock: true,
+      },
+    ],
+    // без вариаций
+    // variants: [
+    //   {
+    //     price: 1200,
+    //     SKU: '5474',
+    //     isStock: true,
+    //   },
+    // ],
   },
-  {
-    _id: '0151651',
-    quantity: 3,
-    option: 1000,
-  },
-]
 
-// from server
-const serverCart = {
-  hz: 'hz',
+  // ORDER
+  // from client
+  fullName: 'dogdan andreevich',
+  phone: '8-(913) 437 21 45',
+  address: 'глазурная 224',
+  cart: [
+    {
+      SKU: '5454',
+      quantity: 8,
+    },
+    {
+      SKU: '5471',
+      quantity: 8,
+    },
+    {
+      SKU: '5472',
+      quantity: 3,
+    },
+  ],
 }

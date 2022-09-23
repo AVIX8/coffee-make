@@ -68,10 +68,10 @@ export default {
 
 <style scoped lang="scss">
 .selectedBox {
-  overflow-y: hidden;
-  overflow-x: scroll;
+  // overflow-y: hidden;
+  // overflow-x: scroll;
   -webkit-overflow-scrolling: touch;
-  height: 2.5rem;
+  height: fit-content;
   // padding: 0.5rem;
   // background: seagreen;
 }

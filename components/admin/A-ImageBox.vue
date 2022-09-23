@@ -16,10 +16,10 @@
       @mouseleave="hover = false"
     >
       <v-card outlined>
-        <v-card-title
+        <v-card-title class="py-1"
           >Изображения<v-spacer />
           <label class="grey--text subtitle-2"> Перенесите или нажмите </label>
-          <v-btn color="primary" fab small class="ml-4" @click="upload">
+          <v-btn color="primary" icon class="ml-1" @click="upload">
             <v-icon> mdi-upload </v-icon>
           </v-btn>
         </v-card-title>
